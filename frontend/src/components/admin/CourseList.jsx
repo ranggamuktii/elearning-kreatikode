@@ -52,6 +52,9 @@ const CourseList = () => {
             <button onClick={() => handleDelete(course._id)} className="px-4 py-2 bg-red-500 text-white rounded-md">
               Delete
             </button>
+            <button onClick={() => (window.location.href = `/admin/course/${course._id}/quizzes`)} className="px-4 py-2 bg-yellow-500 text-white rounded-md">
+              Quiz
+            </button>
           </div>
         </div>
       ))}
