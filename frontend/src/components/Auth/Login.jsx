@@ -70,7 +70,7 @@ function Login() {
           <img className="text-center w-6 h-6 sm:w-12 sm:h-full" src="../../public/kreatikode-logo.png" />
         </div>
         <h1 className="text-[26px] font-semibold text-center">Selamat Datang di KreatiKode 👋🏻</h1>
-        <p className="text-center text-base text-gray-500 mt-2">Silahkan masukkan nomor telepon atau email untuk akses akun kamu.</p>
+        <p className="text-center text-base text-gray-500 mt-2">Silahkan masukkan email dan password untuk akses akun kamu di Kreatikode.</p>
 
         {generalError && <p className="text-red-500 text-center mt-4">{generalError}</p>}
 
