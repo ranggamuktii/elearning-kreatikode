@@ -16,7 +16,7 @@ const Benefit = () => {
       <div className="flex flex-col md:flex-row items-center justify-center mt-10 space-y-6 md:space-y-0 md:space-x-8">
         <div className="w-full md:w-1/2 flex justify-center">
           <img
-            src="https://www.techfor.id/wp-content/uploads/2019/12/html.png"
+            src="https://placehold.co/500x300/png"
             alt="Benefit"
             className="w-3/4 md:w-full object-cover rounded-lg shadow-md"
           />
@@ -65,3 +65,4 @@ const Benefit = () => {
 };
 
 export default Benefit;
+
