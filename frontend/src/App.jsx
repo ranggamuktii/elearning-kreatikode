@@ -1,13 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './components/Auth/Login'; // Ini nanti ganti aja ya sama component yang mau di coba
+import Loading from './components/Loader/Loading';
 import './App.css';
 
 function App() {
   return (
     <Router>
       <Routes>
-        {/* Ini juga ganti ya sama component yang mau di coba */}
-        <Route path="/login" element={<Login />} />
+        <Route path="/loading" element={<Loading />} />
       </Routes>
     </Router>
   );
