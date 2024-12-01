@@ -5,7 +5,6 @@ const testimoniData = [
     name: 'Rangga Mukti',
     job: 'Fullstack Web Vocasia',
     title: 'Lorem Ipsum is simply',
-    rating: 5,
     review: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy",
   },
   {
@@ -14,7 +13,6 @@ const testimoniData = [
     name: 'Rangga Mukti',
     job: 'Fullstack Web Vocasia',
     title: 'Lorem Ipsum is simply',
-    rating: 5,
     review: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy",
   },
   {
@@ -23,7 +21,6 @@ const testimoniData = [
     name: 'Rangga Mukti',
     job: 'Fullstack Web Vocasia',
     title: 'Lorem Ipsum is simply',
-    rating: 5,
     review: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy",
   },
   {
@@ -32,7 +29,6 @@ const testimoniData = [
     name: 'Rangga Mukti',
     job: 'Fullstack Web Vocasia',
     title: 'Lorem Ipsum is simply',
-    rating: 5,
     review: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy",
   },
   {
@@ -41,7 +37,6 @@ const testimoniData = [
     name: 'Rangga Mukti',
     job: 'Fullstack Web Vocasia',
     title: 'Lorem Ipsum is simply',
-    rating: 5,
     review: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy",
   },
   {
@@ -50,7 +45,6 @@ const testimoniData = [
     name: 'Rangga Mukti',
     job: 'Fullstack Web Vocasia',
     title: 'Lorem Ipsum is simply',
-    rating: 5,
     review: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy",
   },
 ];
