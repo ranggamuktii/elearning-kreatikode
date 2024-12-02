@@ -32,20 +32,26 @@ const Navbar = () => {
           } md:flex flex-col md:flex-row justify-between md:justify-center md:items-center md:space-x-12 bg-white md:bg-transparent absolute md:static left-0 w-full md:w-auto top-0 md:top-auto shadow-lg md:shadow-none pt-20 md:pt-0 p-4 md:p-0`}
           id="navbar-menu"
         >
-          <ul className="flex flex-col md:flex-row text-base font-normal space-y-2 md:space-y-0 md:space-x-8 px-4 py-1 md:px-0 md:py-0">
+          <ul className="flex flex-col md:flex-row text-base font-normal space-y-2 md:space-y-0 md:space-x-12 px-4 py-1 md:px-0 md:py-0">
             <li>
               <a href="/" className="block md:inline-block text-left" onClick={handleMenuClose}>
-                <p className="w-full md:w-auto py-2 md:py-6 text-neutral-800 hover:text-primary-600 font-normal hover:font-medium border-b-4 border-transparent md:hover:border-primary-600 transition-colors duration-200">Beranda</p>
+                <p className="w-full md:w-auto py-2 md:py-6 px-2 md:px-4 text-neutral-800 hover:text-primary-600 font-normal hover:font-medium border-b-4 border-transparent md:hover:border-primary-600 transition-colors duration-200">
+                  Beranda
+                </p>
               </a>
             </li>
             <li>
               <a href="/tiket-saya" className="block md:inline-block text-left" onClick={handleMenuClose}>
-                <p className="w-full md:w-auto py-2 md:py-6 text-neutral-800 hover:text-primary-600 font-normal hover:font-medium border-b-4 border-transparent md:hover:border-primary-600 transition-colors duration-200">Kelas</p>
+                <p className="w-full md:w-auto py-2 md:py-6 px-2 md:px-4 text-neutral-800 hover:text-primary-600 font-normal hover:font-medium border-b-4 border-transparent md:hover:border-primary-600 transition-colors duration-200">
+                  Kelas
+                </p>
               </a>
             </li>
             <li>
               <a href="/riwayat-transaksi" className="block md:inline-block text-left" onClick={handleMenuClose}>
-                <p className="w-full md:w-auto py-2 md:py-6 text-neutral-800 hover:text-primary-600 font-normal hover:font-medium border-b-4 border-transparent md:hover:border-primary-600 transition-colors duration-200">Tentang Kami</p>
+                <p className="w-full md:w-auto py-2 md:py-6 px-2 md:px-4 text-neutral-800 hover:text-primary-600 font-normal hover:font-medium border-b-4 border-transparent md:hover:border-primary-600 transition-colors duration-200">
+                  Tentang Kami
+                </p>
               </a>
             </li>
           </ul>
