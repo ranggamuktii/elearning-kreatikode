@@ -41,14 +41,14 @@ const Navbar = () => {
               </a>
             </li>
             <li>
-              <a href="/tiket-saya" className="block md:inline-block text-left" onClick={handleMenuClose}>
+              <a href="/course" className="block md:inline-block text-left" onClick={handleMenuClose}>
                 <p className="w-full md:w-auto py-2 md:py-6 px-2 md:px-4 text-neutral-800 hover:text-primary-600 font-normal hover:font-medium border-b-4 border-transparent md:hover:border-primary-600 transition-colors duration-200">
                   Kelas
                 </p>
               </a>
             </li>
             <li>
-              <a href="/riwayat-transaksi" className="block md:inline-block text-left" onClick={handleMenuClose}>
+              <a href="/about_us" className="block md:inline-block text-left" onClick={handleMenuClose}>
                 <p className="w-full md:w-auto py-2 md:py-6 px-2 md:px-4 text-neutral-800 hover:text-primary-600 font-normal hover:font-medium border-b-4 border-transparent md:hover:border-primary-600 transition-colors duration-200">
                   Tentang Kami
                 </p>
