@@ -19,7 +19,7 @@ function Footer() {
             <a href="/" className="flex items-center mb-3 sm:mb-0">
               <img
                 src="/kreatikode-texthitam.png"
-                className="h-9 sm:h-12 hover:drop-shadow-md hover:shadow-purple-100 hover:shadow-custom-light hover:scale-105 sm:hover:scale-125 hover:-rotate-2 transform transition-transform duration-500"
+                className="h-9 sm:h-12 hover:drop-shadow-md hover:shadow-purple-100 hover:shadow-custom-light hover:scale-105 sm:hover:scale-110 hover:-rotate-2 transform transition-transform duration-500"
                 alt="Flowbite Logo"
               />
             </a>
