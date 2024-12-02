@@ -12,7 +12,7 @@ function Footer() {
   }
 
   return (
-    <footer className="bg-white w-full h-full sm:h-[400px] border-t flex items-center px-0 sm:px-28 mt-16 sm:mt-24 pt-0 sm:pt-12">
+    <footer className="bg-white w-full h-full sm:h-[400px] border-t border-gray-100 flex items-center px-0 sm:px-28 mt-16 sm:mt-24 pt-0 sm:pt-12">
       <div className="mx-auto w-full py-8">
         <div className="flex flex-col md:flex-row md:justify-between px-8 sm:px-0">
           <div className="max-w-full sm:max-w-[500px]  flex flex-col mb-6 md:mb-0 space-y-2 sm:space-y-4">

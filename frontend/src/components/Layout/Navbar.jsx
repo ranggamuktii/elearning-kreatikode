@@ -18,7 +18,7 @@ const Navbar = () => {
   }, [isMenuOpen]);
 
   return (
-    <nav className="bg-white border-gray-200 dark:bg-gray-900 fixed top-0 left-0 w-full h-[60px] sm:h-[75px] shadow-lg z-50">
+    <nav className="bg-white border-gray-200 dark:bg-gray-900 fixed top-0 left-0 w-full h-[60px] sm:h-[75px] shadow-sm z-50">
       <div className="max-w-7xl h-full mx-auto px-6 sm:px-4 flex items-center justify-between">
         {/* Logo */}
         <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse z-50">
