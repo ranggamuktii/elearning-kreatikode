@@ -18,6 +18,8 @@ export default {
         'secondary-300': '#609ECA',
         'secondary-200': '#9ACEED',
         'secondary-100': '#CBE8F6',
+        'color-text': '#4A4B4C',
+        'color-text-2': '#FFFFFF',
       },
       boxShadow: {
         'custom-light': '0 1px 8px rgba(0, 0, 0, 0.06)',
