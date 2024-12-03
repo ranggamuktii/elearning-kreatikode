@@ -6,6 +6,7 @@ import LogoSlider from './components/Landing Page/LogoSlider';
 import Faq from './components/Landing Page/Faq';
 import CallToAction from './components/Landing Page/CallToAction';
 import IntroClass from './pages/IntroClass';
+import Benefit from './components/Landing Page/Benefit';
 import './App.css';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Route path="/faq" element={<Faq />} />
           <Route path="/call-to-action" element={<CallToAction />} />
           <Route path="/introduction" element={<IntroClass />} />
+          <Route path="/benefit" element={<Benefit />} />
         </Routes>
       </Layout>
     </Router>
