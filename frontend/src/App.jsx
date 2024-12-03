@@ -4,6 +4,7 @@ import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import LogoSlider from './components/Landing Page/LogoSlider';
 import Faq from './components/Landing Page/Faq';
+import CallToAction from './components/Landing Page/CallToAction';
 import './App.css';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/logo-slider" element={<LogoSlider />} />
           <Route path="/faq" element={<Faq />} />
+          <Route path="/callToAction" element={<CallToAction />} />
         </Routes>
       </Layout>
     </Router>
