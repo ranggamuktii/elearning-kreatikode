@@ -17,7 +17,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/logo-slider" element={<LogoSlider />} />
           <Route path="/faq" element={<Faq />} />
-          <Route path="/callToAction" element={<CallToAction />} />
+          <Route path="/call-to-action" element={<CallToAction />} />
         </Routes>
       </Layout>
     </Router>
