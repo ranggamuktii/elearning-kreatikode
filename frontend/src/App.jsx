@@ -1,12 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import UserProfile from './components/UserProfile';
+import DashboardPage from './components/Dashboard';
 import './App.css';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/profile" element={<UserProfile />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
       </Routes>
     </Router>
   );
