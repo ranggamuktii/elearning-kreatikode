@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
 import testimoniData from '../../data/testimoni.js';
@@ -31,6 +31,7 @@ const swiperStyles = `
 function Testimoni() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [currentSlidesPerView, setCurrentSlidesPerView] = useState(3);
+  const swiperRef = useRef(null);
 
   const handleSlideChange = (swiper) => {
     setActiveIndex(Math.floor(swiper.realIndex / currentSlidesPerView));
@@ -75,11 +76,11 @@ function Testimoni() {
         <div className="flex flex-col items-center">
           <Swiper
             id="swiper_Two"
+            ref={swiperRef}
             modules={[Pagination]}
             slidesPerView={currentSlidesPerView}
             slidesPerGroup={currentSlidesPerView}
             loop={true}
-            loopFillGroupWithBlank={true}
             autoHeight={false}
             autoplay={{
               delay: 2500,
@@ -134,7 +135,7 @@ function Testimoni() {
               className={`rounded-full transition-all duration-300 ${activeIndex === index ? 'w-6 h-2 bg-primary-500' : 'w-3 h-2 bg-gray-200'}`}
               aria-current={activeIndex === index ? 'true' : 'false'}
               aria-label={`Slide ${index + 1}`}
-              onClick={() => Swiper.current?.slideTo(index * currentSlidesPerView)}
+              onClick={() => swiperRef.current?.slideTo(index * currentSlidesPerView)}
             />
           ))}
         </div>
