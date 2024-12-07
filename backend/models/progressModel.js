@@ -1,4 +1,7 @@
+
+
 import mongoose from 'mongoose';
+const Schema = mongoose.Schema;
 
 const progressSchema = new Schema({
   user: {
@@ -11,7 +14,7 @@ const progressSchema = new Schema({
     ref: 'Course',
     required: true,
   },
-  completedMaterials: [String],
+  completedMaterials: [String], // Harus sesuai dengan field di kode
   lastAccessedMaterial: String,
   createdAt: {
     type: Date,
@@ -22,5 +25,6 @@ const progressSchema = new Schema({
     default: Date.now,
   },
 });
+
 
 export default mongoose.model('Progress', progressSchema);
