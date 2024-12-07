@@ -97,11 +97,11 @@ function Testimoni() {
                 slidesPerGroup: 3,
               },
             }}
-            className="max-w-[350px] sm:max-w-[1200px]"
+            className="max-w-[350px] sm:max-w-[1350px]"
           >
             {testimoniData.map((testimoni) => (
               <SwiperSlide key={testimoni.id}>
-                <div className="h-full py-3 sm:py-5 px-14 sm:px-3">
+                <div className="h-full py-3 sm:py-5 px-6 sm:px-3">
                   <div className="bg-white flex flex-col border border-gray-200 rounded-[20px] h-full p-5 sm:p-8 transform transition-transform-shadow duration-500 hover:shadow-custom-mild hover:shadow-primary-100 hover:scale-102">
                     <div className="space-y-2 sm:space-y-3 flex-grow">
                       <svg className="w-5 h-5 sm:w-8 sm:h-8 text-primary-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
@@ -113,8 +113,8 @@ function Testimoni() {
                       </svg>
                       <p className="text-xs sm:text-base font-normal text-gray-600 leading-relaxed">{testimoni.review}</p>
                     </div>
-                    <div className="flex items-center space-x-3 mt-3 sm:mt-5">
-                      <img src={testimoni.profile} alt="Photo Profile" className="object-cover w-[20px] h-[20px] sm:w-[40px] sm:h-[40px] rounded-full" />
+                    <div className="flex items-center space-x-2 sm:space-x-3 mt-3 sm:mt-5">
+                      <img src={testimoni.profile} alt="Photo Profile" className="object-cover w-[30px] h-[30px] sm:w-[40px] sm:h-[40px] rounded-full" />
                       <div>
                         <h5 className="text-xs sm:text-sm font-medium">{testimoni.name}</h5>
                         <h5 className="text-[8px] sm:text-sm font-normal">{testimoni.job}</h5>
