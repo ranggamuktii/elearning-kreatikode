@@ -2,10 +2,10 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout/Layout';
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
-import LandingPage from './components/Landing Page/LandingPage';
+import LandingPage from './components/LandingPage/LandingPage';
 import Profile from './components/Dashboard';
-import './App.css';
 import 'flowbite-react';
+import './App.css';
 
 function App() {
   return (
