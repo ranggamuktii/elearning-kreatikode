@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Loading from '../Loader/Loading';
+import Banner from './Banner';
 import LogoSlider from './LogoSlider';
 import Benefit from './Benefit';
 import CallToAction from './CallToAction';
@@ -21,6 +22,7 @@ function LandingPage() {
       ) : (
         <div className="flex flex-col items-center">
           <div className="flex flex-col w-full space-y-10 sm:space-y-15">
+            <Banner />
             <LogoSlider />
             <Benefit />
             <Testimoni />

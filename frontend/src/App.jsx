@@ -5,6 +5,7 @@ import Register from './components/Auth/Register';
 import LandingPage from './components/Landing Page/LandingPage';
 import Profile from './components/Dashboard';
 import './App.css';
+import 'flowbite-react';
 
 function App() {
   return (

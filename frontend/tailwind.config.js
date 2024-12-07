@@ -32,6 +32,7 @@ export default {
       scale: {
         102: '1.02',
       },
+
       backgroundImage: {
         'gradation-blue': 'linear-gradient(to right, #0089E2, #62CDF6)',
       },
