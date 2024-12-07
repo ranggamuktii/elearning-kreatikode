@@ -2,8 +2,8 @@ import { Accordion, AccordionContent, AccordionPanel, AccordionTitle } from 'flo
 
 export function Faq() {
   return (
-    <div className="flex items-center justify-center h-screen ">
-      <div className="w-full max-w-2xl">
+    <div className="flex items-center justify-center px-5 sm:px-12">
+      <div className="w-full ">
         <Accordion>
           <AccordionPanel>
             <AccordionTitle>Apakah Cocok Untuk pemula ?</AccordionTitle>
