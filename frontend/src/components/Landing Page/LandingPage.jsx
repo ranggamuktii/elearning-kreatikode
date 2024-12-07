@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import Loading from '../Loading';
+import Loading from '../Loader/Loading';
 import LogoSlider from './LogoSlider';
 import Benefit from './Benefit';
 import CallToAction from './CallToAction';
+import Testimoni from './Testimoni';
 import Faq from './Faq';
 
 function LandingPage() {
@@ -22,6 +23,7 @@ function LandingPage() {
           <div className="flex flex-col w-full space-y-10 sm:space-y-20">
             <LogoSlider />
             <Benefit />
+            <Testimoni />
             <CallToAction />
             <Faq />
           </div>
