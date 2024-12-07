@@ -64,7 +64,7 @@ function Login() {
   };
 
   return (
-    <div className="w-full flex items-center justify-center mt-28">
+    <div className="w-full flex items-center justify-center mt-28 mb-20">
       <div className="max-w-[330px] sm:max-w-[450px]">
         <div className="max-w-full flex justify-center sm:mb-5">
           <img className="text-center w-6 h-6 sm:w-12 sm:h-full" src="../../public/kreatikode-logo.png" />
