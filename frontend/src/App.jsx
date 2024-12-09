@@ -4,6 +4,7 @@ import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import LandingPage from './components/LandingPage/LandingPage';
 import Profile from './components/Dashboard';
+import PageFaq from './components/PageFaq';
 import 'flowbite-react';
 import './App.css';
 
@@ -16,6 +17,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/page_faq" element={<PageFaq />} />
         </Routes>
       </Layout>
     </Router>
