@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const quizSchema = new Schema({
+const quizSchema = new mongoose.Schema({
   course: {
     type: Schema.Types.ObjectId,
     ref: 'Course',
