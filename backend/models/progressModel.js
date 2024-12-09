@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const progressSchema = new Schema({
+const progressSchema = new mongoose.Schema({
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User',
