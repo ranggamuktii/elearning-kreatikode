@@ -77,7 +77,7 @@ function Login() {
         {/* Form Login */}
         <form onSubmit={handleSubmit} className="space-y-6 mt-4 sm:mt-8 " autoComplete="off">
           <div className="flex flex-col">
-            <label className="text-base font-medium">Masukkan Email / No. Telepon</label>
+            <label className="text-base font-medium">Masukkan Email</label>
             <input
               type="email"
               name="email-login"
