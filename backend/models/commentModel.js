@@ -1,19 +1,18 @@
 import mongoose from 'mongoose';
 
-const commentSchema =  new Schema({
+const commentSchema =  new mongoose.Schema({
   user: {
-    type: Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
   },
   course: {
-    type: Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'Course',
     required: true,
   },
   text: {
     type: String,
-    required: true,
     maxlength: 1000,
   },
   rating: {
