@@ -5,6 +5,8 @@ import Register from './components/Auth/Register';
 import LandingPage from './components/LandingPage/LandingPage';
 import Profile from './components/Dashboard';
 import PageFaq from './components/PageFaq';
+import IntroClass from './pages/IntroClass';
+import MaterialCourse from './pages/MaterialCourse';
 import 'flowbite-react';
 import './App.css';
 
@@ -18,6 +20,8 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/page_faq" element={<PageFaq />} />
+          <Route path="/introduction" element={<IntroClass />} />
+          <Route path="/course" element={<MaterialCourse />} />
         </Routes>
       </Layout>
     </Router>
