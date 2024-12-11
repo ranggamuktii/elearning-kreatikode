@@ -3,7 +3,7 @@ const CourseCard = () => {
 
   const courses = [
     {
-      _id: '1',
+      _id: '6750356a6195eec91c2bb5bf',
       title: 'Pemrograman Web',
       description: 'Belajar pengembangan web dari dasar hingga mahir.',
       category: 'Pemrograman',
