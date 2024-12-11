@@ -30,6 +30,15 @@ const quizSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+  },
+  deleted: { 
+    type: Boolean, 
+    default: false 
+  },
+
 });
 
 export default mongoose.model('Quiz', quizSchema);
