@@ -1,8 +1,10 @@
 import express from 'express';
+import courseRoutes from './courseRoute.js';
+import materialRoutes from './materialRoute.js';
+
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  res.send('Welcome to the API');
-});
+router.use('/courses', materialRoutes);
+router.use('/courses', courseRoutes);
 
 export default router;

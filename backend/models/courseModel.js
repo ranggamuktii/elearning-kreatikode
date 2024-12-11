@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+const { Schema } = mongoose;
 
 const courseSchema = new Schema({
   title: {
@@ -22,7 +23,7 @@ const courseSchema = new Schema({
   },
   thumbnail: {
     type: String,
-    required: true,
+    // required: true,
   },
   introduction: {
     overview: {
@@ -35,18 +36,16 @@ const courseSchema = new Schema({
       default: [],
     },
   },
-  materials: [
-    {
-      title: {
-        type: String,
-        required: true,
-      },
-      content: {
-        type: String,
-        required: true,
-      },
+  materials: [{
+    title: {
+      type: String,
+      required: true,
     },
-  ],
+    content: {
+      type: String,
+      required: true,
+    },
+  }, ],
   createdAt: {
     type: Date,
     default: Date.now,
@@ -55,6 +54,10 @@ const courseSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  deleted: {
+    type: Boolean,
+    default: false,
+  }
 });
 
 export default mongoose.model('Course', courseSchema);
