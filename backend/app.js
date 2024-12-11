@@ -8,10 +8,15 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT;
 
+// Koneksi Database
 connectDB();
+
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-app.use('/api/v1', routes);
+// Rute API
+app.use('/api', routes); // Prefix '/api' untuk semua route
 
-app.listen(port, () => console.log(`Server running on http://localhost: ${port}`));
+// Jalankan server
+app.listen(port, () => console.log(`Server running on http://localhost:${port}`));

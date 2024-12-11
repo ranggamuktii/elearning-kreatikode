@@ -1,3 +1,4 @@
+// userModel.js
 import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
@@ -37,4 +38,5 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+// Menambahkan nama koleksi yang diinginkan di parameter ketiga
 export default mongoose.model('User', userSchema);
