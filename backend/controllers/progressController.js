@@ -1,18 +1,17 @@
-import mongoose from "mongoose";
-import Progress from "../models/progressModel.js";
-import User from "../models/userModel.js";
-import Course from "../models/courseModel.js";
+import mongoose from 'mongoose';
+import Progress from '../models/progressModel.js';
+import User from '../models/userModel.js';
+import Course from '../models/courseModel.js';
 
 // Menambahkan User Baru
 export const createUser = async (req, res) => {
   try {
-    const { name, email, password, photoURL, gender, phone, dateOfBirth } =
-      req.body;
+    const { name, email, password, photoURL, gender, phone, dateOfBirth } = req.body;
 
     // Periksa apakah email sudah digunakan
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ message: "Email already in use" });
+      return res.status(400).json({ message: 'Email already in use' });
     }
 
     // Membuat pengguna baru
@@ -29,12 +28,10 @@ export const createUser = async (req, res) => {
 
     // Simpan ke database
     await newUser.save();
-    res
-      .status(201)
-      .json({ message: "User created successfully", user: newUser });
+    res.status(201).json({ message: 'User created successfully', user: newUser });
   } catch (error) {
-    console.error("Error creating user:", error);
-    res.status(500).json({ message: "Server error" });
+    console.error('Error creating user:', error);
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
@@ -42,37 +39,31 @@ export const createUser = async (req, res) => {
 export const getProgress = async (req, res) => {
   try {
     const { courseId } = req.params;
-    
+
     // Mengecek apakah courseId valid
     if (!courseId) {
-      return res.status(400).json({ success: false, message: "Course ID is required" });
+      return res.status(400).json({ success: false, message: 'Course ID is required' });
     }
 
     // Mencari progress berdasarkan courseId
     const progress = await Progress.find({ course: courseId })
-      .populate("user", "name email gender password") // Populate user dengan field name dan email
-      .populate("course", "title description category"); // Populate course dengan field title dan description
+      .populate('user', 'name email gender password') // Populate user dengan field name dan email
+      .populate('course', 'title description category'); // Populate course dengan field title dan description
 
-      console.log(progress);  // Log progress untuk melihat hasilnya
-
+    console.log(progress); // Log progress untuk melihat hasilnya
 
     // Jika tidak ada progress ditemukan untuk courseId ini
     if (progress.length === 0) {
-      return res.status(404).json({ success: false, message: "No progress found for this course" });
+      return res.status(404).json({ success: false, message: 'No progress found for this course' });
     }
-
 
     // Mengirimkan response
     res.json({ success: true, data: progress });
   } catch (error) {
-    console.error("Error fetching progress:", error);
-    res.status(500).json({ success: false, message: "Server error", error: error.message });
+    console.error('Error fetching progress:', error);
+    res.status(500).json({ success: false, message: 'Server error', error: error.message });
   }
 };
-
-
-
-
 
 // Menandai Materi Selesai
 export const markMaterialComplete = async (req, res) => {
@@ -81,13 +72,8 @@ export const markMaterialComplete = async (req, res) => {
     const { userId } = req.body; // Asumsi body mengirimkan userId
 
     // Validasi apakah courseId dan materialId adalah ObjectId yang valid
-    if (
-      !mongoose.Types.ObjectId.isValid(courseId) ||
-      !mongoose.Types.ObjectId.isValid(materialId)
-    ) {
-      return res
-        .status(400)
-        .json({ message: "Invalid courseId or materialId" });
+    if (!mongoose.Types.ObjectId.isValid(courseId) || !mongoose.Types.ObjectId.isValid(materialId)) {
+      return res.status(400).json({ message: 'Invalid courseId or materialId' });
     }
 
     // Cek apakah progress untuk course dan user sudah ada
@@ -107,31 +93,27 @@ export const markMaterialComplete = async (req, res) => {
       progress.completedMaterials.push(materialId);
       progress.lastAccessedMaterial = materialId;
       await progress.save();
-      return res
-        .status(200)
-        .json({ message: "Material marked as completed", progress });
+      return res.status(200).json({ message: 'Material marked as completed', progress });
     }
 
-    res.status(400).json({ message: "Material already completed" });
+    res.status(400).json({ message: 'Material already completed' });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
 export const getProgressOverview = async (req, res) => {
   try {
-    const progressOverview = await Progress.find()
-      .populate("user", "name email gender password")
-      .populate("course", "title description category");
+    const progressOverview = await Progress.find().populate('user', 'name email gender password').populate('course', 'title description category');
 
     if (progressOverview.length === 0) {
-      return res.status(404).json({ message: "No progress data found" });
+      return res.status(404).json({ message: 'No progress data found' });
     }
 
     res.status(200).json({ progressOverview: progressOverview });
   } catch (error) {
-    console.error("Error getting progress overview:", error);
-    res.status(500).json({ message: "Server error", error: error.message });
+    console.error('Error getting progress overview:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
