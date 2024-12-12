@@ -6,13 +6,13 @@ const ReviewCourse = ({ reviews }) => {
             {reviews.map((review, index) => (
                 <div key={index} className="bg-white border rounded-lg p-4">
                     <div className="flex items-center gap-2">
-                        <div className="bg-gray-300 w-10 h-10 rounded-full"></div>
+                        <img src={review?.user.photoURL} className="bg-gray-300 w-10 h-10 rounded-full"></img>
                         <div>
-                            <h3 className="font-semibold">{review.name}</h3>
-                            <p className="text-sm text-gray-500">{review.time}</p>
+                            <h3 className="font-semibold">{review?.user.name}</h3>
+                            <p className="text-sm text-gray-500">{new Date(review.createdAt).toLocaleDateString()}</p>
                         </div>
                     </div>
-                    <p className="text-gray-600">{review.comment}</p>
+                    <p className="text-gray-600">{review.text}</p>
                 </div>
             ))}
         </div>

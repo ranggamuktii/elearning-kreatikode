@@ -7,7 +7,6 @@ import Profile from './components/Dashboard';
 import PageFaq from './components/PageFaq';
 import IntroClass from './pages/IntroClass';
 import MaterialCourse from './pages/MaterialCourse';
-import Home from './pages/Home';
 import 'flowbite-react';
 import './App.css';
 
@@ -23,7 +22,6 @@ function App() {
           <Route path="/page_faq" element={<PageFaq />} />
           <Route path="/introduction" element={<IntroClass />} />
           <Route path="/course/:id" element={<MaterialCourse />} />
-          <Route path="/home" element={<Home />} />
         </Routes>
       </Layout>
     </Router>
