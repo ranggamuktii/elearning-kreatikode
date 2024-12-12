@@ -31,6 +31,7 @@ export default {
       },
       scale: {
         102: '1.02',
+        97: '0.97',
       },
 
       backgroundImage: {
