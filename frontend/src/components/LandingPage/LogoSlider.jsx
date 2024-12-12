@@ -1,68 +1,33 @@
+import PropTypes from 'prop-types';
 import Marquee from 'react-fast-marquee';
 
 const LogoSlider = () => {
+  const categories = ['Web Development', 'React', 'Fullstack Javascript', 'Cloud Computing', 'Fullstack Web Development', 'React Redux', 'UI/UX Designer', 'Javascript Intermediate'];
+
+  const MarqueeItem = ({ text }) => (
+    <div
+      className="bg-white m-0 sm:m-4 rounded-full flex py-2 px-3 sm:py-3 sm:px-4 text-xs sm:text-base font-medium cursor-pointer text-neutral-700 shadow-md hover:shadow-none hover:bg-primary-100 hover:bg-opacity-50 hover:text-primary-500"
+      onClick={() => {
+        window.location.href = 'https://www.google.com';
+      }}
+    >
+      {text}
+    </div>
+  );
+
   return (
-    <div className="bg-[#f8f8f8] mt-24">
-      <Marquee className="mx-auto max-w-[80%]" autoFill speed={50} pauseOnHover>
-        <div
-          className="bg-[#fffefe] m-4 rounded-full flex p-2 text-medium cursor-pointer text-[#343434] shadow-md text-sm "
-          onClick={() => {
-            window.location.href = 'https://www.google.com';
-          }}
-        >
-          Web Development
-        </div>
-        <div
-          className="bg-[#fffefe] m-4 rounded-full flex p-2 text-medium cursor-pointer text-[#343434] shadow-md text-sm"
-          onClick={() => {
-            window.location.href = 'https://www.google.com';
-          }}
-        >
-          Mobile Development
-        </div>
-        <div
-          className="bg-[#fffefe] m-4 rounded-full flex p-2 text-medium cursor-pointer text-[#343434] shadow-md text-sm"
-          onClick={() => {
-            window.location.href = 'https://www.google.com';
-          }}
-        >
-          Fulstack Javascript
-        </div>
-        <div
-          className="bg-[#fffefe] m-4 rounded-full flex p-2 text-medium cursor-pointer text-[#343434] shadow-md text-sm"
-          onClick={() => {
-            window.location.href = 'https://www.google.com';
-          }}
-        >
-          Cloud Computing
-        </div>
-        <div
-          className="bg-[#fffefe] m-4 rounded-full flex p-2 text-medium cursor-pointer text-[#343434] shadow-md text-sm"
-          onClick={() => {
-            window.location.href = 'https://www.google.com';
-          }}
-        >
-          Web Development
-        </div>
-        <div
-          className="bg-[#fffefe] m-4 rounded-full flex p-2 text-medium cursor-pointer text-[#343434] shadow-md text-sm"
-          onClick={() => {
-            window.location.href = 'https://www.google.com';
-          }}
-        >
-          UI/UX Designer
-        </div>
-        <div
-          className="bg-[#fffefe] m-4 rounded-full flex p-2 text-medium cursor-pointer text-[#343434] shadow-md text-sm"
-          onClick={() => {
-            window.location.href = 'https://www.google.com';
-          }}
-        >
-          Web Development
-        </div>
+    <div className="bg-neutral-50 p-2 sm:p-3 -translate-y-4">
+      <Marquee className="mx-auto max-w-full sm:max-w-[90%]" autoFill speed={50} pauseOnHover>
+        {categories.map((category, index) => (
+          <MarqueeItem key={`${category}-${index}`} text={category} />
+        ))}
       </Marquee>
     </div>
   );
+};
+
+LogoSlider.propTypes = {
+  text: PropTypes.string,
 };
 
 export default LogoSlider;
