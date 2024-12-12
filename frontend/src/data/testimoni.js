@@ -1,8 +1,8 @@
 const testimoniData = [
   {
     id: 1,
-    profile: 'https://placehold.co/400',
-    name: 'Dinda Putri',
+    profile: './rangga-profile.jpg',
+    name: 'Rangga Mukti',
     job: 'Front-end Developer',
     title: 'Kreatikode membantu saya menjadi developer yang lebih baik',
     review:
@@ -10,8 +10,8 @@ const testimoniData = [
   },
   {
     id: 2,
-    profile: 'https://placehold.co/400',
-    name: 'Rizky Pratama',
+    profile: './melly-profile.jpg',
+    name: 'Melly Anggraini',
     job: 'UI/UX Designer',
     title: 'Memperluas wawasan desain dengan Kreatikode',
     review:
@@ -19,8 +19,8 @@ const testimoniData = [
   },
   {
     id: 3,
-    profile: 'https://placehold.co/400',
-    name: 'Andi Wijaya',
+    profile: './amar-profile.jpg',
+    name: 'Amar Al Farizi',
     job: 'Back-end Developer',
     title: 'Kreatikode - Sumber belajar yang komprehensif',
     review:
@@ -28,8 +28,8 @@ const testimoniData = [
   },
   {
     id: 4,
-    profile: 'https://placehold.co/400',
-    name: 'Siska Dewi',
+    profile: './mosul-profile.jpg',
+    name: 'Eldoni Mosul',
     job: 'Digital Marketer',
     title: 'Memahami dasar pemrograman dengan mudah',
     review:
@@ -37,16 +37,16 @@ const testimoniData = [
   },
   {
     id: 5,
-    profile: 'https://placehold.co/400',
-    name: 'Irfan Santoso',
+    profile: './zakiyah-profile.jpg',
+    name: 'RA Siti Zakiyah',
     job: 'Fullstack Developer',
     title: 'Selalu belajar hal baru dengan Kreatikode',
     review: 'Sebagai fullstack developer, saya senang mengeksplorasi teknologi baru. Kreatikode selalu menghadirkan materi terkini yang relevan dengan industri. Saya banyak belajar hal baru dan mengasah skill saya dengan platform ini.',
   },
   {
     id: 6,
-    profile: 'https://placehold.co/400',
-    name: 'Rina Kusuma',
+    profile: './diaz-profile.jpeg',
+    name: 'Diaz Agfa',
     job: 'Product Manager',
     title: 'Wawasan teknis yang bermanfaat bagi product manager',
     review:

@@ -65,10 +65,10 @@ function Testimoni() {
   }, []);
 
   return (
-    <div className="mx-auto py-10">
+    <div className="mx-auto py-0 sm:py-10">
       <div className="flex flex-col items-center text-center mx-auto space-y-2">
-        <h1 className="w-[300px] sm:w-full text-xl sm:text-3xl text-primary-500 font-semibold transform transition-transform duration-500 hover:scale-105">Apa kata mereka tentang Kreatikode?</h1>
-        <p className="w-[300px] sm:w-[900px] text-xs sm:text-base pt-2">
+        <h1 className="w-[300px] sm:w-full text-2xl sm:text-3xl text-primary-500 font-semibold transform transition-transform duration-500 hover:scale-105">Apa kata mereka tentang Kreatikode?</h1>
+        <p className="w-[300px] sm:w-[900px] text-sm sm:text-base pt-2">
           Lebih dari <span className="font-bold">1000</span> Talenta Digital telah berkembang bersama KreatiKode. Yuk, simak pengalaman seru dan manfaat yang dirasakan para Pengguna. Apakah kamu yang berikutnya?
         </p>
       </div>
@@ -104,20 +104,20 @@ function Testimoni() {
                 <div className="h-full py-3 sm:py-5 px-6 sm:px-3">
                   <div className="bg-white flex flex-col border border-gray-200 rounded-[20px] h-full p-5 sm:p-8 transform transition-transform-shadow duration-500 hover:shadow-custom-mild hover:shadow-primary-100 hover:scale-102">
                     <div className="space-y-2 sm:space-y-3 flex-grow">
-                      <svg className="w-5 h-5 sm:w-8 sm:h-8 text-primary-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-7 h-7 sm:w-8 sm:h-8 text-primary-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                         <path
                           fillRule="evenodd"
                           d="M6 6a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h3a3 3 0 0 1-3 3H5a1 1 0 1 0 0 2h1a5 5 0 0 0 5-5V8a2 2 0 0 0-2-2H6Zm9 0a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h3a3 3 0 0 1-3 3h-1a1 1 0 1 0 0 2h1a5 5 0 0 0 5-5V8a2 2 0 0 0-2-2h-3Z"
                           clipRule="evenodd"
                         />
                       </svg>
-                      <p className="text-xs sm:text-base font-normal text-gray-600 leading-relaxed">{testimoni.review}</p>
+                      <p className="text-sm sm:text-base font-normal text-gray-600 leading-relaxed">{testimoni.review}</p>
                     </div>
                     <div className="flex items-center space-x-2 sm:space-x-3 mt-3 sm:mt-5">
-                      <img src={testimoni.profile} alt="Photo Profile" className="object-cover w-[30px] h-[30px] sm:w-[40px] sm:h-[40px] rounded-full" />
+                      <img src={testimoni.profile} alt="Photo Profile" className="object-cover w-[35px] h-[35px] sm:w-[40px] sm:h-[40px] rounded-full" />
                       <div>
                         <h5 className="text-xs sm:text-sm font-medium">{testimoni.name}</h5>
-                        <h5 className="text-[8px] sm:text-sm font-normal">{testimoni.job}</h5>
+                        <h5 className="text-xs sm:text-sm font-normal">{testimoni.job}</h5>
                       </div>
                     </div>
                   </div>
