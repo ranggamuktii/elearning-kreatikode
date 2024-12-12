@@ -1,15 +1,17 @@
 import express from 'express';
-import commentRoute from './commentRoutes.js';
-import progressRoute from './progressRoutes.js';
+import userRoutes from './userRoutes.js';
+import commentRoutes from './commentRoutes.js';
+import progressRoutes from './progressRoutes.js';
 import courseRoutes from './courseRoutes.js';
 import materialRoutes from './materialRoute.js';
-import quizRoute from './quizRoute.js';
+import quizRoutes from './quizRoute.js';
 
 const router = express.Router();
 
-router.use('/', progressRoute);
-router.use('/courses', commentRoute);
+router.use('/users', userRoutes);
+router.use('/', progressRoutes);
+router.use('/courses', commentRoutes);
 router.use('/courses', materialRoutes);
 router.use('/courses', courseRoutes);
-router.use('/courses', quizRoute);
+router.use('/courses', quizRoutes);
 export default router;
