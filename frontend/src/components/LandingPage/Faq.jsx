@@ -31,10 +31,10 @@ export function Faq() {
   ];
 
   return (
-    <div className="py-16 px-4 md:px-6 w-full mx-auto">
-      <div className="text-center mb-12">
+    <div className="px-4 md:px-6 w-full mx-auto">
+      <div className="text-center mb-4 sm:mb-12">
         <h2 className="text-xl sm:text-3xl font-semibold mb-4">Pertanyaan yang Sering Ditanyakan</h2>
-        <p className="text-gray-900">Semua yang perlu Anda ketahui tentang berkolaborasi dengan Kreatikode.</p>
+        <p className="text-sm sm:text-base text-gray-900">Semua yang perlu Anda ketahui tentang berkolaborasi dengan Kreatikode.</p>
       </div>
 
       <div className="flex items-center justify-center px-5 sm:px-20">
@@ -43,10 +43,10 @@ export function Faq() {
             {faqData.map((faq, index) => (
               <AccordionPanel key={index}>
                 <div
-                  className="cursor-pointer text-xs sm:text-[17px] text-gray-800 focus:text-primary-500 font-medium focus:font-semibold focus:ring-0 py-8 bg-0 hover:bg-0 border-none focus:border-b-0"
+                  className="cursor-pointer text-sm sm:text-[17px] text-gray-800 focus:text-primary-500 font-medium focus:font-semibold focus:ring-0 py-5 sm:py-8 bg-0 hover:bg-0 border-none focus:border-b-0"
                   onClick={() => toggleAccordion(index)}
                 >
-                  <div className="flex items-center justify-between w-full gap-3">
+                  <div className="flex items-center justify-between w-full gap-2 sm:gap-3">
                     <span className={`${openIndex === index ? 'text-primary-500' : ''}`}>{faq.question}</span>
                     <svg className={`w-3 h-3 transform transition-transform duration-300 ${openIndex === index ? 'rotate-180' : ''}`} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                       <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5 5 1 1 5" />
@@ -54,7 +54,7 @@ export function Faq() {
                   </div>
                 </div>
                 <div className={`transition-all duration-500 ease-in-out overflow-hidden ${openIndex === index ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
-                  <div className="px-5 py-5 text-xs sm:text-sm border-b text-gray-600 border-gray-200">{faq.answer}</div>
+                  <div className="px-2 sm:px-5 py-6 sm:py-5 text-sm sm:text-sm border-b text-gray-600 border-gray-200">{faq.answer}</div>
                 </div>
                 <hr />
               </AccordionPanel>

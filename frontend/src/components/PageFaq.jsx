@@ -14,14 +14,14 @@ function PageFaq() {
   return (
     <div className="h-full w-full flex flex-col justify-center">
       <div className="flex flex-col justify-center w-full h-full sm:w-[1400px] mx-auto px-4 sm:px-0 pt-20 sm:pt-28">
-        <div className="bg-gray-200 w-full aspect-[1600/751] sm:aspect-[1600/250] overflow-hidden flex justify-center items-center rounded-[20px] sm:rounded-[30px]">
+        <div className="bg-gray-200 w-full aspect-[1600/500] sm:aspect-[1600/250] overflow-hidden flex justify-center items-center rounded-[20px] sm:rounded-[30px]">
           <img src="/" alt="Banner Faq" className="block w-full h-full object-cover object-center" />
         </div>
       </div>
       <div className="w-full sm:max-w-[1400px] flex flex-col justify-center items-center space-y-5 px-4 sm:px-0 mx-auto mt-5 sm:mt-8">
-        <div className="w-full sm:w-[900px] flex flex-col space-y-5 justify-center items-center">
+        <div className="w-full sm:w-[900px] flex flex-col space-y-4 sm:space-y-5 justify-center items-center">
           <h1 className="text-center text-primary-500 text-xl sm:text-3xl font-semibold">kamu punya pertanyaan?</h1>
-          <p className="text-center text-[11px] sm:text-[15px] leading-4 sm:leading-6">
+          <p className="text-center text-[11px] sm:text-base leading-4 sm:leading-6">
             Ada yang ingin kamu tanyakan tentang kami? Cek dulu daftar pertanyaan yang sering diajukan user-user kami yang sudah kami buat secara komprehesif untuk memberikan jawaban yang kamu butuhkan yuk!
           </p>
 
@@ -30,7 +30,7 @@ function PageFaq() {
             <div className="relative">
               <input
                 type="text"
-                className="w-full p-4 pl-10 text-sm text-gray-900 border border-gray-200 rounded-2xl focus:ring-primary-500 focus:border-primary-500"
+                className="w-full p-4 pl-10 text-xs sm:text-sm text-gray-900 border border-gray-200 rounded-2xl focus:ring-primary-500 focus:border-primary-500"
                 placeholder="Cari pertanyaan..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -57,7 +57,7 @@ function PageFaq() {
                     aria-expanded={openIndex === faq.id}
                     aria-controls={`accordion-flush-body-${faq.id}`}
                   >
-                    <span className={`${openIndex === faq.id ? 'text-primary-500' : ''}`}>{faq.question}</span>
+                    <span className={`text-sm sm:text-base ${openIndex === faq.id ? 'text-primary-500' : ''}`}>{faq.question}</span>
                     <svg className={`w-3 h-3 transform transition-transform duration-300 ${openIndex === faq.id ? 'rotate-180' : ''}`} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                       <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5 5 1 1 5" />
                     </svg>
