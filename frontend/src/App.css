@@ -66,7 +66,7 @@
 }
 
 .custom-datepicker-wrapper {
-  width: 100% !important;
+  width: 0px !important;
 }
 
 @keyframes slideDown {

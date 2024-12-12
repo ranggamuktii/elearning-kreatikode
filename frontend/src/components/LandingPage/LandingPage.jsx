@@ -22,7 +22,7 @@ function LandingPage() {
         <Loading />
       ) : (
         <div className="flex flex-col items-center">
-          <div className="flex flex-col w-full space-y-10 sm:space-y-15">
+          <div className="flex flex-col w-full space-y-8 sm:space-y-15">
             <Banner />
             <LogoSlider />
             <CourseCard />

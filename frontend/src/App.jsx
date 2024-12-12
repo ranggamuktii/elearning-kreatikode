@@ -21,7 +21,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/page_faq" element={<PageFaq />} />
           <Route path="/introduction" element={<IntroClass />} />
-          <Route path="/course" element={<MaterialCourse />} />
+          <Route path="/course/:id" element={<MaterialCourse />} />
         </Routes>
       </Layout>
     </Router>
