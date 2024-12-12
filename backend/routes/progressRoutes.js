@@ -1,5 +1,5 @@
 import express from 'express';
-import { createUser, getProgress, getProgressOverview, markMaterialComplete } from '../controllers/progressController';
+import { createUser, getProgress, getProgressOverview, markMaterialComplete } from '../controllers/progressController.js';
 const router = express.Router();
 
 router.get('/progress/overview', getProgressOverview);

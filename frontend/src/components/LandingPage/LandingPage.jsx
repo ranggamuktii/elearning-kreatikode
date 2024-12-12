@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Loading from '../Loader/Loading';
 import Banner from './Banner';
 import LogoSlider from './LogoSlider';
-import CourseCard from './CourseCard';
+import CourseList from './CourseList';
 import Benefit from './Benefit';
 import CallToAction from './CallToAction';
 import Testimoni from './Testimoni';
@@ -25,7 +25,7 @@ function LandingPage() {
           <div className="flex flex-col w-full space-y-8 sm:space-y-15">
             <Banner />
             <LogoSlider />
-            <CourseCard />
+            <CourseList />
             <Benefit />
             <Testimoni />
             <CallToAction />
