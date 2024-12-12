@@ -1,12 +1,15 @@
 import express from 'express';
-import adminController from '../controllers/courseController.js';
+import { upload } from '../middlewares/uploadMiddleware.js';
+import { getAllCourses, getCourseById, createCourse, updateCourse, deleteCourse, addThumbnailToCourse, filterCourseByCategory } from '../controllers/courseController.js';
 
 const router = express.Router();
 
-router.get('/courses', adminController.getAllCourses);
-router.get('/courses/:id', adminController.getCourseById);
-router.post('/courses', adminController.createCourse);
-router.put('/courses/:id', adminController.updateCourse);
-router.delete('/courses/:id', adminController.deleteCourse);
+router.get('/:id', getCourseById);
+router.get('/', getAllCourses);
+router.post('/', createCourse);
+router.put('/:id', updateCourse);
+router.delete('/:id', deleteCourse);
+router.get('/category', filterCourseByCategory);
+router.post('/:id/thumbnail', upload.single('thumbnail'), addThumbnailToCourse);
 
 export default router;

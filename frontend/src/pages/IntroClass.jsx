@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import SubMaterial from '../components/Course/SubMaterial.';
 import AboutCourse from '../components/Course/AboutCourse';
 import ReviewCourse from '../components/Course/ReviewCourse';
 import ClassBanner from '../components/Course/ClassBanner';
-import { use } from 'react';
-import loadComment from '../api/load-comment';
-import { useParams } from 'react-router-dom';
+import { loadComment } from '../services/api';
 
 const CourseDetail = () => {
   const topics = [
@@ -18,24 +17,15 @@ const CourseDetail = () => {
     'HTML Tag untuk Membagi Layout Website',
   ];
 
-  const reviews = [
-    { name: 'Elodni Mosul', time: '17 jam yang lalu', comment: 'Sangat bermanfaat!' },
-    { name: 'Diana Kusuma', time: '2 hari yang lalu', comment: 'Materinya aplikatif!' },
-  ];
   const { courseId } = useParams();
   const [comments, setComments] = useState([]);
+
   useEffect(() => {
-    getAllComments();
+    loadComment(courseId)
+      .then((response) => setComments(response.data))
+      .catch((error) => console.log(error));
   }, [courseId]);
-  const getAllComments = async () => {
-    try {
-      const comments = await loadComment(courseId);
-      console.log(comments);
-      setComments(comments);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+
   return (
     <div>
       <ClassBanner />

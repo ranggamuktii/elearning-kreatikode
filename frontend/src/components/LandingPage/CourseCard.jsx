@@ -20,7 +20,7 @@ const CourseCard = ({ course }) => {
     };
 
     fetchProgress();
-  }, [course._id]);
+  }, [course._id, course.materials.length]);
 
   const handleEnrollClick = () => {
     setIsEnrolled(true);

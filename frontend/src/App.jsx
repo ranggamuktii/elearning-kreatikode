@@ -20,8 +20,8 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/page_faq" element={<PageFaq />} />
-          <Route path="/introduction" element={<IntroClass />} />
-          <Route path="/course/:id" element={<MaterialCourse />} />
+          <Route path="/course/:courseId" element={<IntroClass />} />
+          <Route path="/course/:courseId/materials/:id" element={<MaterialCourse />} />
         </Routes>
       </Layout>
     </Router>

@@ -50,8 +50,6 @@ export const getProgress = async (req, res) => {
       .populate('user', 'name email gender password') // Populate user dengan field name dan email
       .populate('course', 'title description category'); // Populate course dengan field title dan description
 
-    console.log(progress); // Log progress untuk melihat hasilnya
-
     // Jika tidak ada progress ditemukan untuk courseId ini
     if (progress.length === 0) {
       return res.status(404).json({ success: false, message: 'No progress found for this course' });
