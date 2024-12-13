@@ -161,18 +161,33 @@ const Course = () => {
 
         {/* Desktop Sidebar */}
         <div className="hidden sm:block w-64 flex-shrink-0">
-          <div className="sticky top-6 space-y-6 bg-white rounded-xl border p-4">
+          <div className="sticky top-24 space-y-6 bg-white rounded-xl border p-4">
             <FilterContent />
           </div>
         </div>
 
         {/* Course List */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {courses.map((course) => (
-            <div key={course._id}>
-              <CourseCard course={course} />
+        <div className="flex flex-col">
+          <div className="space-y-5">
+            <h1 className="text-xl sm:text-2xl font-semibold">Kelas Saya</h1>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {courses.map((course) => (
+                <div key={course._id}>
+                  <CourseCard course={course} />
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+          <div className="space-y-5 mt-10">
+            <h1 className="text-xl sm:text-2xl font-semibold">Semua Kelas</h1>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {courses.map((course) => (
+                <div key={course._id}>
+                  <CourseCard course={course} />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>
