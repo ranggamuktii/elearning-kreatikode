@@ -33,7 +33,7 @@ const CourseCard = ({ course }) => {
           <div className="relative pb-[56.25%]">
             <img src={course.thumbnail} alt={course.title} className="absolute top-0 left-0 w-full h-full object-cover" />
           </div>
-          <div className="p-4 flex flex-col h-full">
+          <div className="bg-white p-4 flex flex-col h-full">
             <h3 className="font-semibold text-base sm:text-xl mb-1">{course.title}</h3>
             <p className="text-gray-400 text-xs sm:text-sm mb-3">{course.category}</p>
             <p className="mt-auto text-xs sm:text-sm line-clamp-1">{course.description}...</p>

@@ -44,7 +44,7 @@ function CourseList() {
       {/* Header Desktop  */}
       <div className="sm:flex hidden justify-between items-center px-6 py-4 sm:px-20 sm:py-6">
         <h1 className="text-xl sm:text-2xl font-semibold">Kelas Unggulan</h1>
-        <button onClick={handleViewAll} className="flex items-center gap-2 hover:text-primary-500 transition-colors">
+        <button onClick={handleViewAll} className="flex items-center gap-2 text-primary-500 transition-colors">
           <span>Lihat Semua</span>
           <svg className="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="m9 5 7 7-7 7" />
@@ -66,7 +66,7 @@ function CourseList() {
       </div>
 
       {/* Desktop Grid */}
-      <div className="hidden sm:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-6 sm:px-20">
+      <div className="hidden sm:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-6 sm:px-20">
         {courses.slice(0, 8).map((course) => (
           <div key={course._id}>
             <CourseCard course={course} />

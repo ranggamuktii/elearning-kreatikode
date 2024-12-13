@@ -3,6 +3,7 @@ import Layout from './components/Layout/Layout';
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import LandingPage from './components/LandingPage/LandingPage';
+import Course from './components/Course/Course';
 import Profile from './components/Dashboard';
 import PageFaq from './components/PageFaq';
 import IntroClass from './pages/IntroClass';
@@ -20,6 +21,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/page_faq" element={<PageFaq />} />
+          <Route path="/course" element={<Course />} />
           <Route path="/course/:courseId" element={<IntroClass />} />
           <Route path="/course/:courseId/materials/:id" element={<MaterialCourse />} />
         </Routes>
