@@ -16,6 +16,7 @@
     "frontend": "file:",
     "jose": "^5.9.6",
     "js-cookie": "^3.0.5",
+    "jwt-decode": "^4.0.0",
     "lucide-react": "^0.462.0",
     "react": "^18.3.1",
     "react-datepicker": "^7.5.0",

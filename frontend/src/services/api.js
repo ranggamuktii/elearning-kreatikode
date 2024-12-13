@@ -35,6 +35,20 @@ API.interceptors.response.use(
 export const registerUser = (userData) => API.post('/users/register', userData);
 export const loginUser = (credentials) => API.post('/users/login', credentials);
 
+export const updateUser = (userId, data) => API.put(`/users/${userId}`, data);
+export const getUserProfile = (userId) => API.get(`/users/${userId}`);
+export const updateProfileDetails = (userId, { name }) => {
+  return updateUser(userId, { name });
+};
+
+export const updatePersonalData = (userId, { phone, dateOfBirth, gender }) => {
+  return updateUser(userId, { phone, dateOfBirth, gender });
+};
+
+export const updatePassword = (userId, { password }) => {
+  return updateUser(userId, { password });
+};
+
 export const fetchCourses = () => API.get('/courses');
 export const fetchCourseById = (id) => API.get(`/courses/${id}`);
 export const createCourse = (courseData) => API.post('/courses', courseData);

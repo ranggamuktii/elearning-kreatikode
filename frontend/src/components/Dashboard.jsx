@@ -1,7 +1,12 @@
-import { useState } from 'react';
-import { showSuccessToast } from './Utils/toastUtils';
+import Cookies from 'js-cookie';
+import { decodeJwt } from 'jose';
+import { useState, useEffect } from 'react';
+import { showErrorToast, showSuccessToast } from './Utils/toastUtils';
 import { ToastContainer } from 'react-toastify';
 import DatePicker from 'react-datepicker';
+import { updateProfileDetails, updatePersonalData, updatePassword } from '../services/api';
+import { fetchCourses, getProgress } from '../services/api';
+import { removeUserToken } from './Utils/tokendata';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -17,17 +22,64 @@ const DashboardPage = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [activeTab, setActiveTab] = useState('Semua Kelas');
 
-  const courses = [
-    {
-      id: 1,
-      title: 'HTML Dasar',
-      icon: 'https://placehold.co/400x400/png',
-      progress: 0,
-      totalSubmodules: 79,
-      completedSubmodules: 0,
-      type: 'Materi',
-    },
-  ];
+  const [courses, setCourses] = useState([]);
+  const [userDetails, setUserDetails] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const token = Cookies.get('TOKEN');
+    if (token) {
+      const decoded = decodeJwt(token);
+
+      setUserDetails(decoded);
+    }
+    setIsLoading(false);
+  }, []);
+
+  useEffect(() => {
+    const loadCourses = async () => {
+      try {
+        const { data } = await fetchCourses();
+
+        if (!data || !Array.isArray(data)) {
+          throw new Error('Invalid course data received');
+        }
+
+        const coursesWithProgress = await Promise.all(
+          data.map(async (course) => {
+            try {
+              const progressResponse = await getProgress(course.id);
+              return {
+                ...course,
+                progress: progressResponse.data.progress || 0,
+                completedSubmodules: progressResponse.data.completedSubmodules || 0,
+                totalSubmodules: progressResponse.data.totalSubmodules || course.totalSubmodules || 0,
+                icon: course.thumbnail ? `${import.meta.env.VITE_API_URL}/thumbnail/${course.thumbnail}` : '/default-course-thumbnail.png', // Use a local default image
+              };
+            } catch (error) {
+              console.error(`Error fetching progress for course ${course.id}:`, error);
+              return {
+                ...course,
+                progress: 0,
+                completedSubmodules: 0,
+                totalSubmodules: course.totalSubmodules || 0,
+                icon: course.thumbnail ? `${import.meta.env.VITE_API_URL}/thumbnail/${course.thumbnail}` : '/default-course-thumbnail.png',
+              };
+            }
+          })
+        );
+
+        setCourses(coursesWithProgress);
+      } catch (error) {
+        console.error('Error loading courses:', error);
+        showErrorToast('Gagal memuat data kelas');
+        setError('Failed to load courses. Please try again later.');
+      }
+    };
+
+    loadCourses();
+  }, []);
 
   const filterCourses = (tab) => {
     switch (tab) {
@@ -69,9 +121,16 @@ const DashboardPage = () => {
 
   const handleLogout = async () => {
     try {
+      removeUserToken();
       showSuccessToast('Berhasil logout');
+
+      setTimeout(() => {
+        Cookies.remove('TOKEN');
+        window.location.pathname = '/';
+      }, 2000);
     } catch (error) {
       console.error('Logout failed:', error);
+      showErrorToast('Gagal logout');
     }
   };
 
@@ -150,9 +209,92 @@ const DashboardPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const handlePhoneChange = (e) => {
+    let value = e.target.value.replace(/\D/g, '');
+
+    if (value.startsWith('62')) {
+      value = value.substring(2);
+    } else if (value.startsWith('0')) {
+      value = value.substring(1);
+    }
+
+    setPhone(value);
+  };
+
+  useEffect(() => {
+    setName(userDetails.name);
+    setPhone(userDetails.phone);
+    setSelectedDate(userDetails.dateOfBirth);
+    setGender(userDetails.gender);
+    setPassword(userDetails.password);
+  }, [userDetails]);
+
   const handleSave = async () => {
-    if (validateForm()) {
-      showSuccessToast('Berhasil memperbarui profil');
+    try {
+      setIsLoading(true);
+
+      let isValid = false;
+      let saveFunction;
+      let successMessage;
+
+      switch (activeProfileSection) {
+        case 'Detail Profil':
+          isValid = validateForm();
+          saveFunction = () => updateProfileDetails(userDetails.id, { name });
+          successMessage = 'Berhasil memperbarui profil';
+          break;
+
+        case 'Data Pribadi':
+          isValid = validateForm();
+          saveFunction = () =>
+            updatePersonalData(userDetails.id, {
+              phone,
+              dateOfBirth: selectedDate,
+              gender,
+            });
+          successMessage = 'Berhasil memperbarui data pribadi';
+          break;
+
+        default:
+          if (activeMenu === 'Pengaturan') {
+            isValid = validateForm();
+            saveFunction = () => updatePassword(userDetails.id, { password });
+            successMessage = 'Berhasil memperbarui password';
+          }
+          break;
+      }
+
+      if (!isValid) {
+        return;
+      }
+
+      const response = await saveFunction();
+
+      if (response?.status === 200 || response?.status === 201) {
+        showSuccessToast(successMessage);
+
+        // Update local state based on the section
+        if (activeProfileSection === 'Detail Profil') {
+          setUserDetails((prev) => ({ ...prev, name }));
+        } else if (activeProfileSection === 'Data Pribadi') {
+          setUserDetails((prev) => ({
+            ...prev,
+            phone,
+            dateOfBirth: selectedDate,
+            gender,
+          }));
+        } else if (activeMenu === 'Pengaturan') {
+          setPassword('');
+          setConfirmPassword('');
+        }
+      } else {
+        throw new Error('Gagal menyimpan perubahan');
+      }
+    } catch (error) {
+      console.error('Save error:', error);
+      showErrorToast(error.message || 'Terjadi kesalahan saat menyimpan data');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -173,33 +315,48 @@ const DashboardPage = () => {
   };
 
   const renderWelcomeContent = () => {
+    if (isLoading) {
+      return <div className="p-6">Loading...</div>;
+    }
+
+    if (error) {
+      return <div className="p-6 text-red-500">{error}</div>;
+    }
+
+    const lastActiveCourse = courses.find((course) => course.progress > 0 && course.progress < 100);
+
     return (
       <div className="p-6">
         <div className="bg-primary-500 text-white rounded-lg p-8 mb-8">
-          <h1 className="text-2xl font-bold mb-2">Halo, Rangga Mukti Daniswara !</h1>
+          <h1 className="text-2xl font-bold mb-2">Halo, {userDetails?.name || 'Selamat Datang'}!</h1>
           <p className="text-lg">Mulai belajar lagi, dan jadilah mahir bersama Kreatikode.</p>
         </div>
 
-        <div>
-          <h2 className="text-lg text-gray-600 mb-6">Lanjutkan Progress Terakhir Kelas</h2>
-
-          <div className="bg-white rounded-lg p-4 border flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <img src="https://placehold.co/400x400/png" alt="React Redux" className="rounded-lg w-24 h-24" />
-              <div>
-                <h3 className="font-medium text-lg mb-2">HTML Dasar</h3>
-                <span className="flex items-center gap-1">📚 19 Materi</span>
-                <div className="mt-2">
-                  <div className="w-64 h-2 bg-gray-200 rounded-full">
-                    <div className="h-full bg-blue-600 rounded-full w-[5.3%]" />
+        {lastActiveCourse ? (
+          <div>
+            <h2 className="text-lg text-gray-600 mb-6">Lanjutkan Progress Terakhir Kelas</h2>
+            <div className="bg-white rounded-lg p-4 border flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <img src={lastActiveCourse.icon} alt={lastActiveCourse.title} className="rounded-lg w-24 h-24" />
+                <div>
+                  <h3 className="font-medium text-lg mb-2">{lastActiveCourse.title}</h3>
+                  <span className="flex items-center gap-1">📚 {lastActiveCourse.totalSubmodules} Materi</span>
+                  <div className="mt-2">
+                    <div className="w-64 h-2 bg-gray-200 rounded-full">
+                      <div className="h-full bg-blue-600 rounded-full" style={{ width: `${lastActiveCourse.progress}%` }} />
+                    </div>
+                    <span className="text-sm text-gray-500">
+                      {lastActiveCourse.completedSubmodules} / {lastActiveCourse.totalSubmodules} Materi
+                    </span>
                   </div>
-                  <span className="text-sm text-gray-500">1 / 19 Materi</span>
                 </div>
               </div>
+              <button className="px-4 py-2 text-white bg-primary-500 rounded-lg hover:bg-primary-600">Lihat Detail Kelas</button>
             </div>
-            <button className="px-4 py-2 text-white bg-primary-500 rounded-lg hover:bg-primary-600">Lihat Detail Kelas</button>
           </div>
-        </div>
+        ) : (
+          <div className="text-center py-8 text-gray-500">Belum ada kelas yang sedang dipelajari</div>
+        )}
       </div>
     );
   };
@@ -209,19 +366,28 @@ const DashboardPage = () => {
       case 'Detail Profil':
         return (
           <div className="p-4 space-y-4">
-            <h2 className="text-lg font-semibold">Detail Profil</h2>
-            <div className="space-y-3">
+            <h2 className="text-lg font-semibold mb-5">Detail Profil</h2>
+            <div className="space-y-5">
               <div>
-                <label className="block mb-2 text-sm">
+                <label className="block mb-2 text-xs sm:text-sm ">
                   Nama Lengkap <span className="text-red-500">*</span>
                 </label>
-                <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full p-2 border-gray-300 rounded-xl" />
+                <input
+                  type="text"
+                  id="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full p-2.5 border-gray-300 rounded-xl text-xs sm:text-sm "
+                  placeholder="Nama Lengkap"
+                  aria-describedby="helper-text-explanation"
+                  required
+                />
               </div>
               <div>
-                <label className="block mb-2 text-sm">
+                <label className="block mb-2 text-xs sm:text-sm">
                   Email <span className="text-red-500">*</span>
                 </label>
-                <input type="email" className="w-full p-2 border-gray-300 rounded-xl" readOnly />
+                <input type="email" value={userDetails.email} className="w-full p-2.5 border-gray-300 rounded-xl text-xs sm:text-sm " readOnly />
               </div>
             </div>
             <button onClick={handleSave} className="bg-primary-500 text-white py-2 px-5 rounded-xl">
@@ -241,7 +407,7 @@ const DashboardPage = () => {
                 </label>
                 <div className="flex">
                   <span className="inline-flex items-center px-3 bg-gray-200 border rounded-l-lg">+62</span>
-                  <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} className="flex-1 p-2 border-gray-300 rounded-r-lg" />
+                  <input type="tel" value={phone} onChange={handlePhoneChange} className="flex-1 p-2 border-gray-300 rounded-r-lg" />
                 </div>
               </div>
               <div>
@@ -260,7 +426,7 @@ const DashboardPage = () => {
                   </span>
                   <DatePicker
                     selected={selectedDate}
-                    onChange={setSelectedDate}
+                    onChange={(date) => setSelectedDate(date)}
                     className="custom-datepicker w-full p-2 border rounded-lg"
                     popperClassName="custom-datepicker-popper"
                     wrapperClassName="custom-datepicker-wrapper"
@@ -333,6 +499,14 @@ const DashboardPage = () => {
   };
 
   const renderClassContent = () => {
+    if (isLoading) {
+      return <div className="p-6">Loading...</div>;
+    }
+
+    if (error) {
+      return <div className="p-6 text-red-500">{error}</div>;
+    }
+
     return (
       <>
         <div className="bg-white rounded-lg shadow-sm mb-6">
@@ -357,7 +531,7 @@ const DashboardPage = () => {
                     <img src={course.icon} alt={course.title} className="w-12 h-12 rounded-lg" />
                     <div>
                       <h3 className="font-medium">{course.title}</h3>
-                      <span className="flex items-center">📚 19 {course.type}</span>
+                      <span className="flex items-center">📚 {course.materials.length}</span>
                       <div className="mt-2">
                         <div className="w-64 h-2 bg-gray-200 rounded-full">
                           <div className="h-full bg-blue-600 rounded-full" style={{ width: `${course.progress}%` }} />
@@ -386,13 +560,21 @@ const DashboardPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 mt-20">
       <ToastContainer />
       <div className="flex">
         <aside className="w-64 bg-white min-h-screen p-4 border-r">
           <div className="flex flex-col items-center space-y-5 mb-8">
-            <img src="https://placehold.co/400x400/png" alt="Profile" className="w-24 h-24 rounded-full" />
-            <h3 className="font-medium">Rangga Mukti Daniswara</h3>
+            <img
+              src={userDetails?.photoURL || 'https://placehold.co/400x400/png'}
+              alt="Profile"
+              className="w-24 h-24 rounded-full object-cover"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = 'https://placehold.co/400x400/png';
+              }}
+            />
+            <h3 className="font-medium">{userDetails?.name || 'User'}</h3>
           </div>
 
           <div className="space-y-2">
