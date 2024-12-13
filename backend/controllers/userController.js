@@ -1,79 +1,132 @@
+// backend/controllers/userController.js
 import User from '../models/userModel.js';
+import bcrypt from 'bcryptjs';
+import { generateToken } from '../utils/jwtUtils.js';
 
+// Register controller
+export const register = async (req, res) => {
+  const { name, email, password, gender, phone, dateOfBirth } = req.body;
+
+  try {
+    // Check if user exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(409).json({ message: 'Email sudah terdaftar' });
+    }
+
+    // Hash password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    // Create new user
+    const user = new User({
+      name,
+      email,
+      password: hashedPassword,
+      gender,
+      phone,
+      dateOfBirth: new Date(dateOfBirth),
+    });
+
+    const savedUser = await user.save();
+    const token = generateToken(savedUser);
+
+    // Return user data without password
+    const { password: _, ...userWithoutPassword } = savedUser.toObject();
+
+    res.status(201).json({
+      message: 'Registrasi berhasil',
+      user: userWithoutPassword,
+      token,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Gagal melakukan registrasi',
+      error: error.message,
+    });
+  }
+};
+
+// Login controller
+export const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({ message: 'Email atau password salah' });
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: 'Email atau password salah' });
+    }
+
+    const token = generateToken(user);
+    const { password: _, ...userWithoutPassword } = user.toObject();
+
+    res.status(200).json({
+      message: 'Login berhasil',
+      user: userWithoutPassword,
+      token,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Gagal melakukan login',
+      error: error.message,
+    });
+  }
+};
+
+// Existing controllers dengan modifikasi
 export const getUsers = async (req, res) => {
   try {
-    const users = await User.find();
+    const users = await User.find().select('-password');
     res.status(200).json(users);
   } catch (error) {
-    res.status(500).json({ message: 'Gagal mendapatkan data pengguna.', error: error.message });
+    res.status(500).json({ message: 'Gagal mendapatkan data pengguna', error: error.message });
   }
 };
 
 export const getUserById = async (req, res) => {
   try {
-    const user = await User.findOne({ _id: req.params.id });
+    const user = await User.findById(req.params.id).select('-password');
     if (!user) {
-      return res.status(404).json({ message: 'Pengguna tidak ditemukan.' });
+      return res.status(404).json({ message: 'Pengguna tidak ditemukan' });
     }
     res.status(200).json(user);
   } catch (error) {
-    res.status(500).json({ message: 'Gagal mendapatkan data pengguna.', error: error.message });
-  }
-};
-
-export const saveUser = async (req, res) => {
-  const { uid, email, name, photoURL, createdAt, password, ...rest } = req.body;
-
-  try {
-    let user = await User.findOne({ uid });
-    if (user) {
-      return res.status(200).json({ message: 'User already exists in MongoDB.', user });
-    }
-
-    user = new User({
-      uid,
-      email,
-      name: name || '',
-      photoURL: photoURL || '',
-      gender: rest.gender || 'other',
-      phone: rest.phone || 'N/A',
-      password: password || '',
-      dateOfBirth: rest.dateOfBirth || new Date(),
-      createdAt,
-    });
-
-    const savedUser = await user.save();
-    res.status(201).json({ message: 'User saved to MongoDB successfully.', user: savedUser });
-  } catch (error) {
-    console.error('Error saving user to MongoDB:', error);
-    res.status(500).json({ message: 'Failed to save user to MongoDB', error: error.message });
+    res.status(500).json({ message: 'Gagal mendapatkan data pengguna', error: error.message });
   }
 };
 
 export const updateUser = async (req, res) => {
   try {
-    const updatedUser = await User.findOneAndUpdate({ _id: req.params.id }, { $set: req.body }, { new: true, runValidators: true });
-    if (!updatedUser) {
-      console.warn(`User not found with UID: ${id}`);
-      return res.status(404).json({ message: 'Pengguna tidak ditemukan.' });
+    if (req.body.password) {
+      const salt = await bcrypt.genSalt(10);
+      req.body.password = await bcrypt.hash(req.body.password, salt);
     }
+
+    const updatedUser = await User.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true }).select('-password');
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'Pengguna tidak ditemukan' });
+    }
+
     res.status(200).json(updatedUser);
   } catch (error) {
-    console.error('Error updating user:', error);
-    res.status(400).json({ message: 'Gagal memperbarui data pengguna.', error: error.message });
+    res.status(400).json({ message: 'Gagal memperbarui data pengguna', error: error.message });
   }
 };
 
 export const deleteUser = async (req, res) => {
-  const { id } = req.params;
-
   try {
-    const deletedUser = await User.findByIdAndDelete(id);
+    const deletedUser = await User.findByIdAndDelete(req.params.id);
     if (!deletedUser) {
-      return res.status(404).json({ message: 'Pengguna tidak ditemukan.' });
+      return res.status(404).json({ message: 'Pengguna tidak ditemukan' });
     }
-    res.status(200).json({ message: 'Pengguna berhasil dihapus.', deletedUser });
+    res.status(200).json({ message: 'Pengguna berhasil dihapus' });
   } catch (error) {
-    res.status(400).json({ message: 'Gagal menghapus pengguna.', error: error.message });
+    res.status(400).json({ message: 'Gagal menghapus pengguna', error: error.message });
   }
 };
