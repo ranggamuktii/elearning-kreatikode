@@ -87,6 +87,7 @@ const DashboardPage = () => {
         </svg>
       ),
       text: 'Dashboard',
+      path: '/profile',
     },
     {
       icon: (
@@ -105,6 +106,7 @@ const DashboardPage = () => {
         </svg>
       ),
       text: 'Kelas Saya',
+      path: '/profile/my-classes',
     },
     {
       icon: (
@@ -117,6 +119,7 @@ const DashboardPage = () => {
         </svg>
       ),
       text: 'Pengaturan',
+      path: '/profile/settings',
     },
     {
       icon: (

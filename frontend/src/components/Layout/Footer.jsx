@@ -74,12 +74,12 @@ function Footer() {
               <h2 className="mb-2 sm:mb-6 text-xs sm:text-base font-semibold uppercase text-black">Layanan</h2>
               <ul className="text-gray-600 text-xs sm:text-base space-y-2 sm:space-y-4 font-normal">
                 <li>
-                  <a href="/" target="_blank" className="hover:underline">
+                  <a href="/" className="hover:underline">
                     kelas
                   </a>
                 </li>
                 <li>
-                  <a href="/" target="_blank" className="hover:underline">
+                  <a href="/" className="hover:underline">
                     Tentang Kami
                   </a>
                 </li>

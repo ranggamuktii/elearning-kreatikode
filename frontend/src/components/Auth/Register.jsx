@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Spinner } from 'flowbite-react';
 import DatePicker from 'react-datepicker';
 import { showErrorToast, showSuccessToast } from '../Utils/toastUtils';
+import { registerUser } from '../../services/api';
 
 function Register() {
   const navigate = useNavigate();
@@ -75,21 +76,32 @@ function Register() {
     if (validateForm()) {
       setIsLoading(true);
       try {
-        const simulatedResponse = { ok: true };
+        const userData = {
+          name,
+          email,
+          password,
+          phone: `+62${phone}`,
+          gender,
+          dateOfBirth: selectedDate,
+        };
 
-        if (simulatedResponse.ok) {
-          showSuccessToast('Email berhasil terdaftar!');
+        const response = await registerUser(userData);
+
+        if (response.data) {
+          showSuccessToast('Registrasi berhasil!');
+          // Tunggu sebentar sebelum redirect ke login
           setTimeout(() => {
             navigate('/login');
           }, 2000);
-        } else if (simulatedResponse.status === 409) {
-          showErrorToast('Email sudah terdaftar, silakan masuk menggunakan akun Anda');
-          setErrors({ email: 'Email sudah terdaftar, silakan login.' });
-        } else {
-          console.error('Error: Terjadi kesalahan');
         }
       } catch (error) {
-        console.log('Error:', error);
+        if (error.response?.status === 409) {
+          showErrorToast('Email sudah terdaftar');
+          setErrors({ email: 'Email sudah terdaftar, silakan login.' });
+        } else {
+          showErrorToast('Terjadi kesalahan saat registrasi');
+          console.error('Error:', error);
+        }
       } finally {
         setIsLoading(false);
       }
@@ -110,7 +122,7 @@ function Register() {
     <div className="w-full flex items-center justify-center mt-28">
       <div className="w-[330px] sm:w-[420px]">
         <div className="max-w-full flex justify-center sm:mb-5">
-          <img className="text-center w-6 h-6 sm:w-12 sm:h-full" src="../../public/kreatikode-logo.png" />
+          <img className="text-center w-6 h-6 sm:w-12 sm:h-full" src="/kreatikode-logo.png" />
         </div>
         <h1 className="text-[26px]  font-semibold text-center">Pendaftaran Akun</h1>
         <p className="text-center text-base text-gray-500 mt-2">Yuk, daftarkan akunmu sekarang juga!</p>

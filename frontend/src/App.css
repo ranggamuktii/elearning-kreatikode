@@ -8,6 +8,12 @@
   word-break: break-word;
 }
 
+@media (max-width: 768px) {
+  .Toastify__toast {
+    border-radius: 0px !important;
+  }
+}
+
 /* React Date Picker */
 
 .custom-datepicker {

@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { showSuccessToast } from '../Utils/toastUtils';
+import { showSuccessToast, showErrorToast } from '../Utils/toastUtils';
+import { loginUser } from '../../services/api';
+import { setUserToken } from '../Utils/tokendata';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -47,10 +49,47 @@ function Login() {
     }
 
     setIsSubmitting(true);
-    const formData = new FormData();
-    formData.append('email', email);
-    formData.append('password', password);
-    showSuccessToast('Login berhasil');
+    try {
+      const response = await loginUser({ email, password });
+      if (response.status === 200) {
+        const { token } = response.data;
+
+        setUserToken(token);
+
+        if (rememberMe) {
+          localStorage.setItem('email', email);
+          localStorage.setItem('password', password);
+        } else {
+          localStorage.clear();
+        }
+
+        showSuccessToast('Login berhasil');
+        setTimeout(() => {
+          window.location.pathname = '/';
+        }, 2000);
+      }
+    } catch (error) {
+      const status = error.response?.status;
+
+      switch (status) {
+        case 400:
+          showErrorToast('Email dan Password dibutuhkan');
+          break;
+        case 401:
+          showErrorToast('Email atau password salah');
+          setGeneralError('Email atau password salah');
+          break;
+        case 404:
+          showErrorToast('Email tidak ditemukan');
+          setGeneralError('Email tidak ditemukan');
+          break;
+        default:
+          showErrorToast('Terjadi kesalahan pada server.');
+          setGeneralError('Terjadi kesalahan pada server');
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleRememberMeChange = (e) => {
@@ -67,7 +106,7 @@ function Login() {
     <div className="w-full flex items-center justify-center mt-28 mb-20">
       <div className="max-w-[330px] sm:max-w-[450px]">
         <div className="max-w-full flex justify-center sm:mb-5">
-          <img className="text-center w-6 h-6 sm:w-12 sm:h-full" src="../../public/kreatikode-logo.png" />
+          <img className="text-center w-6 h-6 sm:w-12 sm:h-full" src="../kreatikode-logo.png" />
         </div>
         <h1 className="text-[26px] font-semibold text-center">Selamat Datang di KreatiKode 👋🏻</h1>
         <p className="text-center text-base text-gray-500 mt-2">Silahkan masukkan email dan password untuk akses akun kamu di Kreatikode.</p>
