@@ -7,6 +7,8 @@ import Profile from './components/Dashboard';
 import PageFaq from './components/PageFaq';
 import IntroClass from './pages/IntroClass';
 import MaterialCourse from './pages/MaterialCourse';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import 'flowbite-react';
 import './App.css';
 
@@ -14,6 +16,7 @@ function App() {
   return (
     <Router>
       <Layout>
+        <ToastContainer />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
