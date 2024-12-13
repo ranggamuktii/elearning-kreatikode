@@ -2,7 +2,7 @@ import React from 'react'
 
 const AboutCourse = () => {
     return (
-        <div className="container w-2/3 mb-6">
+        <div className="mx-auto md:w-2/3 mb-6">
             <div className="border bg-white rounded-lg p-6 mb-6 h-fit">
                 <section>
                     <h2 className="font-bold text-xl mb-2">Tentang Kelas</h2>
