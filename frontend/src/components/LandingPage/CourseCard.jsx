@@ -38,8 +38,8 @@ const CourseCard = ({ course }) => {
             <p className="text-gray-400 text-xs sm:text-sm mb-3">{course.category}</p>
             <p className="mt-auto text-xs sm:text-sm line-clamp-1">{course.description}...</p>
             <div className="flex justify-beetwen items-center space-x-1 sm:space-x-2 mt-3">
-              <div className="w-full flex justify-center items-center py-2 px-3 bg-primary-100 bg-opacity-50 rounded-xl space-x-1 sm:space-x-2">
-                <svg className="w-4 h-4 text-primary-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+              <div className="w-full flex justify-center items-center py-2 px-2 sm:px-3 bg-primary-100 bg-opacity-50 rounded-xl space-x-1 sm:space-x-2">
+                <svg className="w-3 h-3 sm:w-4 sm:h-4 text-primary-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                   <path
                     fillRule="evenodd"
                     d="M11 4.717c-2.286-.58-4.16-.756-7.045-.71A1.99 1.99 0 0 0 2 6v11c0 1.133.934 2.022 2.044 2.007 2.759-.038 4.5.16 6.956.791V4.717Zm2 15.081c2.456-.631 4.198-.829 6.956-.791A2.013 2.013 0 0 0 22 16.999V6a1.99 1.99 0 0 0-1.955-1.993c-2.885-.046-4.76.13-7.045.71v15.081Z"
@@ -49,8 +49,8 @@ const CourseCard = ({ course }) => {
 
                 <p className="text-xs sm:text-sm text-primary-500 font-medium">{course.materials.length} material</p>
               </div>
-              <div className="w-full flex justify-center items-center py-2 px-3 bg-primary-100 bg-opacity-50 rounded-xl space-x-1 sm:space-x-2">
-                <svg className="w-4 h-4 text-primary-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+              <div className="w-full flex justify-center items-center py-2 px-2 sm:px-3 bg-primary-100 bg-opacity-50 rounded-xl space-x-1 sm:space-x-2">
+                <svg className="w-3 h-3 sm:w-4 sm:h-4 text-primary-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z" />
                 </svg>
 

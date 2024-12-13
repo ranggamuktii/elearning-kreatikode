@@ -4,6 +4,10 @@
 @tailwind components;
 @tailwind utilities;
 
+@import 'swiper/css';
+@import 'swiper/css/navigation';
+@import 'swiper/css/pagination';
+
 :root {
   font-family: 'Poppins', sans-serif;
   color: #4a4b4c;
