@@ -2,7 +2,7 @@ import React from "react";
 
 const SubMaterial = ({ topics }) => {
     return (
-        <div className="border bg-white rounded-lg p-6 w-1/3 h-fit">
+        <div className="border bg-white rounded-lg p-6 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 h-fit mx-auto">
             <h2 className="font-semibold text-lg mb-4">Materi</h2>
             <ul className="space-y-2">
                 {topics.map((topic, index) => (
@@ -11,7 +11,9 @@ const SubMaterial = ({ topics }) => {
                     </li>
                 ))}
             </ul>
-            <button className="font-semibold text-lg mt-2 py-2 w-full text-white bg-primary-500 rounded-full hover:bg-secondary-500">Lihat Selengkapnya</button>
+            <button className="font-semibold text-lg mt-2 py-2 w-full text-white bg-primary-500 rounded-full hover:bg-secondary-500">
+                Lihat Selengkapnya
+            </button>
         </div>
     );
 };

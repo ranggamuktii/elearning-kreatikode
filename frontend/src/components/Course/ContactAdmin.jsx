@@ -2,15 +2,29 @@ import React from 'react';
 
 const ContactAdmin = () => {
   return (
-    <div className="flex justify-center rounded-lg bg-secondary-400 text-color-text-2 font-medium text-base m-9 p-4">
-      Apabila ada kendala teknis atau sistem, dapat menghubungi admin Kreatikode melalui{' '}
-      <a href="https://web.telegram.org" target="_blank" className="underline hover:text-blue-800 mx-1">
-        Telegram
-      </a>{' '}
-      atau{' '}
-      <a href="https://www.whatsapp.com/" target="_blank" className="underline hover:text-blue-800 ml-1">
-        Whatsapp
-      </a>
+    <div className="flex flex-col items-center rounded-lg bg-secondary-400 text-color-text-2 font-medium text-sm sm:text-base mt-16 md:mt-20 mx-4 sm:mx-9 p-6 space-y-4 text-center">
+      <p className="leading-relaxed">
+        Apabila ada kendala teknis atau sistem, Anda dapat menghubungi admin Kreatikode melalui: 
+        {' '}
+        <a
+          href="https://web.telegram.org"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline hover:text-blue-800 font-semibold"
+        >
+          Telegram
+        </a>
+        {' '}atau{' '}
+        <a
+          href="https://www.whatsapp.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline hover:text-blue-800 font-semibold"
+        >
+          Whatsapp
+        </a>
+        .
+      </p>
     </div>
   );
 };
