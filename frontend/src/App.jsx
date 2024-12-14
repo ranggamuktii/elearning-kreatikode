@@ -7,6 +7,7 @@ import Profile from './components/Dashboard';
 import PageFaq from './components/PageFaq';
 import 'flowbite-react';
 import './App.css';
+import Modal from './components/Modal/quizModal';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/page_faq" element={<PageFaq />} />
+          <Route path="/modal" element={<Modal />} />
         </Routes>
       </Layout>
     </Router>
