@@ -38,7 +38,7 @@ export const createUser = async (req, res) => {
 // Mendapatkan Progress Kursus
 export const getProgress = async (req, res) => {
   try {
-    const { courseId } = req.params;
+    const { courseId, userId } = req.params;
 
     // Mengecek apakah courseId valid
     if (!courseId) {
@@ -46,14 +46,13 @@ export const getProgress = async (req, res) => {
     }
 
     // Mencari progress berdasarkan courseId
-    const progress = await Progress.find({ course: courseId })
+    const progress = await Progress.find({ course: courseId, user: userId})
       .populate('user', 'name email gender password') // Populate user dengan field name dan email
       .populate('course', 'title description category'); // Populate course dengan field title dan description
 
-    // Jika tidak ada progress ditemukan untuk courseId ini
-    if (progress.length === 0) {
-      return res.status(404).json({ success: false, message: 'No progress found for this course' });
-    }
+      if (!progress) {
+        return res.status(200).json({ data: null });
+      }
 
     // Mengirimkan response
     res.json({ success: true, data: progress });
@@ -113,5 +112,32 @@ export const getProgressOverview = async (req, res) => {
   } catch (error) {
     console.error('Error getting progress overview:', error);
     res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+export const getCoursesWithProgressByUserId = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: 'Invalid userId' });
+    }
+
+    const progress = await Progress.find({ user: userId })
+
+    if (progress.length === 0) {
+      return res.status(404).json({ message: 'No progress data found for this user' });
+    }
+
+    const coursesWithProgress = progress.map(entry => entry.course);
+    const uniqueCourses = Array.from(new Set(coursesWithProgress.map(course => course._id)))
+      .map(id => {
+        return coursesWithProgress.find(course => course._id.equals(id));
+      });
+
+    res.status(200).json({ success: true, data: uniqueCourses });
+  } catch (error) {
+    console.error('Error fetching courses with progress by userId:', error);
+    res.status(500).json({ success: false, message: 'Server error', error: error.message });
   }
 };

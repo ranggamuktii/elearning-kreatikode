@@ -1,14 +1,28 @@
 import PropTypes from 'prop-types';
+import Cookies from 'js-cookie';
+import { decodeJwt } from 'jose';
 import { useEffect, useState } from 'react';
 import { getProgress } from '../../services/api';
 
 const CourseCard = ({ course }) => {
   const [progress, setProgress] = useState(0);
   const [isEnrolled, setIsEnrolled] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  let userDetails = {}
+
+  useEffect(() => {
+    const token = Cookies.get('TOKEN');
+    if (token) {
+      setIsLoggedIn(true);
+      userDetails = decodeJwt(token)
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
 
   useEffect(() => {
     const fetchProgress = async () => {
-      const response = await getProgress(`${course._id}`);
+      const response = await getProgress(`${course._id}`, userDetails.id);
       const data = response.data.data[0];
 
       const totalMaterials = course.materials.length || 0;
@@ -59,7 +73,7 @@ const CourseCard = ({ course }) => {
             </div>
             <hr className="mt-4 mb-0" />
 
-            {isEnrolled && (
+            {isLoggedIn && (
               <div className="flex items-center gap-1 mt-3 -mb-1">
                 <div className="w-full h-2 bg-gray-200 border-0 rounded-xl border-current">
                   <div className="bg-primary-500 rounded-xl p-1 h-full text-xs sm:text-sm" style={{ width: `${progress}%` }}></div>
@@ -67,13 +81,13 @@ const CourseCard = ({ course }) => {
                 <p className="text-xs xs:text-sm sm:text-base">{Math.round(progress)}%</p>
               </div>
             )}
-            {!isEnrolled && (
+            {!isLoggedIn && (
               <button onClick={handleEnrollClick} className="w-full mt-4 px-4 py-2 bg-primary-500 text-white rounded-xl text-xs xs:text-sm sm:text-base">
                 Selengkapnya
               </button>
             )}
 
-            {isEnrolled && (
+            {isLoggedIn && (
               <button onClick={() => (window.location.href = `/course/${course._id}`)} className="w-full mt-4 px-4 py-2 bg-primary-500 text-white rounded-xl text-xs xs:text-sm sm:text-base">
                 Selengkapnya
               </button>
