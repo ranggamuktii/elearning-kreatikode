@@ -8,6 +8,7 @@ import Profile from './components/Dashboard';
 import PageFaq from './components/PageFaq';
 import IntroClass from './pages/IntroClass';
 import MaterialCourse from './pages/MaterialCourse';
+import CourseQuiz from './components/Course/CourseQuiz';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'flowbite-react';
@@ -27,6 +28,7 @@ function App() {
           <Route path="/course" element={<Course />} />
           <Route path="/course/:courseId" element={<IntroClass />} />
           <Route path="/course/:courseId/materials/:id" element={<MaterialCourse />} />
+          <Route path="/course/:courseId/quiz" element={<CourseQuiz />} />
         </Routes>
       </Layout>
     </Router>

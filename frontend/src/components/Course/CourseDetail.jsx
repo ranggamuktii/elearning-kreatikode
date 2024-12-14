@@ -1,42 +1,68 @@
-import React from 'react';
+import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const CourseDetail = () => {
-    return (
-        <section className="flex-1 p-4">
-            <h1 className="text-3xl font-bold mb-4">Belajar Dasar HTML</h1>
-            <article>
-                <h2 className="text-xl font-semibold mb-2">Apa itu HTML?</h2>
-                <p className="mb-4">
-                    Berikut ini merupakan Video Materi dari Trainer untuk "Pengenalan HTML.
-                </p>
-                <p className="mb-4">HTML merupakan singkatan dari Hyper Text Markup Language. HTML adalah sebuah bahasa standar untuk pembuatan halaman web. Dengan adanya HTML, kita dapat membedakan struktur yang tersusun dari sebuah halaman melalui tag atau elemen-elemen penyusunnya.</p>
-                <p className="mb-4">Elemen atau tag pada HTML dikenali oleh browser seperti google chrome, firefox atau Ms Edge, dll. Browser tersebut mengidentifikasi setiap elemen penyusun HTML dan ditampilkan sesuai karakteristik elemen tersebut. Contohnya sebuah elemen paragraph akan ditampilkan sebagai tulisan panjang, atau sebuah elemen pranala/link akan dicetak dengan warna biru dan ketika mouse mendekat kursornya berubah menjadi telunjuk, dsb.</p>
-                <p className="mb-4">Contoh sebuah struktur HTML sederhana:
-                </p>
-                <pre className="bg-gray-100 p-4 rounded mb-4">
-                    {`<!DOCTYPE html>
-<html>
-<head>
-<title>Page Title</title>
-</head>
-<body>
-    <h1>My First Heading</h1>
-    <p>My first paragraph.</p>
-</body>
-</html>`}
-                </pre>
-                <p>
-                    Dari contoh struktur HTML sederhana di atas kita dapat mengidentifikasi beberapa hal seperti berikut.
-                </p>
-                <ul>
-                    <li>{`<!DOCTYPE html>`} mengartikan bahwa dokumen ditulis dengan versi HTML5</li>
-                    <li>{`<html>`} adalah elemen induk atau elemen utama yang sering disebut juga root element dari sebuah halaman HTML.</li>
-                    <li>{`<head>`} berisi informasi tentang halaman HTML yang sedang dibuat</li>
-                    <li>{`<title>`} adalah judul dari halaman HTML yang akan tampil di tab browser.</li>
-                </ul>
-            </article>
-        </section>
-    );
+const CourseDetail = ({ materials = [], courseId }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const navigate = useNavigate();
+
+  const handleNext = () => {
+    if (currentIndex < materials.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    } else {
+      // If we're at the last material, navigate to quiz
+      navigate(`/course/${courseId}/quiz`);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+    }
+  };
+
+  if (!materials.length) {
+    return <div>No materials available</div>;
+  }
+
+  const isLastMaterial = currentIndex === materials.length - 1;
+
+  return (
+    <section className="flex-1 p-4">
+      <h1 className="text-3xl font-bold mb-4">{materials[currentIndex].title}</h1>
+      <article className="prose max-w-none mb-8" dangerouslySetInnerHTML={{ __html: materials[currentIndex].content }} />
+
+      <div className="flex justify-between">
+        <button onClick={handlePrevious} disabled={currentIndex === 0} className={`flex items-center gap-2 p-2 rounded-lg ${currentIndex === 0 ? 'bg-gray-300' : 'bg-primary-500'} text-white`}>
+          <svg className="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m15 19-7-7 7-7" />
+          </svg>
+          <p>Sebelumnya</p>
+        </button>
+
+        <button onClick={handleNext} className="flex items-center gap-2 p-2 rounded-lg bg-primary-500 text-white">
+          <p>{isLastMaterial ? 'Mulai Quiz' : 'Selanjutnya'}</p>
+          <svg className="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m9 5 7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+
+      <div className="mt-4 text-sm text-gray-500">
+        Materi {currentIndex + 1} dari {materials.length}
+      </div>
+    </section>
+  );
+};
+
+CourseDetail.propTypes = {
+  materials: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      content: PropTypes.string.isRequired,
+    })
+  ),
+  courseId: PropTypes.string.isRequired,
 };
 
 export default CourseDetail;

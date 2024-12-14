@@ -1,5 +1,3 @@
-import React from 'react';
-
 const ContactAdmin = () => {
   return (
     <div className="flex justify-center rounded-lg bg-secondary-400 text-color-text-2 font-medium text-base m-9 p-4">

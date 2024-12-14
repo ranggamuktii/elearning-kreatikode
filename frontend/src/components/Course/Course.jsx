@@ -204,7 +204,7 @@ Course.propTypes = {
       thumbnail: PropTypes.string.isRequired,
       level: PropTypes.string.isRequired,
     })
-  ).isRequired,
+  ),
 };
 
 MobileFilter.propTypes = {

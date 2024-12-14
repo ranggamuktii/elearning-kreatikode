@@ -16,7 +16,7 @@ function CourseList() {
     const getCourses = async () => {
       try {
         const { data } = await fetchCourses();
-        setCourses(data);
+        setCourses(data.slice(0, 4));
         setIsLoading(false);
       } catch (err) {
         showErrorToast('Gagal memuat data kelas');
@@ -67,7 +67,7 @@ function CourseList() {
 
       {/* Desktop Grid */}
       <div className="hidden sm:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-6 sm:px-20">
-        {courses.slice(0, 8).map((course) => (
+        {courses.map((course) => (
           <div key={course._id}>
             <CourseCard course={course} />
           </div>

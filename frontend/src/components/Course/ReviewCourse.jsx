@@ -1,8 +1,6 @@
 import PropTypes from 'prop-types';
 
 const ReviewCourse = ({ reviews }) => {
-  console.log(reviews);
-
   return (
     <div className="space-y-4">
       {reviews.map((review, index) => (

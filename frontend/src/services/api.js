@@ -50,9 +50,11 @@ export const updatePassword = (userId, { password }) => {
 };
 
 export const fetchCourses = () => API.get('/courses');
-export const fetchCourseById = (id) => API.get(`/courses/${id}`);
+export const fetchCourseById = (courseId) => API.get(`/courses/${courseId}`);
 export const createCourse = (courseData) => API.post('/courses', courseData);
 export const updateCourse = (id, courseData) => API.put(`/courses/${id}`, courseData);
 export const deleteCourse = (id) => API.delete(`/courses/${id}`);
 export const getProgress = (courseId) => API.get(`/progress/${courseId}`);
 export const loadComment = (courseId) => API.get(`/courses/${courseId}/comments`);
+
+export const fetchQuizByCourse = (courseId) => API.get(`/courses/${courseId}/quiz`);

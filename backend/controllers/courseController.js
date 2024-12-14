@@ -135,6 +135,7 @@ export const deleteCourse = async (req, res) => {
 export const addThumbnailToCourse = async (req, res) => {
   try {
     const { id } = req.params;
+    z;
 
     if (!req.file) {
       return res.status(400).json({ message: 'No file uploaded' });

@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchQuizByCourse } from '../../services/api'; //Sesuaiin dengan file API
+import PropTypes from 'prop-types';
+import { fetchQuizByCourse } from '../../services/api';
 
-const courseQuiz = () => {
-  const { id } = useParams();
+const CourseQuiz = () => {
+  const { courseId } = useParams();
   const [quiz, setQuiz] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -11,11 +12,10 @@ const courseQuiz = () => {
   const [submitted, setSubmitted] = useState(false);
   const [totalScore, setTotalScore] = useState(0);
 
-  //Ambil data quiz
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
-        const { data } = await fetchQuizByCourse(id);
+        const { data } = await fetchQuizByCourse(courseId);
         if (data && Array.isArray(data) && data.length > 0) {
           setQuiz(data[0]);
         } else {
@@ -30,7 +30,7 @@ const courseQuiz = () => {
     };
 
     fetchQuiz();
-  }, [id]);
+  }, [courseId]);
 
   const handleAnswerChange = (questionIndex, optionIndex) => {
     setUserAnswers({
@@ -67,18 +67,14 @@ const courseQuiz = () => {
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return <div>Error: {error}</div>;
   }
 
   if (!quiz) {
     return (
-      <div className="text-center p-6">
+      <div className="text-center p-6 ">
         <h2 className="text-lg font-semibold">Tidak ada kuis tersedia untuk course ini.</h2>
-        <button
-          type="button"
-          onClick={() => window.history.back()} // Menggunakan window.history.back() untuk kembali
-          className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg"
-        >
+        <button type="button" onClick={() => window.history.back()} className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">
           Kembali
         </button>
       </div>
@@ -89,7 +85,7 @@ const courseQuiz = () => {
   const skor = pointsPerQuestion.toFixed(2).split('.')[0];
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
+    <div className="max-w-2xl mx-auto p-6 mt-20">
       <h1 className="text-2xl font-bold mb-4">{quiz.title}</h1>
       {submitted && <h2 className="text-lg font-semibold mb-4">{`Total Skor: ${totalScore.toFixed(2).split('.')[0]}/100`}</h2>}
       <ul className="space-y-4">
@@ -122,7 +118,7 @@ const courseQuiz = () => {
                   }
 
                   return (
-                    <li key={optionIndex} className="flex w-full ">
+                    <li key={optionIndex} className="flex w-full">
                       <button type="button" onClick={() => handleAnswerChange(index, optionIndex)} className={`flex ${optionClass} transition duration-200`} disabled={submitted}>
                         <span className="ml-2">{option}</span>
                       </button>
@@ -147,4 +143,31 @@ const courseQuiz = () => {
   );
 };
 
-export default courseQuiz;
+CourseQuiz.propTypes = {
+  quiz: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    questions: PropTypes.arrayOf(
+      PropTypes.shape({
+        question: PropTypes.string.isRequired,
+        options: PropTypes.arrayOf(PropTypes.string).isRequired,
+        correctAnswer: PropTypes.number.isRequired,
+      })
+    ).isRequired,
+  }),
+  userAnswers: PropTypes.objectOf(PropTypes.number),
+  submitted: PropTypes.bool,
+  totalScore: PropTypes.number,
+  loading: PropTypes.bool,
+  error: PropTypes.string,
+};
+
+CourseQuiz.defaultProps = {
+  quiz: null,
+  userAnswers: {},
+  submitted: false,
+  totalScore: 0,
+  loading: true,
+  error: null,
+};
+
+export default CourseQuiz;
