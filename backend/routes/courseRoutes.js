@@ -6,10 +6,10 @@ const router = express.Router();
 
 router.get('/:id', getCourseById);
 router.get('/', getAllCourses);
-router.post('/', createCourse);
+router.post('/', upload.single('thumbnail'), createCourse);
 router.put('/:id', updateCourse);
 router.delete('/:id', deleteCourse);
 router.get('/category', filterCourseByCategory);
-router.post('/:id/thumbnail', upload.single('thumbnail'), addThumbnailToCourse);
+router.put('/:id/thumbnail', upload.single('thumbnail'), addThumbnailToCourse);
 
 export default router;

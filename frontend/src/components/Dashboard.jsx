@@ -49,7 +49,7 @@ const DashboardPage = () => {
         const coursesWithProgress = await Promise.all(
           data.map(async (course) => {
             try {
-              const progressResponse = await getProgress(course.id);
+              const progressResponse = await getProgress(course.id, userDetails.id);
               return {
                 ...course,
                 progress: progressResponse.data.progress || 0,

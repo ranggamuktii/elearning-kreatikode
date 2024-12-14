@@ -14,7 +14,7 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 
-app.use('/images', express.static('public/images'));
+app.use('/thumbnail', express.static('public/thumbnail'));
 app.use('/api', routes);
 
 app.listen(port, () => console.log(`Server running on http://localhost:${port}`));

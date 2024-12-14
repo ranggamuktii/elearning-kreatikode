@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 // import { Navigation, Pagination } from 'swiper/modules';
-import { fetchCourses } from '../../services/api';
+import { fetchCourses, fetchCourseById, getProgressByUserId } from '../../services/api';
 import { showErrorToast } from '../Utils/toastUtils';
+import Cookies from 'js-cookie';
+import { decodeJwt } from 'jose';
 import CourseCard from './CourseCard';
 import Loading from '../../components/Loader/Loading';
 
@@ -11,11 +13,39 @@ function CourseList() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [courses, setCourses] = useState([]);
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  let userDetails = {}
+  
   useEffect(() => {
-    const getCourses = async () => {
+    const token = Cookies.get('TOKEN');
+    if (token) {
+      setIsLoggedIn(true);
+      userDetails = decodeJwt(token)
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
+
+  // useEffect(() => {
+  //   const getCourses = async () => {
+  //     try {
+  //       const { data } = await fetchCourses();
+  //       setCourses(data.slice(0, 4));
+  //       setIsLoading(false);
+  //     } catch (err) {
+  //       showErrorToast('Gagal memuat data kelas');
+  //       setIsLoading(false);
+  //       console.error(err);
+  //     }
+  //   };
+
+  //   getCourses();
+  // }, []);
+
+  useEffect(() =>{
+    const getCoursesByUserId = async () => {
       try {
-        const { data } = await fetchCourses();
+        const { data } = await getProgressByUserId(userDetails.id);
         setCourses(data.slice(0, 4));
         setIsLoading(false);
       } catch (err) {
@@ -24,9 +54,8 @@ function CourseList() {
         console.error(err);
       }
     };
-
-    getCourses();
-  }, []);
+    getCoursesByUserId()
+  }, [])
 
   const handleViewAll = () => {
     navigate('/course');

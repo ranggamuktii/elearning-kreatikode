@@ -123,7 +123,7 @@ export const getCoursesWithProgressByUserId = async (req, res) => {
       return res.status(400).json({ message: 'Invalid userId' });
     }
 
-    const progress = await Progress.find({ user: userId })
+    const progress = await Progress.find({ user: userId }).populate('course');
 
     if (progress.length === 0) {
       return res.status(404).json({ message: 'No progress data found for this user' });
@@ -135,7 +135,7 @@ export const getCoursesWithProgressByUserId = async (req, res) => {
         return coursesWithProgress.find(course => course._id.equals(id));
       });
 
-    res.status(200).json({ success: true, data: uniqueCourses });
+    res.status(200).json(uniqueCourses);
   } catch (error) {
     console.error('Error fetching courses with progress by userId:', error);
     res.status(500).json({ success: false, message: 'Server error', error: error.message });

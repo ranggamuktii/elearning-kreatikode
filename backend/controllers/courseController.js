@@ -34,7 +34,7 @@ export const createCourse = async (req, res) => {
   try {
     const { title, description, category, level, introduction, materials } = req.body;
 
-    const thumbnailPath = req.file?.path;
+    const thumbnailPath = req.file.path;
 
     const formattedMaterials = Array.isArray(materials)
       ? materials.map((material) => ({
@@ -135,7 +135,6 @@ export const deleteCourse = async (req, res) => {
 export const addThumbnailToCourse = async (req, res) => {
   try {
     const { id } = req.params;
-    z;
 
     if (!req.file) {
       return res.status(400).json({ message: 'No file uploaded' });

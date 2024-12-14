@@ -2,7 +2,7 @@ import multer from 'multer';
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, './public/images'); // Folder tempat file disimpan
+    cb(null, './public/thumbnail'); // Folder tempat file disimpan
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + '-' + file.originalname); // Format nama file
