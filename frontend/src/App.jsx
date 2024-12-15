@@ -14,6 +14,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'flowbite-react';
 import './App.css';
+import Modal from './components/Modal/quizModal';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/course/:courseId/materials/:id" element={<MaterialCourse />} />
           <Route path="/course/:courseId/quiz" element={<CourseQuiz />} />
           <Route path="/about_us" element={<AboutUs />} />
+          <Route path="/modal" element={<Modal />} />
         </Routes>
       </Layout>
     </Router>
