@@ -8,6 +8,7 @@ import Profile from './components/Dashboard';
 import PageFaq from './components/PageFaq';
 import IntroClass from './pages/IntroClass';
 import MaterialCourse from './pages/MaterialCourse';
+import AboutUs from './pages/AboutUs';
 import 'flowbite-react';
 import './App.css';
 
@@ -24,6 +25,7 @@ function App() {
           <Route path="/course" element={<Course />} />
           <Route path="/course/:courseId" element={<IntroClass />} />
           <Route path="/course/:courseId/materials/:id" element={<MaterialCourse />} />
+          <Route path="/about_us" element={<AboutUs />} />
         </Routes>
       </Layout>
     </Router>
