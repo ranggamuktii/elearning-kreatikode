@@ -10,9 +10,9 @@ const AboutUs = () => {
             <Deskription />
             <div className="max-w-full mx-auto px-8 mt-8">
                 <VisionMission />
+                <OurValues />
+                <Founders />
             </div>
-            <OurValues />
-            <Founders />
         </div>
     );
 }

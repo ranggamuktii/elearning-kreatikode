@@ -35,7 +35,7 @@ const Founders = () => {
                 <div className="bg-secondary-500 p-1 w-24 mb-4 mt-11"></div>
             </div>
             <h2 className="text-3xl font-bold text-center mb-6">Berkenalan dengan Pendiri Kreatikode</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 ">
                 {founders.map((founder, index) => (
                     <div key={index} className="text-center">
                         <img 
