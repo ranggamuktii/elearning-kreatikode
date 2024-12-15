@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { fetchQuizByCourse } from '../../services/api'; //Sesuaiin dengan file API
+import { BsQuestion } from 'react-icons/bs';
 
 const QuizDisplay = () => {
   const { courseId } = useParams();
@@ -16,7 +17,7 @@ const QuizDisplay = () => {
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
-        const { data } = await fetchQuizByCourse(courseid);
+        const { data } = await fetchQuizByCourse(courseId);
         if (data && Array.isArray(data) && data.length > 0) {
           setQuiz(data[0]);
         } else {
@@ -169,7 +170,7 @@ const QuizDisplay = () => {
   );
 };
 
-CourseQuiz.propTypes = {
+QuizDisplay.propTypes = {
   quiz: PropTypes.shape({
     title: PropTypes.string.isRequired,
     questions: PropTypes.arrayOf(
@@ -187,7 +188,7 @@ CourseQuiz.propTypes = {
   error: PropTypes.string,
 };
 
-CourseQuiz.defaultProps = {
+QuizDisplay.defaultProps = {
   quiz: null,
   userAnswers: {},
   submitted: false,
