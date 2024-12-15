@@ -10,9 +10,9 @@ router.post('/register', register);
 router.post('/login', login);
 
 // Protected routes (perlu token)
-router.get('/', authenticateToken, getUsers);
+router.get('/', getUsers);
 router.get('/:id', authenticateToken, getUserById);
 router.patch('/:id', authenticateToken, updateUser);
-router.delete('/:id', authenticateToken, deleteUser);
+router.delete('/:id', deleteUser);
 
 export default router;
