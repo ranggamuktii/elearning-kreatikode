@@ -11,7 +11,7 @@ const SubMaterial = ({ courses }) => {
           </li>
         ))}
       </ul>
-      <button className="font-semibold text-lg mt-2 py-2 w-full text-white bg-primary-500 rounded-full hover:bg-secondary-500">Lihat Selengkapnya</button>
+      <button className="font-semibold text-sm mt-2 py-2 w-full text-white bg-primary-500 rounded-full hover:bg-secondary-500">Lihat Selengkapnya</button>
     </div>
   );
 };

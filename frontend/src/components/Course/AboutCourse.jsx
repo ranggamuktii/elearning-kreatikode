@@ -8,7 +8,7 @@ const AboutCourse = ({ courses }) => {
           <h2 className="font-bold text-xl mb-2">Tentang Kelas</h2>
           <p className="mb-5">{courses.description}</p>
           <h3 className="text-lg font-bold mb-5">Apa yang akan kita pelajari?</h3>
-          <ul className="list-disc pl-5 mb-5">
+          <ul className="list-disc pl-5">
             {courses.introduction.whatWillLearn.map((item, index) => (
               <li key={index}>{item}</li>
             ))}
@@ -18,7 +18,7 @@ const AboutCourse = ({ courses }) => {
       <div className="border bg-white rounded-lg p-6 h-fit">
         <section>
           <h2 className="font-bold text-xl mb-2">Persiapan Kelas</h2>
-          <ul className="list-disc pl-5 mb-5">
+          <ul className="list-disc pl-5">
             {courses.introduction.prerequisites.map((prerequisite, index) => (
               <li key={index}>{prerequisite}</li>
             ))}

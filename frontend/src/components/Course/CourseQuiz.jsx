@@ -80,7 +80,7 @@ const QuizDisplay = () => {
 
   if (!quiz) {
     return (
-      <div className="text-center p-6">
+      <div className="text-center p-6 mt-20">
         <h2 className="text-lg font-semibold">Tidak ada kuis tersedia untuk course ini.</h2>
         <button type="button" onClick={() => window.history.back()} className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">
           Kembali
@@ -118,13 +118,13 @@ const QuizDisplay = () => {
 
                   if (submitted) {
                     if (isUserAnswerIncorrect && optionIndex === userAnswer) {
-                      optionClass = 'bg-red-500 w-full p-2 rounded-md';
+                      optionClass = 'bg-red-300 w-full p-2 rounded-md';
                     }
                     if (optionIndex === correctAnswer) {
-                      optionClass = 'bg-green-500 w-full p-2 rounded-md';
+                      optionClass = 'bg-green-300 w-full p-2 rounded-md';
                     }
                   } else {
-                    optionClass = userAnswer === optionIndex ? 'bg-gray-500 w-full p-2 rounded-md' : 'bg-gray-200 w-full p-2 rounded-md';
+                    optionClass = userAnswer === optionIndex ? 'w-full p-2 border-2 border-gray-500 rounded-md bg-gray-50' : 'bg-gray-100 w-full p-2 rounded-md';
                   }
 
                   return (
