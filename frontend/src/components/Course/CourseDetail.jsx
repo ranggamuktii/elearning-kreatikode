@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 const CourseDetail = ({ materials = [], courseId }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userDetails, setUserDetails] = useState({})
+  const [userDetails, setUserDetails] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,7 +16,7 @@ const CourseDetail = ({ materials = [], courseId }) => {
     if (token) {
       setIsLoggedIn(true);
       const a = decodeJwt(token);
-      setUserDetails(a)
+      setUserDetails(a);
     } else {
       setIsLoggedIn(false);
     }
@@ -28,7 +28,6 @@ const CourseDetail = ({ materials = [], courseId }) => {
       await addProgress(courseId, materialId, userDetails.id);
       setCurrentIndex(currentIndex + 1);
     } else {
-      // If we're at the last material, navigate to quiz
       navigate(`/course/${courseId}/quiz`);
     }
   };

@@ -49,7 +49,7 @@ const CourseDetail = () => {
   }
 
   return (
-    <div>
+    <div className="mt-20">
       <ClassBanner courses={course} />
       <div className="max-w-full mx-auto px-8 mt-8">
         <div className="flex gap-6">
