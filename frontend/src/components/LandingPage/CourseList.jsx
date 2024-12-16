@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 // import { Navigation, Pagination } from 'swiper/modules';
 import { fetchCourses } from '../../services/api';
-import { showErrorToast } from '../Utils/toastUtils';
+// import { showErrorToast } from '../Utils/toastUtils';
 import CourseCard from './CourseCard';
 import Loading from '../../components/Loader/Loading';
 
@@ -20,7 +20,7 @@ function CourseList() {
         setCourses(data.slice(0, 4));
         setIsLoading(false);
       } catch (err) {
-        showErrorToast('Gagal memuat data kelas');
+        // showErrorToast('Gagal memuat data kelas');
         setIsLoading(false);
         console.error(err);
       }

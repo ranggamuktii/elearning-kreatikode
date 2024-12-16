@@ -1,35 +1,54 @@
 import PropTypes from 'prop-types';
-import Cookies from 'js-cookie';
-import { decodeJwt } from 'jose';
-import { addProgress } from '../../services/api';
+import { addProgress, getProgress } from '../../services/api';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const CourseDetail = ({ materials = [], courseId }) => {
+const CourseDetail = ({ materials = [], courseId, materialId, userDetails, isLoggedIn }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userDetails, setUserDetails] = useState({})
+  const [progress, setProgress] = useState(0);
+  const [completedMaterials, setCompletedMaterials] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = Cookies.get('TOKEN');
-    if (token) {
-      setIsLoggedIn(true);
-      const a = decodeJwt(token);
-      setUserDetails(a)
-    } else {
-      setIsLoggedIn(false);
-    }
+    const fetchProgress = async () => {
+      if(!userDetails.id){
+        return 0;
+      }
+      const response = await getProgress(courseId, userDetails.id);
+      const data = response.data.data[0];
+      setProgress(data)
+      setCompletedMaterials(data.completedMaterials || []);
+    };
+
+    fetchProgress();
   }, []);
+
+  useEffect(() => {
+    const index = materials.findIndex(material => material._id === materialId);
+    if (index !== -1) {
+      setCurrentIndex(index); 
+    } else {
+
+      setCurrentIndex(0); 
+    }
+  }, [materialId, materials]);
+
   const handleNext = async () => {
     const materialId = materials[currentIndex]._id;
 
-    if (currentIndex < materials.length - 1) {
-      await addProgress(courseId, materialId, userDetails.id);
-      setCurrentIndex(currentIndex + 1);
+    if (completedMaterials.includes(materialId)) {
+      if (currentIndex < materials.length - 1) {
+        setCurrentIndex(currentIndex + 1);
+      } else {
+        navigate(`/course/${courseId}/quiz`);
+      }
     } else {
-      // If we're at the last material, navigate to quiz
-      navigate(`/course/${courseId}/quiz`);
+      if (currentIndex < materials.length - 1) {
+        await addProgress(courseId, materialId, userDetails.id);
+        setCurrentIndex(currentIndex + 1);
+      } else {
+        navigate(`/course/${courseId}/quiz`);
+      }
     }
   };
 
@@ -61,7 +80,7 @@ const CourseDetail = ({ materials = [], courseId }) => {
         <button onClick={handleNext} className="flex items-center gap-2 p-2 rounded-lg bg-primary-500 text-white">
           <p>{isLastMaterial ? 'Mulai Quiz' : 'Selanjutnya'}</p>
           <svg className="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m9 5 7 7-7 7" />
+            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin=" round" strokeWidth="2" d="m9 5 7 7-7 7" />
           </svg>
         </button>
       </div>

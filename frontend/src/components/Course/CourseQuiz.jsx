@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { fetchQuizByCourse } from '../../services/api'; //Sesuaiin dengan file API
-import { BsQuestion } from 'react-icons/bs';
+import { fetchQuizByCourse } from '../../services/api';
+
 
 const QuizDisplay = () => {
   const { courseId } = useParams();

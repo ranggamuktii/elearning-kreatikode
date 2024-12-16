@@ -39,14 +39,14 @@ AboutCourse.propTypes = {
   }).isRequired,
 };
 
-AboutCourse.defaultProps = {
-  courses: {
-    description: '',
-    introduction: {
-      whatWillLearn: [],
-      prerequisites: [],
-    },
-  },
-};
+// AboutCourse.defaultProps = {
+//   courses: {
+//     description: '',
+//     introduction: {
+//       whatWillLearn: [],
+//       prerequisites: [],
+//     },
+//   },
+// };
 
 export default AboutCourse;

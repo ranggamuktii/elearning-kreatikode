@@ -1,47 +1,35 @@
 import PropTypes from 'prop-types';
-import Cookies from 'js-cookie';
-import { decodeJwt } from 'jose';
 import { getProgress } from '../../services/api';
 import { useEffect, useState } from 'react';
 import { showWarningToast } from '../Utils/toastUtils';
 
-
-const ClassBanner = ({ courses }) => {
+const ClassBanner = ({ courses, userDetails, isLoggedIn }) => {
     const [progress, setProgress] = useState(0);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    let userDetails = {}
-  
-    useEffect(() => {
-      const token = Cookies.get('TOKEN');
-      if (token) {
-        setIsLoggedIn(true);
-        userDetails = decodeJwt(token)
-      } else {
-        setIsLoggedIn(false);
-      }
-    }, []);
   
     useEffect(() => {
       const fetchProgress = async () => {
         const response = await getProgress(`${courses._id}`, userDetails.id);
         const data = response.data.data[0];
-  
         setProgress(data)
-        console.log(progress)
-        
       };
-  
+      
       fetchProgress();
     }, [courses._id, courses.materials.length]);
-
+    
     const handleClick = () => {
-      if(!isLoggedIn){
-        return showWarningToast('Please login to access this feature')
+      if (!isLoggedIn) {
+        return showWarningToast('Please login to access this feature');
       }
-      if(progress){
-        window.location.href = `/course/${courses._id}/materials/${progress.lastAccessedMaterial}`
+  
+      if (progress && progress.lastAccessedMaterial) {
+        const lastAccessedIndex = courses.materials.findIndex(material => material._id === progress.lastAccessedMaterial);
+        if (lastAccessedIndex !== -1 && lastAccessedIndex < courses.materials.length - 1) {
+          window.location.href = `/course/${courses._id}/materials/${courses.materials[lastAccessedIndex + 1]._id}`;
+        } else {
+          window.location.href = `/course/${courses._id}/quiz`;
+        }
       } else {
-        window.location.href = `/course/${courses._id}/materials/${courses.materials[0]._id}`
+        window.location.href = `/course/${courses._id}/materials/${courses.materials[0]._id}`;
       }
     }
 
@@ -69,11 +57,11 @@ ClassBanner.propTypes = {
   }).isRequired,
 };
 
-ClassBanner.defaultProps = {
-  courses: {
-    title: '',
-    description: '',
-  },
-};
+// ClassBanner.defaultProps = {
+//   courses: {
+//     title: '',
+//     description: '',
+//   },
+// };
 
 export default ClassBanner;

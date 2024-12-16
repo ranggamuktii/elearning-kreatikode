@@ -22,6 +22,9 @@ const CourseCard = ({ course }) => {
 
   useEffect(() => {
     const fetchProgress = async () => {
+      if(!userDetails.id){
+        return 0;
+      }
       const response = await getProgress(`${course._id}`, userDetails.id);
       const data = response.data.data[0];
 
