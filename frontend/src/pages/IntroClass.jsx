@@ -66,16 +66,18 @@ const CourseDetail = () => {
   return (
     <div>
       <ClassBanner courses={course} userDetails={userDetails} isLoggedIn={isLoggedIn} />
-      <div className="max-w-full mx-auto px-8 mt-8">
-        <div className="flex gap-6">
-          <AboutCourse courses={course} />
-          <SubMaterial courses={course?.materials} />
+      <div className="max-w-full mx-auto px-4 mt-8 flex flex-col space-y-6">
+        <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex flex-col md:flex-row gap-4 w-full">
+            <AboutCourse courses={course} />
+            <SubMaterial courses={course?.materials} className="w-full md:w-1/2" />
+          </div>
         </div>
-        <section className="border bg-white rounded-lg p-6 mb-8 h-fit w-2/3">
+        <section className="border bg-white rounded-lg p-6 mb-8 w-full md:w-2/3">
           <h2 className="font-bold text-xl mb-4">Ulasan</h2>
           <ReviewCourse reviews={comments} />
         </section>
-        <section className="mt-8">
+        <section className="w-full">
           <h2 className="font-bold text-xl mb-4">Rekomendasi Kelas Untuk Kamu</h2>
         </section>
       </div>

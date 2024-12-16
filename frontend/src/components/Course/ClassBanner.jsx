@@ -14,7 +14,7 @@ const ClassBanner = ({ courses, userDetails, isLoggedIn }) => {
     };
 
     fetchProgress();
-  }, [courses._id, courses.materials.length]);
+  }, [courses._id]);
 
   const handleClick = () => {
     if (!isLoggedIn) {
@@ -34,18 +34,18 @@ const ClassBanner = ({ courses, userDetails, isLoggedIn }) => {
   };
 
   return (
-    <div className="w-full bg-gray-200 ">
-      <div>
-        <div className=" ml-10 mr-10 flex items-center justify-between space-x-4">
-          <div className="w-1/2">
-            <h1 className="text-5xl font-bold text-color-text mb-4">{courses.title}</h1>
+    <div className="w-full bg-gray-200  py-16">
+      <div className="max-w-full mx-auto py-8 p-4">
+        <div className="flex flex-col md:flex-row items-center justify-around">
+          <div className="w-full md:w-1/2 flex flex-col items-center md:items-start">
+            <h1 className="text-3xl md:text-5xl font-bold text-color-text mb-4 text-center md:text-left">{courses.title}</h1>
 
-            <p className="mb-4 text-base">{courses.description}</p>
+            <p className="mb-4 text-base text-center md:text-left">{courses.description}</p>
             <button onClick={handleClick} className="bg-primary-500 text-color-text-2 p-3 px-5 rounded-md font-semibold">
               Mulai Kelas Ini
             </button>
           </div>
-          <img src={`${import.meta.env.VITE_API_URL}/thumbnail/${courses.thumbnail.split('\\').pop()}`} alt={courses.title} className="w-[500px] h-[300px] rounded-lg mt-20 mb-20" />
+          <img src={`${import.meta.env.VITE_API_URL}/thumbnail/${courses.thumbnail.split('\\').pop()}`} alt={courses.title} className="w-full md:w-[500px] h-auto rounded-lg mt-10 md:mt-0 object-contain" />
         </div>
       </div>
     </div>

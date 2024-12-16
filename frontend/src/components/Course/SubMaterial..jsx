@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 const SubMaterial = ({ courses }) => {
   return (
-    <div className="border bg-white rounded-lg p-6 w-1/3 h-fit">
+    <div className="border bg-white rounded-lg p-6 w-full md:w-1/3 h-fit mx-auto">
       <h2 className="font-semibold text-lg mb-4">Materi</h2>
       <ul className="space-y-2">
         {courses.map((topic, index) => (
