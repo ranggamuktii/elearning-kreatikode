@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.get('/progress/overview', getProgressOverview);
 router.get('/progress/:courseId/:userId', getProgress);
-router.post('/progress/:courseId/material/:materialId', markMaterialComplete);
+router.post('/progress/:courseId/material/:materialId/:userId', markMaterialComplete);
 router.get('/progress/:userId', getCoursesWithProgressByUserId);
 router.post('/users', createUser);
 
