@@ -65,8 +65,8 @@ export const getProgress = async (req, res) => {
 // Menandai Materi Selesai
 export const markMaterialComplete = async (req, res) => {
   try {
-    const { courseId, materialId } = req.params;
-    const { userId } = req.body; // Asumsi body mengirimkan userId
+    const { courseId, materialId, userId } = req.params;
+    // const { userId } = req.body; // Asumsi body mengirimkan userId
 
     // Validasi apakah courseId dan materialId adalah ObjectId yang valid
     if (!mongoose.Types.ObjectId.isValid(courseId) || !mongoose.Types.ObjectId.isValid(materialId)) {

@@ -1,13 +1,31 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import Cookies from 'js-cookie';
+import { decodeJwt } from 'jose';
+import { addProgress } from '../../services/api';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const CourseDetail = ({ materials = [], courseId }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userDetails, setUserDetails] = useState({})
   const navigate = useNavigate();
 
-  const handleNext = () => {
+  useEffect(() => {
+    const token = Cookies.get('TOKEN');
+    if (token) {
+      setIsLoggedIn(true);
+      const a = decodeJwt(token);
+      setUserDetails(a)
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
+  const handleNext = async () => {
+    const materialId = materials[currentIndex]._id;
+
     if (currentIndex < materials.length - 1) {
+      await addProgress(courseId, materialId, userDetails.id);
       setCurrentIndex(currentIndex + 1);
     } else {
       // If we're at the last material, navigate to quiz

@@ -55,6 +55,7 @@ export const createCourse = (courseData) => API.post('/courses', courseData);
 export const updateCourse = (id, courseData) => API.put(`/courses/${id}`, courseData);
 export const deleteCourse = (id) => API.delete(`/courses/${id}`);
 export const getProgress = (courseId, userId) => API.get(`/progress/${courseId}/${userId}`);
+export const addProgress = (courseId, materialId, userId) => API.post(`/progress/${courseId}/material/${materialId}/${userId}`);
 export const getProgressByUserId = (userId) => API.get(`/progress/${userId}`);
 export const loadComment = (courseId) => API.get(`/courses/${courseId}/comments`);
 
