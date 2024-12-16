@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { showErrorToast, showSuccessToast } from './Utils/toastUtils';
 import { ToastContainer } from 'react-toastify';
 import DatePicker from 'react-datepicker';
-import { updateProfileDetails, updatePersonalData, updatePassword } from '../services/api';
+import { updateProfileDetails, updatePersonalData, updatePassword, updateUser } from '../services/api';
 import { fetchCourses, getProgress } from '../services/api';
 import { removeUserToken } from './Utils/tokendata';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -14,6 +14,7 @@ const DashboardPage = () => {
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [activeProfileSection, setActiveProfileSection] = useState(null);
   const [activeMenu, setActiveMenu] = useState('Dashboard');
+  const [userDetails, setUserDetails] = useState({});
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [selectedDate, setSelectedDate] = useState(null);
@@ -21,9 +22,9 @@ const DashboardPage = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [activeTab, setActiveTab] = useState('Semua Kelas');
+  const [uploading, setUploading] = useState(false);
 
   const [courses, setCourses] = useState([]);
-  const [userDetails, setUserDetails] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -55,7 +56,7 @@ const DashboardPage = () => {
                 progress: progressResponse.data.progress || 0,
                 completedSubmodules: progressResponse.data.completedSubmodules || 0,
                 totalSubmodules: progressResponse.data.totalSubmodules || course.totalSubmodules || 0,
-                icon: course.thumbnail ? `${import.meta.env.VITE_API_URL}/thumbnail//${course.thumbnail.split("\\").pop()}` : '/default-course-thumbnail.png', // Use a local default image
+                icon: course.thumbnail ? `${import.meta.env.VITE_API_URL}/thumbnail//${course.thumbnail.split('\\').pop()}` : '/default-course-thumbnail.png', // Use a local default image
               };
             } catch (error) {
               console.error(`Error fetching progress for course ${course.id}:`, error);
@@ -132,6 +133,58 @@ const DashboardPage = () => {
       console.error('Logout failed:', error);
       showErrorToast('Gagal logout');
     }
+  };
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+    if (!validTypes.includes(file.type)) {
+      showErrorToast('Hanya file JPG, JPEG, dan PNG yang diperbolehkan');
+      return;
+    }
+
+    const maxSize = 2 * 1024 * 1024;
+    if (file.size > maxSize) {
+      showErrorToast('Ukuran file maksimal 2MB');
+      return;
+    }
+
+    try {
+      setUploading(true);
+
+      const formData = new FormData();
+      formData.append('photo', file);
+
+      if (!userDetails.id) {
+        throw new Error('User ID tidak ditemukan');
+      }
+
+      const response = await updateUser(userDetails.id, formData);
+
+      if (response?.status === 200) {
+        const updatedUser = response.data;
+        setUserDetails((prev) => ({
+          ...prev,
+          photoURL: updatedUser.photoURL,
+        }));
+        showSuccessToast('Foto profil berhasil diperbarui');
+      }
+    } catch (error) {
+      console.error('Error uploading photo:', error);
+      showErrorToast(error.response?.data?.message || 'Gagal mengunggah foto');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleUpload = () => {
+    document.getElementById('fileInput').click();
+  };
+
+  const displayNameAlias = () => {
+    return `${userDetails.name.charAt(0)}`.toUpperCase();
   };
 
   const sidebarItems = [
@@ -367,6 +420,38 @@ const DashboardPage = () => {
         return (
           <div className="p-4 space-y-4">
             <h2 className="text-lg font-semibold mb-5">Detail Profil</h2>
+            <div>
+              <label htmlFor="name" className="block mb-2 text-sm font-normal text-gray-900 dark:text-white">
+                Foto Profil <span className="text-red-500">*</span>
+              </label>
+              <div className="flex items-center space-x-8">
+                {userDetails?.photoURL ? (
+                  <img
+                    src={`${import.meta.env.VITE_API_URL}/${userDetails.photoURL}`}
+                    alt="User profile"
+                    className="object-cover w-[100px] h-[100px] rounded-full"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = 'https://placehold.co/400x400/png';
+                    }}
+                  />
+                ) : (
+                  <div className="flex items-center justify-center w-[100px] h-[100px] rounded-full text-white font-semibold text-2xl bg-gray-300">{displayNameAlias()}</div>
+                )}
+
+                <input type="file" id="fileInput" accept="image/jpeg,image/png,image/jpg" onChange={handleFileChange} style={{ display: 'none' }} />
+
+                <button type="button" onClick={() => document.getElementById('fileInput').click()} className="font-semibold px-4 py-2.5 rounded-xl bg-primary-500 hover:bg-primary-600 text-white disabled:opacity-50" disabled={uploading}>
+                  {uploading ? 'Mengunggah...' : 'Unggah Foto'}
+                </button>
+                {!userDetails.photoURL && (
+                  <button type="button" onClick={handleUpload} className="font-semibold px-4 py-2.5 rounded-xl hover:bg-purple-50 text-primary-500 hover:text-primary-600">
+                    Gunakan Karakter Avatar
+                  </button>
+                )}
+              </div>
+              <p className="mt-2 text-sm text-gray-500">Format yang didukung: JPG, JPEG, PNG. Maksimal 2MB.</p>
+            </div>
             <div className="space-y-5">
               <div>
                 <label className="block mb-2 text-xs sm:text-sm ">
@@ -559,6 +644,8 @@ const DashboardPage = () => {
     );
   };
 
+  console.log(userDetails);
+
   return (
     <div className="min-h-screen bg-gray-50 mt-20">
       <ToastContainer />
@@ -566,7 +653,7 @@ const DashboardPage = () => {
         <aside className="w-64 bg-white min-h-screen p-4 border-r">
           <div className="flex flex-col items-center space-y-5 mb-8">
             <img
-              src={userDetails?.photoURL || 'https://placehold.co/400x400/png'}
+              src={`${import.meta.env.VITE_API_URL}/${userDetails.photoURL}`}
               alt="Profile"
               className="w-24 h-24 rounded-full object-cover"
               onError={(e) => {
