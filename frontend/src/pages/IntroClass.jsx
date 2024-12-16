@@ -56,7 +56,7 @@ const CourseDetail = () => {
           <AboutCourse courses={course} />
           <SubMaterial courses={course?.materials} />
         </div>
-        <section className="border bg-white rounded-lg p-6 mb-8 h-fit w-2/3">
+        <section className="border bg-white rounded-lg p-6 mb-8 h-fit w-[888px]">
           <h2 className="font-bold text-xl mb-4">Ulasan</h2>
           <ReviewCourse reviews={comments} />
         </section>

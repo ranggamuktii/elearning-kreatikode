@@ -74,7 +74,7 @@ const QuizDisplay = () => {
 
   if (!quiz) {
     return (
-      <div className="text-center p-6">
+      <div className="text-center p-6 mt-20">
         <h2 className="text-lg font-semibold">Tidak ada kuis tersedia untuk course ini.</h2>
         <button 
           type="button" 
@@ -92,7 +92,7 @@ const QuizDisplay = () => {
 
   return (
     <div className="max-w-2xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4">{quiz.title}</h1>
+      <h1 className="text-2xl font-bold mb-4 mt-20">{quiz.title}</h1>
       {submitted && (
           <h2 className="text-lg font-semibold mb-4">{`Total Skor: ${totalScore.toFixed(2).split('.')[0]}/100`}</h2>
       )}
@@ -118,17 +118,17 @@ const QuizDisplay = () => {
               </div>
               <ul className="mt-2 space-y-2">
                 {question.options.map((option, optionIndex) => {
-                  let optionClass = '';
+                  let optionClass = 'bg-gray-50 w-full text-gray-400 p-2 rounded-md';
   
                   if (submitted) {
                     if (isUserAnswerIncorrect && optionIndex === userAnswer) {
-                      optionClass = 'bg-red-500 w-full p-2 rounded-md';
+                      optionClass = 'bg-red-300 w-full p-2 rounded-md';
                     }
                     if (optionIndex === correctAnswer) {
-                      optionClass = 'bg-green-500 w-full p-2 rounded-md';
+                      optionClass = 'bg-green-300 w-full p-2 rounded-md';
                     }
                   } else {
-                    optionClass = userAnswer === optionIndex ? 'bg-gray-500 w-full p-2 rounded-md' : 'bg-gray-200 w-full p-2 rounded-md';
+                    optionClass = userAnswer === optionIndex ? 'w-full p-2 border-2 border-gray-500 rounded-md bg-gray-50' : 'bg-gray-100 w-full p-2 rounded-md';
                   }
                   
                   return (
@@ -153,7 +153,7 @@ const QuizDisplay = () => {
         <button
           type="button"
           onClick={handleSubmit}
-          className="bg-red-500 text-white px-4 py-2 rounded-lg w-full mt-4"
+          className="bg-blue-500 text-white px-4 py-2 rounded-lg w-full mt-4"
         >
           Submit
         </button>
@@ -162,7 +162,7 @@ const QuizDisplay = () => {
       <button
         type="button"
         onClick={() => window.history.back()}
-        className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg w-full"
+        className="mt-4 bg-red-500 text-white px-4 py-2 rounded-lg w-full"
       >
         Kembali
       </button>

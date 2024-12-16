@@ -46,7 +46,7 @@ const ClassBanner = ({ courses }) => {
     }
 
   return (
-    <div className="w-full bg-gray-200 ">
+    <div className="w-full bg-gray-200 mt-20">
       <div>
         <div className=" ml-10 mr-10 flex items-center justify-between space-x-4">
           <div className="w-1/2">
