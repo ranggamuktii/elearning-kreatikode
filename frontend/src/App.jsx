@@ -29,7 +29,7 @@ function App() {
           <Route path="/page_faq" element={<PageFaq />} />
           <Route path="/course" element={<Course />} />
           <Route path="/course/:courseId" element={<IntroClass />} />
-          <Route path="/course/:courseId/materials/:id" element={<MaterialCourse />} />
+          <Route path="/course/:courseId/materials/:materialId" element={<MaterialCourse />} />
           <Route path="/course/:courseId/quiz" element={<CourseQuiz />} />
           <Route path="/about_us" element={<AboutUs />} />
           <Route path="/modal" element={<Modal />} />

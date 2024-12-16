@@ -6,6 +6,8 @@ import ReviewCourse from '../components/Course/ReviewCourse';
 import ClassBanner from '../components/Course/ClassBanner';
 import { loadComment } from '../services/api';
 import { fetchCourseById } from '../services/api';
+import Cookies from 'js-cookie';
+import { decodeJwt } from 'jose';
 
 const CourseDetail = () => {
   const [comments, setComments] = useState([]);
@@ -13,6 +15,19 @@ const CourseDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { courseId } = useParams();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userDetails, setUserDetails] = useState({});
+
+  useEffect(() => {
+    const token = Cookies.get('TOKEN');
+    if (token) {
+      setIsLoggedIn(true);
+      const decoded = decodeJwt(token);
+      setUserDetails(decoded);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
 
   useEffect(() => {
     const loadCourse = async () => {
@@ -49,8 +64,8 @@ const CourseDetail = () => {
   }
 
   return (
-    <div className="mt-20">
-      <ClassBanner courses={course} />
+    <div>
+      <ClassBanner courses={course} userDetails={userDetails} isLoggedIn={isLoggedIn} />
       <div className="max-w-full mx-auto px-8 mt-8">
         <div className="flex gap-6">
           <AboutCourse courses={course} />

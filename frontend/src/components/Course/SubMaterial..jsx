@@ -26,8 +26,8 @@ SubMaterial.propTypes = {
   ).isRequired,
 };
 
-SubMaterial.defaultProps = {
-  courses: [],
-};
+// SubMaterial.defaultProps = {
+//   courses: [],
+// };
 
 export default SubMaterial;

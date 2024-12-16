@@ -1,6 +1,4 @@
 import PropTypes from 'prop-types';
-import Cookies from 'js-cookie';
-import { decodeJwt } from 'jose';
 import { getProgress } from '../../services/api';
 import { useEffect, useState } from 'react';
 import { showWarningToast } from '../Utils/toastUtils';
@@ -69,11 +67,11 @@ ClassBanner.propTypes = {
   }).isRequired,
 };
 
-ClassBanner.defaultProps = {
-  courses: {
-    title: '',
-    description: '',
-  },
-};
+// ClassBanner.defaultProps = {
+//   courses: {
+//     title: '',
+//     description: '',
+//   },
+// };
 
 export default ClassBanner;

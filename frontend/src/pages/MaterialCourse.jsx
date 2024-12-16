@@ -4,12 +4,27 @@ import CourseMaterial from '../components/Course/CourseMaterial';
 import CourseDetail from '../components/Course/CourseDetail';
 import ContactAdmin from '../components/Course/ContactAdmin';
 import { fetchCourseById } from '../services/api';
+import Cookies from 'js-cookie';
+import { decodeJwt } from 'jose';
 
 const MateriPage = () => {
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { courseId } = useParams();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userDetails, setUserDetails] = useState({});
+  const { courseId, materialId } = useParams();
+
+  useEffect(() => {
+    const token = Cookies.get('TOKEN');
+    if (token) {
+      setIsLoggedIn(true);
+      const decoded = decodeJwt(token);
+      setUserDetails(decoded);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
 
   useEffect(() => {
     const loadCourse = async () => {
@@ -43,8 +58,8 @@ const MateriPage = () => {
     <div className="mt-24">
       <ContactAdmin />
       <div className="flex flex-1 m-9 gap-8">
-        <CourseMaterial materials={course?.materials} />
-        <CourseDetail materials={course?.materials} courseId={courseId} />
+        <CourseMaterial materials={course?.materials} courseId={courseId} userDetails={userDetails} isLoggedIn={isLoggedIn} />
+        <CourseDetail materials={course?.materials} courseId={courseId} materialId={materialId} userDetails={userDetails} isLoggedIn={isLoggedIn} />
       </div>
     </div>
   );
