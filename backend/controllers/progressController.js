@@ -82,6 +82,7 @@ export const markMaterialComplete = async (req, res) => {
         course: courseId,
         completedMaterials: [],
         lastAccessedMaterial: materialId,
+        quizCompleted: true,
       });
     }
 

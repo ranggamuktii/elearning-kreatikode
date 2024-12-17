@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 import { decodeJwt } from 'jose';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { fetchQuizByCourse, addQuizScore, fetchCourseById, addProgress } from '../../services/api';
 import CompletionModal from '../Modal/quizModal';
@@ -17,6 +17,7 @@ const QuizDisplay = () => {
   const [totalScore, setTotalScore] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [userDetails, setUserDetails] = useState({})
+  const navigate = useNavigate()
   
   useEffect(() => {
     const token = Cookies.get('TOKEN');
@@ -103,6 +104,10 @@ const QuizDisplay = () => {
     setShowModal(false);
   };
 
+  const handleBack = () => {
+    navigate(`/course/${courseId}`)
+  }
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -115,7 +120,7 @@ const QuizDisplay = () => {
     return (
       <div className="text-center p-6 mt-20">
         <h2 className="text-lg font-semibold">Tidak ada kuis tersedia untuk course ini.</h2>
-        <button type="button" onClick={() => window.history.back()} className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">
+        <button type="button" onClick={handleBack} className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">
           Kembali
         </button>
       </div>
@@ -126,7 +131,7 @@ const QuizDisplay = () => {
   const skor = pointsPerQuestion.toFixed(2).split('.')[0];
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
+    <div className="max-w-3xl mx-auto p-6 mt-20">
       {showModal && <CompletionModal skor={totalScore} courseId={courseId} onClose={handleCloseModal} />}
 
       <h1 className="text-2xl font-bold mb-4">{quiz.title}</h1>
@@ -142,7 +147,7 @@ const QuizDisplay = () => {
             <li key={index} className="border p-4 rounded-lg">
               <div className="flex flex-nowrap justify-between items-start">
                 <h2 className="text-lg font-semibold">{`${index + 1}.) ${question.question}`}</h2>
-                {!submitted && <p className="text-sm text-gray-600 w-24 text-right pt-1">{`${skor} points`}</p>}
+                {!submitted && <p className="text-sm text-gray-600 min-w-24 text-right pt-1">{`${skor} points`}</p>}
                 {submitted && <p className="mt-1 text-sm w-24 text-right">{isUserAnswerCorrect ? `${skor}/${skor}` : isUserAnswerIncorrect ? `0/${skor}` : ''}</p>}
               </div>
               <ul className="mt-2 space-y-2">
@@ -163,7 +168,7 @@ const QuizDisplay = () => {
                   return (
                     <li key={optionIndex} className="flex w-full ">
                       <button type="button" onClick={() => handleAnswerChange(index, optionIndex)} className={`flex ${optionClass} transition duration-200`} disabled={submitted}>
-                        <span className="ml-2">{option}</span>
+                        <span className="ml-2 text-left">{option}</span>
                       </button>
                     </li>
                   );
@@ -179,7 +184,7 @@ const QuizDisplay = () => {
         </button>
       )}
 
-      <button type="button" onClick={() => window.history.back()} className="mt-4 bg-red-500 text-white px-4 py-2 rounded-lg w-full">
+      <button type="button" onClick={handleBack} className="mt-4 bg-red-500 text-white px-4 py-2 rounded-lg w-full">
         Kembali
       </button>
     </div>
