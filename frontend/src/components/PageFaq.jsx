@@ -14,8 +14,8 @@ function PageFaq() {
   return (
     <div className="h-full w-full flex flex-col justify-center">
       <div className="flex flex-col justify-center w-full h-full sm:w-[1400px] mx-auto px-4 sm:px-0 pt-20 sm:pt-28">
-        <div className="bg-gray-200 w-full aspect-[1600/500] sm:aspect-[1600/250] overflow-hidden flex justify-center items-center rounded-[20px] sm:rounded-[30px]">
-          <img src="/" alt="Banner Faq" className="block w-full h-full object-cover object-center" />
+        <div className="bg-gray-200 w-full aspect-[1600/300] sm:aspect-[1600/300] overflow-hidden flex justify-center items-center rounded-[20px] sm:rounded-[30px]">
+          <img src="./faq-banner.jpg" alt="Banner Faq" className="block w-full h-full object-cover object-center" />
         </div>
       </div>
       <div className="w-full sm:max-w-[1400px] flex flex-col justify-center items-center space-y-5 px-4 sm:px-0 mx-auto mt-5 sm:mt-8">

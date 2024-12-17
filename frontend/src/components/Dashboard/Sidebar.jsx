@@ -47,7 +47,7 @@ const Sidebar = ({ userDetails, sidebarItems, activeMenu, showProfileDropdown, a
 Sidebar.propTypes = {
   userDetails: PropTypes.shape({
     name: PropTypes.string,
-    photoURL: PropTypes.string,
+    photo: PropTypes.string,
   }).isRequired,
   sidebarItems: PropTypes.arrayOf(
     PropTypes.shape({

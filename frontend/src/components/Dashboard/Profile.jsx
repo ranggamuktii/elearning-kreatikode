@@ -1,7 +1,10 @@
 import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
+import { useState } from 'react';
 
-export const DetailProfile = ({ name, setName, userDetails, uploading, handleFileChange, handleUpload, displayNameAlias, handleSave }) => {
+export const DetailProfile = ({ userDetails, uploading, handleFileChange, handleUpload, displayNameAlias, handleSave }) => {
+  const [name, setName] = useState(userDetails.name);
+
   return (
     <div className="p-4 space-y-4">
       <h2 className="text-lg font-semibold mb-5">Detail Profil</h2>
@@ -41,7 +44,7 @@ export const DetailProfile = ({ name, setName, userDetails, uploading, handleFil
 
       <div className="space-y-5">
         <div>
-          <label className="block mb-2 text-xs sm:text-sm">
+          <label htmlFor="name" className="block mb-2 text-xs sm:text-sm">
             Nama Lengkap <span className="text-red-500">*</span>
           </label>
           <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full p-2.5 border-gray-300 rounded-xl text-xs sm:text-sm" placeholder="Nama Lengkap" required />
@@ -142,11 +145,10 @@ const CustomDatePickerHeader = ({ date, changeYear, changeMonth }) => (
 );
 
 DetailProfile.propTypes = {
-  name: PropTypes.string.isRequired,
-  setName: PropTypes.func.isRequired,
   userDetails: PropTypes.shape({
-    photoURL: PropTypes.string,
+    photo: PropTypes.string,
     email: PropTypes.string,
+    name: PropTypes.string,
   }).isRequired,
   uploading: PropTypes.bool.isRequired,
   handleFileChange: PropTypes.func.isRequired,

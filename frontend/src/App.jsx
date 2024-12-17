@@ -26,6 +26,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/mycourse" element={<Profile defaultMenu="Kelas Saya" />} />
+          <Route path="/profile/setting" element={<Profile defaultMenu="Pengaturan" />} />
           <Route path="/page_faq" element={<PageFaq />} />
           <Route path="/course" element={<Course />} />
           <Route path="/course/:courseId" element={<IntroClass />} />

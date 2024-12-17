@@ -33,15 +33,18 @@ const CourseMaterial = ({ materials, courseId, userDetails, isLoggedIn }) => {
   };
 
   return (
-    <div className="border rounded-lg p-6 w-full md:w-3/12 h-fit">
+    <div className="sm:sticky sm:top-24 border rounded-xl p-6 w-full md:w-3/12 h-fit">
       <h1 className="text-xl font-bold mb-4">Materi Kelas</h1>
       <div className="space-y-2">
-        {materials.map((material, index) => (
-          <label key={material._id} className="flex justify-between items-center bg-secondary-100 py-3 px-5 rounded-md">
-            <span className="text-base">{material.title}</span>
-            <input type="checkbox" name={`item${index}`} onChange={(event) => handleCheckboxChange(event, material)} checked={checkedItems[`item${index}`] || false} className="form-checkbox rounded-md h-5 w-5 text-primary-500" />
-          </label>
-        ))}
+        {materials.map((material, index) => {
+          const isCompleted = checkedItems[`item${index}`] || false;
+          return (
+            <label key={material._id} className={`flex justify-between items-center py-3 px-5 rounded-xl ${isCompleted ? 'bg-secondary-100 text-gray-800' : 'bg-gray-100 text-gray-300'}`}>
+              <span className="text-base">{material.title}</span>
+              <input type="checkbox" name={`item${index}`} onChange={(event) => handleCheckboxChange(event, material)} checked={isCompleted} className="form-checkbox rounded-md h-5 w-5 text-primary-500" />
+            </label>
+          );
+        })}
       </div>
     </div>
   );
@@ -55,6 +58,9 @@ CourseMaterial.propTypes = {
       content: PropTypes.string.isRequired,
     })
   ),
+  courseId: PropTypes.string.isRequired,
+  userDetails: PropTypes.object.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
 };
 
 export default CourseMaterial;

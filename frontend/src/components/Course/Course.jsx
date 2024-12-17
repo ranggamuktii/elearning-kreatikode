@@ -7,10 +7,10 @@ import { showErrorToast } from '../Utils/toastUtils';
 
 const topics = [
   { id: 'all', label: 'Semua Kelas' },
-  { id: 'web', label: 'Web Development' },
+  { id: 'web development', label: 'Web Development' },
   { id: 'react', label: 'React' },
   { id: 'redux', label: 'Redux' },
-  { id: 'react-redux', label: 'React Redux' },
+  { id: 'react redux', label: 'React Redux' },
   { id: 'mobile', label: 'Mobile Development' },
 ];
 
@@ -121,19 +121,14 @@ const Course = () => {
   );
 
   const filteredCourses = courses.filter((course) => {
-    const matchesSearchQuery =
-      course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      course.description.toLowerCase().includes(searchQuery.toLowerCase());
-  
-    const matchesTopicFilter =
-      selectedTopics.includes('all') || selectedTopics.some(topic => course.category.toLowerCase().includes(topic.toLowerCase()));
-  
-    const matchesLevelFilter =
-      selectedLevels.includes('all') || selectedLevels.includes(course.level);
-  
+    const matchesSearchQuery = course.title.toLowerCase().includes(searchQuery.toLowerCase()) || course.description.toLowerCase().includes(searchQuery.toLowerCase());
+
+    const matchesTopicFilter = selectedTopics.includes('all') || selectedTopics.some((topic) => course.category.toLowerCase().includes(topic.toLowerCase()));
+
+    const matchesLevelFilter = selectedLevels.includes('all') || selectedLevels.includes(course.level);
+
     return matchesSearchQuery && matchesTopicFilter && matchesLevelFilter;
   });
-  
 
   if (isLoading) {
     return <Loading />;
@@ -152,13 +147,7 @@ const Course = () => {
             <p className="max-w-2xl mx-auto">Kreatikode menyediakan berbagai macam kelas programing gratis yang dapat kamu akses kapan pun untuk meningkatkan keterampilan kamu!</p>
             <div className="max-w-xl mx-auto">
               <div className="relative">
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 rounded-lg bg-white text-gray-900"
-                  placeholder="Cari kelas..."
-                />
+                <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full pl-10 pr-4 py-2 rounded-lg bg-white text-gray-900" placeholder="Cari kelas..." />
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3">
                   <svg className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />

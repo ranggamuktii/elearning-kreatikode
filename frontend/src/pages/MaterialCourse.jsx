@@ -57,7 +57,7 @@ const MateriPage = () => {
   return (
     <div className="mt-24">
       <ContactAdmin />
-      <div className="flex flex-1 m-9 gap-8">
+      <div className="flex flex-col md:flex-row flex-1 m-4 gap-8">
         <CourseMaterial materials={course?.materials} courseId={courseId} userDetails={userDetails} isLoggedIn={isLoggedIn} />
         <CourseDetail materials={course?.materials} courseId={courseId} materialId={materialId} userDetails={userDetails} isLoggedIn={isLoggedIn} />
       </div>
