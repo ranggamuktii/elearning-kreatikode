@@ -25,7 +25,7 @@ const CallToAction = () => {
               Lebih dari <span className="font-semibold">100+ perusahaan</span> telah bekerja sama dengan KreatiKode untuk membangun pendidikan yang lebih baik di Indonesia.
             </p>
             <div>
-              <a href="https://docs.google.com/forms/d/e/1FAIpQLSeNBkYEGmlQxfTcxCsrN3AeNw2KC5USDLECLwh6sjtYvJE_7g/viewform?usp=sf_link" target="_blank" rel="noopener noreferrer">
+              <a href="https://forms.gle/JwGqeCnQJSNfYrC29" target="_blank" rel="noopener noreferrer">
                 <button className="text-sm sm:text-base bg-white px-7 py-2 sm:px-8 sm:py-2 rounded-xl text-primary-500 font-medium hover:shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105">
                   Gabung Jadi Partner KreatiKode
                 </button>

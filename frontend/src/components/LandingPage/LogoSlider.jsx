@@ -8,7 +8,7 @@ const LogoSlider = () => {
     <div
       className="bg-white m-0 sm:m-4 rounded-full flex py-2 px-3 sm:py-3 sm:px-4 text-xs sm:text-base font-medium cursor-pointer text-neutral-700 shadow-md hover:shadow-none hover:bg-primary-100 hover:bg-opacity-50 hover:text-primary-500"
       onClick={() => {
-        window.location.href = 'https://www.google.com';
+        window.location.href = '/course';
       }}
     >
       {text}
