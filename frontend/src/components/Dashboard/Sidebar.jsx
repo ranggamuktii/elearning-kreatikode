@@ -5,7 +5,7 @@ const Sidebar = ({ userDetails, sidebarItems, activeMenu, showProfileDropdown, a
     <aside className="w-64 bg-white min-h-screen p-4 border-r">
       <div className="flex flex-col items-center space-y-5 mb-8">
         <img
-          src={`${import.meta.env.VITE_API_URL}/${userDetails.photoURL}`}
+          src={`${import.meta.env.VITE_API_URL}${userDetails.photo}`}
           alt="Profile"
           className="w-24 h-24 rounded-full object-cover"
           onError={(e) => {
