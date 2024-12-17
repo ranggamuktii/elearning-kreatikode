@@ -5,15 +5,17 @@ import { decodeJwt } from 'jose';
 import { ToastContainer } from 'react-toastify';
 import { showErrorToast, showSuccessToast } from '../Utils/toastUtils';
 import { removeUserToken, getUserData, setUserToken } from '../Utils/tokendata';
-import { updateProfileDetails, updatePersonalData, updatePassword, updateUser, fetchCourses, getProgress } from '../../services/api';
+import { updateProfileDetails, updatePersonalData, updatePassword, fetchCourses, getProgress } from '../../services/api';
 
 import Sidebar from './Sidebar';
 import Welcome from './Welcome';
 import { DetailProfile, PersonalData } from './Profile';
 import Settings from './Setting';
 import MyCourse from './MyCourse';
+import ModalValidation from './ModalValidation';
+import ModalLogout from './ModalLogout';
 
-const DashboardPage = ({ defaultMenu }) => {
+const DashboardPage = ({ defaultMenu = 'Dashboard' }) => {
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [activeProfileSection, setActiveProfileSection] = useState(null);
   const [activeMenu, setActiveMenu] = useState('Dashboard');
@@ -29,6 +31,14 @@ const DashboardPage = ({ defaultMenu }) => {
   const [courses, setCourses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [temporaryPhoto, setTemporaryPhoto] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [showDiscardModal, setShowDiscardModal] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
+  const [nextPath, setNextPath] = useState('');
+  const [nextMenu, setNextMenu] = useState('');
+  const [nextSection, setNextSection] = useState('');
 
   const tabs = ['Semua Kelas', 'Sedang Dipelajari', 'Selesai'];
 
@@ -85,173 +95,95 @@ const DashboardPage = ({ defaultMenu }) => {
     },
   ];
 
+  const resetFileState = () => {
+    if (temporaryPhoto) {
+      URL.revokeObjectURL(temporaryPhoto);
+      setTemporaryPhoto(null);
+    }
+    setSelectedFile(null);
+  };
+
+  useEffect(() => {
+    return () => {
+      resetFileState();
+    };
+  }, []);
+
+  const resetAllStates = () => {
+    resetFileState();
+
+    const currentUserData = getUserData();
+    setName(currentUserData.name || '');
+    setPhone(currentUserData.phone || '');
+    setSelectedDate(currentUserData.dateOfBirth ? new Date(currentUserData.dateOfBirth) : null);
+    setGender(currentUserData.gender || '');
+    setPassword('');
+    setConfirmPassword('');
+    setShowDiscardModal(false);
+    setIsNavigating(false);
+    setNextPath('');
+    setNextMenu('');
+    setNextSection('');
+  };
+
   useEffect(() => {
     if (defaultMenu) {
       setActiveMenu(defaultMenu);
     }
   }, [defaultMenu]);
 
-  const handlePhoneChange = (e) => {
-    let value = e.target.value.replace(/\D/g, '');
-    if (value.startsWith('62')) {
-      value = value.substring(2);
-    } else if (value.startsWith('0')) {
-      value = value.substring(1);
-    }
-    setPhone(value);
-  };
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      const hasUnsavedChanges =
+        temporaryPhoto !== null ||
+        selectedFile !== null ||
+        (userDetails.name && name !== userDetails.name) ||
+        (userDetails.phone && phone !== userDetails.phone) ||
+        (userDetails.dateOfBirth && selectedDate?.toISOString() !== new Date(userDetails.dateOfBirth).toISOString()) ||
+        (userDetails.gender && gender !== userDetails.gender) ||
+        password !== '' ||
+        confirmPassword !== '';
 
-  const handleFileChange = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-    if (!validTypes.includes(file.type)) {
-      showErrorToast('Hanya file JPG, JPEG, dan PNG yang diperbolehkan');
-      return;
-    }
-
-    const maxSize = 2 * 1024 * 1024; // 2MB
-    if (file.size > maxSize) {
-      showErrorToast('Ukuran file maksimal 2MB');
-      return;
-    }
-
-    setUploading(true);
-    const formData = new FormData();
-    formData.append('photo', file);
-
-    try {
-      const response = await updateUser(userDetails.id, formData);
-
-      if (response?.status === 200 && response.data?.token) {
-        setUserToken(response.data.token);
-
-        const userData = getUserData();
-        setUserDetails(userData);
-
-        showSuccessToast('Foto profil berhasil diperbarui');
+      if (hasUnsavedChanges && !isLoading) {
+        e.preventDefault();
+        e.returnValue = '';
       }
-    } catch (error) {
-      console.error('Error uploading photo:', error);
-      showErrorToast(error.response?.data?.message || 'Gagal mengunggah foto');
-    } finally {
-      setUploading(false);
-    }
-  };
+    };
 
-  const handleUpload = () => {
-    document.getElementById('fileInput').click();
-  };
-
-  const displayNameAlias = () => {
-    return userDetails.name ? `${userDetails.name.charAt(0)}`.toUpperCase() : '';
-  };
-
-  const validateForm = () => {
-    const errors = {};
-
-    if (activeProfileSection === 'Detail Profil' && !name) {
-      errors.name = 'Nama harus diisi';
-    }
-
-    if (activeProfileSection === 'Data Pribadi') {
-      if (!phone) errors.phone = 'Nomor telepon harus diisi';
-      if (!selectedDate) errors.date = 'Tanggal lahir harus diisi';
-      if (!gender) errors.gender = 'Jenis kelamin harus dipilih';
-    }
-
-    if (activeMenu === 'Pengaturan') {
-      if (!password) errors.password = 'Password baru harus diisi';
-      if (password !== confirmPassword) {
-        errors.confirmPassword = 'Password tidak cocok';
-      }
-    }
-
-    return Object.keys(errors).length === 0;
-  };
-
-  const handleSave = async () => {
-    try {
-      if (!validateForm()) {
-        showErrorToast('Mohon lengkapi semua field yang diperlukan');
-        return;
-      }
-
-      setIsLoading(true);
-      let response;
-
-      switch (activeProfileSection) {
-        case 'Detail Profil':
-          response = await updateProfileDetails(userDetails.id, { name });
-          if (response.status === 200 && response.data?.token) {
-            setUserToken(response.data.token);
-
-            const userData = getUserData();
-            setUserDetails(userData);
-
-            showSuccessToast('Profil berhasil diperbarui');
-          }
-          break;
-
-        case 'Data Pribadi':
-          response = await updatePersonalData(userDetails.id, {
-            phone,
-            dateOfBirth: selectedDate,
-            gender,
-          });
-
-          if (response.status === 200 && response.data?.token) {
-            setUserToken(response.data.token);
-
-            const userData = getUserData();
-            setUserDetails(userData);
-
-            showSuccessToast('Data pribadi berhasil diperbarui');
-          }
-          break;
-
-        case 'Pengaturan':
-          response = await updatePassword(userDetails.id, { password });
-          if (response.status === 200) {
-            setPassword('');
-            setConfirmPassword('');
-            showSuccessToast('Password berhasil diperbarui');
-          }
-          break;
-
-        default:
-          break;
-      }
-    } catch (error) {
-      console.error('Save error:', error);
-      showErrorToast(error.response?.data?.message || 'Terjadi kesalahan saat menyimpan');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [temporaryPhoto, selectedFile, name, phone, selectedDate, gender, password, confirmPassword, isLoading, userDetails]);
 
   useEffect(() => {
-    const token = Cookies.get('TOKEN');
-    if (token) {
-      const decoded = decodeJwt(token);
-      setUserDetails(decoded);
-    }
-    setIsLoading(false);
+    return () => {
+      if (temporaryPhoto) {
+        URL.revokeObjectURL(temporaryPhoto);
+      }
+    };
   }, []);
 
   useEffect(() => {
-    const userData = getUserData();
-    if (Object.keys(userData).length > 0) {
-      setUserDetails(userData);
-      setName(userData.name || '');
-      setPhone(userData.phone || '');
-      setSelectedDate(userData.dateOfBirth ? new Date(userData.dateOfBirth) : null);
-      setGender(userData.gender || '');
-    } else {
-      window.location.pathname = '/';
-    }
-    setIsLoading(false);
+    const fetchUserData = () => {
+      const token = Cookies.get('TOKEN');
+      if (token) {
+        const decoded = decodeJwt(token);
+        setUserDetails(decoded);
+      }
+
+      const userData = getUserData();
+      if (Object.keys(userData).length > 0) {
+        setUserDetails(userData);
+        setName(userData.name || '');
+        setPhone(userData.phone || '');
+        setSelectedDate(userData.dateOfBirth ? new Date(userData.dateOfBirth) : null);
+        setGender(userData.gender || '');
+      } else {
+        window.location.pathname = '/';
+      }
+      setIsLoading(false);
+    };
+
+    fetchUserData();
   }, []);
 
   useEffect(() => {
@@ -304,11 +236,219 @@ const DashboardPage = ({ defaultMenu }) => {
     }
   }, [userDetails?.id]);
 
-  const handleMenuClick = (menuText) => {
-    if (menuText === 'Logout') {
-      handleLogout();
+  const handlePhoneChange = (e) => {
+    let value = e.target.value.replace(/\D/g, '');
+    if (value.startsWith('62')) {
+      value = value.substring(2);
+    } else if (value.startsWith('0')) {
+      value = value.substring(1);
+    }
+    setPhone(value);
+  };
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+    if (!validTypes.includes(file.type)) {
+      showErrorToast('Hanya file JPG, JPEG, dan PNG yang diperbolehkan');
       return;
     }
+
+    const maxSize = 2 * 1024 * 1024; // 2MB
+    if (file.size > maxSize) {
+      showErrorToast('Ukuran file maksimal 2MB');
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const tempUrl = URL.createObjectURL(file);
+      setTemporaryPhoto(tempUrl);
+      setSelectedFile(file);
+    } catch (error) {
+      console.error('Error handling file:', error);
+      showErrorToast('Gagal memproses file');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleDiscardChanges = () => {
+    resetAllStates();
+
+    if (isNavigating) {
+      if (nextPath) {
+        if (nextPath === '/') {
+          handleLogout();
+        } else {
+          window.location.pathname = nextPath;
+        }
+      } else if (nextMenu) {
+        navigateToMenu(nextMenu);
+      } else if (nextSection) {
+        setActiveProfileSection(nextSection);
+      }
+    }
+  };
+
+  const handleUpload = () => {
+    document.getElementById('fileInput').click();
+  };
+
+  const displayNameAlias = () => {
+    return userDetails.name ? `${userDetails.name.charAt(0)}`.toUpperCase() : '';
+  };
+
+  const validateForm = () => {
+    const errors = {};
+
+    if (activeProfileSection === 'Detail Profil' && !name) {
+      errors.name = 'Nama harus diisi';
+    }
+
+    if (activeProfileSection === 'Data Pribadi') {
+      if (!phone) errors.phone = 'Nomor telepon harus diisi';
+      if (!selectedDate) errors.date = 'Tanggal lahir harus diisi';
+      if (!gender) errors.gender = 'Jenis kelamin harus dipilih';
+    }
+
+    if (activeMenu === 'Pengaturan') {
+      if (!password) errors.password = 'Password baru harus diisi';
+      if (password !== confirmPassword) {
+        errors.confirmPassword = 'Password tidak cocok';
+      }
+    }
+
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleSave = async () => {
+    try {
+      console.log('Selected File:', selectedFile);
+      console.log('Name:', name);
+      console.log('User Details:', userDetails);
+
+      if (!validateForm()) {
+        showErrorToast('Mohon lengkapi semua field yang diperlukan');
+        return;
+      }
+
+      setIsLoading(true);
+      let response;
+      let shouldRedirect = false;
+
+      switch (activeProfileSection) {
+        case 'Detail Profil':
+          // Update foto jika ada
+          if (selectedFile) {
+            const photoFormData = new FormData();
+            photoFormData.append('photo', selectedFile);
+
+            try {
+              response = await updateProfileDetails(userDetails.id, photoFormData);
+              if (response.data?.token) {
+                setUserToken(response.data.token);
+                shouldRedirect = true;
+              }
+            } catch (error) {
+              console.error('Photo upload error:', error);
+              showErrorToast('Gagal mengupload foto');
+            }
+          }
+
+          // Update nama jika berubah
+          if (name !== userDetails.name) {
+            try {
+              response = await updateProfileDetails(userDetails.id, { name });
+              console.log('Name Update Response:', response);
+
+              if (response.data?.token) {
+                // Perbarui token di cookies
+                setUserToken(response.data.token);
+
+                // Update state userDetails dengan nama baru
+                setUserDetails((prevDetails) => ({
+                  ...prevDetails,
+                  name: name,
+                }));
+
+                shouldRedirect = true;
+                showSuccessToast('Nama berhasil diperbarui');
+              }
+            } catch (error) {
+              console.error('Name update error:', error);
+              showErrorToast('Gagal mengupdate nama');
+            }
+          }
+
+          // Redirect jika ada perubahan
+          if (shouldRedirect) {
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            resetAllStates();
+            window.location.pathname = '/profile';
+          }
+          break;
+
+        case 'Data Pribadi':
+          response = await updatePersonalData(userDetails.id, {
+            phone,
+            dateOfBirth: selectedDate,
+            gender,
+          });
+
+          if (response.status === 200 && response.data?.token) {
+            setUserToken(response.data.token);
+            showSuccessToast('Data pribadi berhasil diperbarui');
+            // Tunggu toast muncul sebelum reset dan redirect
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            resetAllStates();
+            window.location.pathname = '/profile';
+          }
+          break;
+
+        case 'Pengaturan':
+          response = await updatePassword(userDetails.id, { password });
+          if (response.status === 200) {
+            showSuccessToast('Password berhasil diperbarui');
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            resetAllStates();
+            window.location.pathname = '/profile/mycourse';
+          }
+          break;
+
+        default:
+          break;
+      }
+    } catch (error) {
+      console.error('Save error:', error);
+      showErrorToast(error.response?.data?.message || 'Terjadi kesalahan saat menyimpan');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleMenuClick = (menuText) => {
+    console.log('Menu clicked:', menuText);
+    if (temporaryPhoto) {
+      setShowDiscardModal(true);
+      setIsNavigating(true);
+      setNextPath(menuText === 'Logout' ? '/' : null);
+      setNextMenu(menuText);
+      return;
+    }
+
+    if (menuText === 'Logout') {
+      console.log('Setting logout modal to true');
+      setShowLogoutModal(true);
+      return;
+    }
+
+    navigateToMenu(menuText);
+  };
+
+  const navigateToMenu = (menuText) => {
     setActiveMenu(menuText);
     setShowProfileDropdown(menuText === 'Profile');
     setActiveProfileSection(null);
@@ -317,18 +457,35 @@ const DashboardPage = ({ defaultMenu }) => {
   };
 
   const handleProfileClick = () => {
+    if (temporaryPhoto) {
+      setShowDiscardModal(true);
+      setIsNavigating(true);
+      setNextMenu('Profile');
+      return;
+    }
+
     setShowProfileDropdown(!showProfileDropdown);
     setActiveMenu('Profile');
   };
 
   const handleProfileSectionClick = (section) => {
+    if (temporaryPhoto) {
+      setShowDiscardModal(true);
+      setIsNavigating(true);
+      setNextSection(section);
+      return;
+    }
+
     setActiveProfileSection(section);
   };
 
   const handleLogout = async () => {
+    console.log('Logout initiated');
     try {
       removeUserToken();
       showSuccessToast('Berhasil logout');
+      console.log('Closing logout modal');
+      setShowLogoutModal(false);
       setTimeout(() => {
         Cookies.remove('TOKEN');
         window.location.pathname = '/';
@@ -336,6 +493,7 @@ const DashboardPage = ({ defaultMenu }) => {
     } catch (error) {
       console.error('Logout failed:', error);
       showErrorToast('Gagal logout');
+      setShowLogoutModal(false);
     }
   };
 
@@ -357,7 +515,20 @@ const DashboardPage = ({ defaultMenu }) => {
     }
 
     if (activeProfileSection === 'Detail Profil') {
-      return <DetailProfile name={name} setName={setName} userDetails={userDetails} handleFileChange={handleFileChange} uploading={uploading} handleUpload={handleUpload} displayNameAlias={displayNameAlias} handleSave={handleSave} />;
+      return (
+        <DetailProfile
+          userDetails={userDetails}
+          handleFileChange={handleFileChange}
+          uploading={uploading}
+          handleUpload={handleUpload}
+          displayNameAlias={displayNameAlias}
+          handleSave={handleSave}
+          temporaryPhoto={temporaryPhoto}
+          handleDiscardChanges={handleDiscardChanges}
+          name={name}
+          onNameChange={setName}
+        />
+      );
     }
 
     if (activeProfileSection === 'Data Pribadi') {
@@ -380,7 +551,10 @@ const DashboardPage = ({ defaultMenu }) => {
       <ToastContainer />
       <div className="flex">
         <Sidebar
-          userDetails={userDetails}
+          userDetails={{
+            ...userDetails,
+            temporaryPhoto: temporaryPhoto,
+          }}
           sidebarItems={sidebarItems}
           activeMenu={activeMenu}
           showProfileDropdown={showProfileDropdown}
@@ -393,16 +567,15 @@ const DashboardPage = ({ defaultMenu }) => {
           <div className="bg-white rounded-lg shadow-sm">{renderContent()}</div>
         </main>
       </div>
+
+      <ModalValidation isOpen={showDiscardModal} onClose={() => setShowDiscardModal(false)} onConfirm={handleDiscardChanges} />
+      <ModalLogout isOpen={showLogoutModal} onClose={() => setShowLogoutModal(false)} onLogout={handleLogout} />
     </div>
   );
 };
 
 DashboardPage.propTypes = {
   defaultMenu: PropTypes.oneOf(['Dashboard', 'Kelas Saya', 'Pengaturan']),
-};
-
-DashboardPage.defaultProps = {
-  defaultMenu: 'Dashboard',
 };
 
 export default DashboardPage;

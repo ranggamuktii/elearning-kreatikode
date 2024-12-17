@@ -124,7 +124,12 @@ export const updateUser = async (req, res) => {
       return res.status(404).json({ message: 'Pengguna tidak ditemukan' });
     }
 
-    res.status(200).json(updatedUser);
+    const newToken = generateToken(updatedUser);
+
+    res.status(200).json({
+      ...updatedUser.toObject(),
+      token: newToken,
+    });
   } catch (error) {
     if (req.file) {
       fs.unlinkSync(path.join('./public/thumbnail', req.file.filename));

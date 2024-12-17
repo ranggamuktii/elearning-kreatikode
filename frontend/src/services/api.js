@@ -37,8 +37,25 @@ export const loginUser = (credentials) => API.post('/users/login', credentials);
 
 export const updateUser = (userId, data) => API.put(`/users/${userId}`, data);
 export const getUserProfile = (userId) => API.get(`/users/${userId}`);
-export const updateProfileDetails = (userId, { name }) => {
-  return updateUser(userId, { name });
+
+export const updateUserPhoto = (userId, formData) => {
+  return API.put(`/users/${userId}`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
+
+export const updateProfileDetails = (userId, data) => {
+  // Jika data adalah objek dengan nama
+  if (data && data.name) {
+    return updateUser(userId, { name: data.name });
+  }
+
+  // Jika data adalah FormData (foto)
+  if (data instanceof FormData) {
+    return updateUserPhoto(userId, data);
+  }
 };
 
 export const updatePersonalData = (userId, { phone, dateOfBirth, gender }) => {
