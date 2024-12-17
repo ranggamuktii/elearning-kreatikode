@@ -25,16 +25,6 @@ const Navbar = ({ userDetails, isLoggedIn, handleLogout }) => {
     return () => document.body.classList.remove('overflow-hidden');
   }, [isMenuOpen]);
 
-  const profileImage = (() => {
-    if (userDetails?.gender === 'male') {
-      return <img src="/male-profile.svg" alt="Male Profile" className="w-6 h-6 sm:w-8 sm:h-8 rounded-full" />;
-    }
-    if (userDetails?.gender === 'female') {
-      return <img src="/female-profile.svg" alt="Female Profile" className="w-6 h-6 rounded-full" />;
-    }
-    return <img src="/unknown-profile.svg" alt="Default" className="w-6 h-6 rounded-full" />;
-  })();
-
   return (
     <nav className="bg-white border-gray-200 dark:bg-gray-900 fixed top-0 left-0 w-full h-[60px] sm:h-[75px] shadow-sm z-50">
       <div className="max-w-7xl h-full mx-auto px-6 sm:px-4">
@@ -80,7 +70,15 @@ const Navbar = ({ userDetails, isLoggedIn, handleLogout }) => {
                     inline
                     label={
                       <div className="bg-white border rounded-[10px] flex justify-center items-center space-x-2 p-2 z-50">
-                        {profileImage}
+                        <img
+                          src={`${import.meta.env.VITE_API_URL}${userDetails.photo}`}
+                          alt="Default"
+                          className="w-6 h-6 rounded-full"
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = 'https://placehold.co/400x400/png';
+                          }}
+                        />
                         <p className="text-[15px] font-normal">{userDetails.name?.split(' ')[0]}</p>
                       </div>
                     }
@@ -121,7 +119,15 @@ const Navbar = ({ userDetails, isLoggedIn, handleLogout }) => {
                     inline
                     label={
                       <div className="bg-white border rounded-[10px] flex justify-center items-center space-x-2 p-2 z-50">
-                        {profileImage}
+                        <img
+                          src={`${import.meta.env.VITE_API_URL}${userDetails.photo}`}
+                          alt="Default"
+                          className="w-6 h-6 rounded-full"
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = 'https://placehold.co/400x400/png';
+                          }}
+                        />
                         <p className="text-[15px] font-normal">{userDetails.name?.split(' ')[0]}</p>
                       </div>
                     }
@@ -225,6 +231,7 @@ const Navbar = ({ userDetails, isLoggedIn, handleLogout }) => {
 
 Navbar.propTypes = {
   userDetails: PropTypes.shape({
+    photo: PropTypes.string,
     name: PropTypes.string,
     email: PropTypes.string,
     gender: PropTypes.string,
