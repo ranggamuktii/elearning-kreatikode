@@ -15,7 +15,6 @@ const Modal = ({ skor, courseId }) => {
 
   const closeModal = () => {
     setShowModal(false);
-    //navigate(`/course/${courseId}`);
   };
 
   useEffect(() => {

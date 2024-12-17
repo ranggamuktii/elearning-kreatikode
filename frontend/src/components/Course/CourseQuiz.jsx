@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 import { decodeJwt } from 'jose';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { fetchQuizByCourse, addQuizScore, fetchCourseById, addProgress } from '../../services/api';
 import CompletionModal from '../Modal/quizModal';
@@ -16,7 +16,8 @@ const QuizDisplay = () => {
   const [submitted, setSubmitted] = useState(false);
   const [totalScore, setTotalScore] = useState(0);
   const [showModal, setShowModal] = useState(false);
-  const [userDetails, setUserDetails] = useState({});
+  const [userDetails, setUserDetails] = useState({})
+  const navigate = useNavigate()
   
   useEffect(() => {
     const token = Cookies.get('TOKEN');
@@ -103,6 +104,10 @@ const QuizDisplay = () => {
     setShowModal(false);
   };
 
+  const handleBack = () => {
+    navigate(`/course/${courseId}`)
+  }
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -115,7 +120,7 @@ const QuizDisplay = () => {
     return (
       <div className="text-center p-6 mt-20">
         <h2 className="text-lg font-semibold">Tidak ada kuis tersedia untuk course ini.</h2>
-        <button type="button" onClick={() => window.history.back()} className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">
+        <button type="button" onClick={handleBack} className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">
           Kembali
         </button>
       </div>
@@ -126,7 +131,7 @@ const QuizDisplay = () => {
   const skor = pointsPerQuestion.toFixed(2).split('.')[0];
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
+    <div className="max-w-3xl mx-auto p-6 mt-20">
       {showModal && <CompletionModal skor={totalScore} courseId={courseId} onClose={handleCloseModal} />}
 
       {/* Judul kursus */}
@@ -184,7 +189,7 @@ const QuizDisplay = () => {
         </button>
       )}
 
-      <button type="button" onClick={() => window.history.back()} className="mt-4 bg-red-500 text-white px-4 py-2 rounded-lg w-full">
+      <button type="button" onClick={handleBack} className="mt-4 bg-red-500 text-white px-4 py-2 rounded-lg w-full">
         Kembali
       </button>
     </div>
