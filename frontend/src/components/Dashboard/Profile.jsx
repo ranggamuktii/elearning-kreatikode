@@ -10,9 +10,9 @@ export const DetailProfile = ({ name, setName, userDetails, uploading, handleFil
           Foto Profil <span className="text-red-500">*</span>
         </label>
         <div className="flex items-center space-x-8">
-          {userDetails?.photoURL ? (
+          {userDetails?.photo ? (
             <img
-              src={`${import.meta.env.VITE_API_URL}/${userDetails.photoURL}`}
+              src={`${import.meta.env.VITE_API_URL}${userDetails.photo}`}
               alt="User profile"
               className="object-cover w-[100px] h-[100px] rounded-full"
               onError={(e) => {
@@ -30,7 +30,7 @@ export const DetailProfile = ({ name, setName, userDetails, uploading, handleFil
             {uploading ? 'Mengunggah...' : 'Unggah Foto'}
           </button>
 
-          {!userDetails.photoURL && (
+          {!userDetails.photo && (
             <button type="button" onClick={handleUpload} className="font-semibold px-4 py-2.5 rounded-xl hover:bg-purple-50 text-primary-500 hover:text-primary-600">
               Gunakan Karakter Avatar
             </button>

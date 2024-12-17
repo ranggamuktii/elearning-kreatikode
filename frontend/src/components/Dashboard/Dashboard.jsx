@@ -29,10 +29,8 @@ const DashboardPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Constants
   const tabs = ['Semua Kelas', 'Sedang Dipelajari', 'Selesai'];
 
-  // Definisi sidebarItems
   const sidebarItems = [
     {
       icon: (
@@ -112,11 +110,11 @@ const DashboardPage = () => {
       return;
     }
 
-    try {
-      setUploading(true);
-      const formData = new FormData();
-      formData.append('photo', file);
+    setUploading(true);
+    const formData = new FormData();
+    formData.append('photo', file);
 
+    try {
       const response = await updateUser(userDetails.id, formData);
 
       if (response?.status === 200) {
@@ -229,6 +227,8 @@ const DashboardPage = () => {
     }
     setIsLoading(false);
   }, []);
+
+  console.log(userDetails);
 
   useEffect(() => {
     const loadCourses = async () => {
