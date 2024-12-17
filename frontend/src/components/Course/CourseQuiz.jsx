@@ -141,12 +141,12 @@ const QuizDisplay = () => {
         })}
       </ul>
       {!submitted && (
-        <button type="button" onClick={handleSubmit} className="bg-red-500 text-white px-4 py-2 rounded-lg w-full mt-4">
+        <button type="button" onClick={handleSubmit} className="bg-blue-500 text-white px-4 py-2 rounded-lg w-full mt-4">
           Submit
         </button>
       )}
 
-      <button type="button" onClick={() => window.history.back()} className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg w-full">
+      <button type="button" onClick={() => window.history.back()} className="mt-4 bg-red-500 text-white px-4 py-2 rounded-lg w-full">
         Kembali
       </button>
     </div>
