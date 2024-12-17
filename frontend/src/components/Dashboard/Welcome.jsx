@@ -21,21 +21,31 @@ const Welcome = ({ isLoading, error, userDetails, lastActiveCourse }) => {
           <h2 className="text-lg text-gray-600 mb-6">Lanjutkan Progress Terakhir Kelas</h2>
           <div className="bg-white rounded-lg p-4 border flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <img src={lastActiveCourse.icon} alt={lastActiveCourse.title} className="rounded-lg w-24 h-24" />
+              <img
+                src={lastActiveCourse.thumbnail ? `${import.meta.env.VITE_API_URL}/thumbnail/${lastActiveCourse.thumbnail.split('\\').pop()}` : 'https://placehold.co/400'}
+                alt={lastActiveCourse.title}
+                className="rounded-lg w-24 h-24 object-cover"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = 'https://placehold.co/400';
+                }}
+              />
               <div>
                 <h3 className="font-medium text-lg mb-2">{lastActiveCourse.title}</h3>
-                <span className="flex items-center gap-1">📚 {lastActiveCourse.totalSubmodules} Materi</span>
+                <span className="flex items-center gap-1">📚 {lastActiveCourse.materials.length} Materi</span>
                 <div className="mt-2">
                   <div className="w-64 h-2 bg-gray-200 rounded-full">
-                    <div className="h-full bg-blue-600 rounded-full" style={{ width: `${lastActiveCourse.progress}%` }} />
+                    <div className="h-full bg-blue-600 rounded-full" style={{ width: `${lastActiveCourse.progress.percentage}%` }} />
                   </div>
                   <span className="text-sm text-gray-500">
-                    {lastActiveCourse.completedSubmodules} / {lastActiveCourse.totalSubmodules} Materi
+                    {lastActiveCourse.progress.completedMaterials.length} / {lastActiveCourse.materials.length} Materi
                   </span>
                 </div>
               </div>
             </div>
-            <button className="px-4 py-2 text-white bg-primary-500 rounded-lg hover:bg-primary-600">Lihat Detail Kelas</button>
+            <button onClick={() => (window.location.href = `/course/${lastActiveCourse._id}`)} className="px-4 py-2 text-white bg-primary-500 rounded-lg hover:bg-primary-600">
+              Lihat Detail Kelas
+            </button>
           </div>
         </div>
       ) : (
@@ -52,11 +62,20 @@ Welcome.propTypes = {
     name: PropTypes.string,
   }),
   lastActiveCourse: PropTypes.shape({
-    icon: PropTypes.string.isRequired,
+    _id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
-    totalSubmodules: PropTypes.number.isRequired,
-    progress: PropTypes.number.isRequired,
-    completedSubmodules: PropTypes.number.isRequired,
+    thumbnail: PropTypes.string,
+    materials: PropTypes.arrayOf(
+      PropTypes.shape({
+        _id: PropTypes.string.isRequired,
+        title: PropTypes.string.isRequired,
+      })
+    ).isRequired,
+    progress: PropTypes.shape({
+      percentage: PropTypes.number.isRequired,
+      completedMaterials: PropTypes.arrayOf(PropTypes.string).isRequired,
+      lastAccessedMaterial: PropTypes.string,
+    }).isRequired,
   }),
 };
 

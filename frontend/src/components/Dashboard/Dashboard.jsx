@@ -86,7 +86,6 @@ const DashboardPage = () => {
     },
   ];
 
-  // Handler untuk nomor telepon
   const handlePhoneChange = (e) => {
     let value = e.target.value.replace(/\D/g, '');
     if (value.startsWith('62')) {
@@ -97,7 +96,6 @@ const DashboardPage = () => {
     setPhone(value);
   };
 
-  // Handler untuk upload file
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -136,17 +134,14 @@ const DashboardPage = () => {
     }
   };
 
-  // Handler untuk upload avatar
   const handleUpload = () => {
     document.getElementById('fileInput').click();
   };
 
-  // Fungsi untuk menampilkan inisial nama
   const displayNameAlias = () => {
     return userDetails.name ? `${userDetails.name.charAt(0)}`.toUpperCase() : '';
   };
 
-  // Validation
   const validateForm = () => {
     const errors = {};
 
@@ -170,7 +165,6 @@ const DashboardPage = () => {
     return Object.keys(errors).length === 0;
   };
 
-  // Handler untuk menyimpan perubahan
   const handleSave = async () => {
     try {
       if (!validateForm()) {
@@ -227,7 +221,6 @@ const DashboardPage = () => {
     }
   };
 
-  // Effects
   useEffect(() => {
     const token = Cookies.get('TOKEN');
     if (token) {
@@ -240,30 +233,40 @@ const DashboardPage = () => {
   useEffect(() => {
     const loadCourses = async () => {
       try {
-        const { data } = await fetchCourses();
+        const { data: coursesData } = await fetchCourses();
+
         const coursesWithProgress = await Promise.all(
-          data.map(async (course) => {
+          coursesData.map(async (course) => {
             try {
-              const progressResponse = await getProgress(course.id, userDetails.id);
+              const response = await getProgress(course._id, userDetails.id);
+              const progressData = response.data.data[0];
+
+              const totalMaterials = course.materials.length || 0;
+              const completedMaterials = progressData?.completedMaterials?.length || 0;
+              const progressPercentage = totalMaterials > 0 ? (completedMaterials / totalMaterials) * 100 : 0;
+
               return {
                 ...course,
-                progress: progressResponse.data.progress || 0,
-                completedSubmodules: progressResponse.data.completedSubmodules || 0,
-                totalSubmodules: progressResponse.data.totalSubmodules || course.totalSubmodules || 0,
-                icon: course.thumbnail ? `${import.meta.env.VITE_API_URL}/thumbnail/${course.thumbnail}` : '/default-course-thumbnail.png',
+                progress: {
+                  percentage: Math.round(progressPercentage),
+                  completedMaterials: progressData?.completedMaterials || [],
+                  lastAccessedMaterial: progressData?.lastAccessedMaterial || null,
+                },
               };
             } catch (error) {
-              console.error(`Error fetching progress for course ${course.id}:`, error);
+              console.error(`Error fetching progress for course ${course._id}:`, error);
               return {
                 ...course,
-                progress: 0,
-                completedSubmodules: 0,
-                totalSubmodules: course.totalSubmodules || 0,
-                icon: course.thumbnail ? `${import.meta.env.VITE_API_URL}/thumbnail/${course.thumbnail}` : '/default-course-thumbnail.png',
+                progress: {
+                  percentage: 0,
+                  completedMaterials: [],
+                  lastAccessedMaterial: null,
+                },
               };
             }
           })
         );
+
         setCourses(coursesWithProgress);
       } catch (error) {
         console.error('Error loading courses:', error);
@@ -272,10 +275,11 @@ const DashboardPage = () => {
       }
     };
 
-    loadCourses();
-  }, [userDetails.id]);
+    if (userDetails?.id) {
+      loadCourses();
+    }
+  }, [userDetails?.id]);
 
-  // Handlers
   const handleMenuClick = (menuText) => {
     if (menuText === 'Logout') {
       handleLogout();
@@ -314,9 +318,9 @@ const DashboardPage = () => {
   const filterCourses = (tab) => {
     switch (tab) {
       case 'Sedang Dipelajari':
-        return courses.filter((course) => course.progress > 0 && course.progress < 100);
+        return courses.filter((course) => course.progress.percentage > 0 && course.progress.percentage < 100);
       case 'Selesai':
-        return courses.filter((course) => course.progress === 100);
+        return courses.filter((course) => course.progress.percentage === 100);
       default:
         return courses;
     }
@@ -324,7 +328,7 @@ const DashboardPage = () => {
 
   const renderContent = () => {
     if (activeMenu === 'Dashboard') {
-      const lastActiveCourse = courses.find((course) => course.progress > 0 && course.progress < 100);
+      const lastActiveCourse = courses.find((course) => course.progress.percentage > 0 && course.progress.percentage < 100);
       return <Welcome isLoading={isLoading} error={error} userDetails={userDetails} lastActiveCourse={lastActiveCourse} />;
     }
 
