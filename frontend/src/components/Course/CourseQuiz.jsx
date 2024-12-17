@@ -1,20 +1,31 @@
-import { useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
+import { decodeJwt } from 'jose';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { fetchQuizByCourse } from '../../services/api';
+import { fetchQuizByCourse, addQuizScore, fetchCourseById, addProgress } from '../../services/api';
 import CompletionModal from '../Modal/quizModal';
 
 const QuizDisplay = () => {
   const { courseId } = useParams();
   const [quiz, setQuiz] = useState(null);
+  const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userAnswers, setUserAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [totalScore, setTotalScore] = useState(0);
   const [showModal, setShowModal] = useState(false);
+  const [userDetails, setUserDetails] = useState({})
+  
+  useEffect(() => {
+    const token = Cookies.get('TOKEN');
+    if (token) {
+      const decoded = decodeJwt(token);
+      setUserDetails(decoded);
+    }
+  }, []);
 
-  //Ambil data quiz
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
@@ -32,7 +43,20 @@ const QuizDisplay = () => {
       }
     };
 
+    const fetchCourses =  async () => {
+      try {
+        const { data } = await fetchCourseById(courseId);
+        setCourse(data);
+      } catch (err) {
+        setError('Failed to fetch Course data');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    
     fetchQuiz();
+    fetchCourses()
   }, [courseId]);
 
   const handleAnswerChange = (questionIndex, optionIndex) => {
@@ -42,30 +66,39 @@ const QuizDisplay = () => {
     });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const allAnswered = quiz.questions.every((_, index) => userAnswers[index] !== undefined);
-
     if (!allAnswered) {
       alert('Silakan jawab semua pertanyaan sebelum submit!');
       return;
     }
-
+  
     const totalQuestions = quiz.questions.length;
     const pointsPerQuestion = totalQuestions > 0 ? 100 / totalQuestions : 0;
     let score = 0;
-
+  
     quiz.questions.forEach((question, index) => {
       if (userAnswers[index] === question.correctAnswer) {
         score += pointsPerQuestion;
       }
     });
+  
+    setTotalScore(score)
 
-    setTotalScore(score);
+    const lastMaterial = course.materials[course.materials.length - 1];
+    const materialId = lastMaterial._id;
+
+    try {
+      await addQuizScore(courseId, userDetails.id, {score});
+      await addProgress(courseId, materialId, userDetails.id)
+    } catch (error) {
+      console.error('Failed to add quiz score:', error);
+    }
     setSubmitted(true);
     setShowModal(true);
     window.scrollTo(0, 0);
   };
-
+  
   const handleCloseModal = () => {
     setShowModal(false);
   };
@@ -171,13 +204,13 @@ QuizDisplay.propTypes = {
   error: PropTypes.string,
 };
 
-QuizDisplay.defaultProps = {
-  quiz: null,
-  userAnswers: {},
-  submitted: false,
-  totalScore: 0,
-  loading: true,
-  error: null,
-};
+// QuizDisplay.defaultProps = {
+//   quiz: null,
+//   userAnswers: {},
+//   submitted: false,
+//   totalScore: 0,
+//   loading: true,
+//   error: null,
+// };
 
 export default QuizDisplay;

@@ -1,10 +1,12 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { getProgress } from '../../services/api';
+import { useNavigate } from 'react-router-dom';
 
 const CourseMaterial = ({ materials, courseId, userDetails, isLoggedIn }) => {
   const [checkedItems, setCheckedItems] = useState({});
   const [progress, setProgress] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProgress = async () => {
@@ -27,7 +29,7 @@ const CourseMaterial = ({ materials, courseId, userDetails, isLoggedIn }) => {
   }, [courseId]);
 
   const handleCheckboxChange = (event, material) => {
-    window.location.href = `/course/${courseId}/materials/${material._id}`;
+    navigate(`/course/${courseId}/materials/${material._id}`);
   };
 
   return (

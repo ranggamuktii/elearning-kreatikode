@@ -2,11 +2,13 @@ import PropTypes from 'prop-types';
 import { addProgress, getProgress } from '../../services/api';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { showWarningToast } from '../Utils/toastUtils';
 
 const CourseDetail = ({ materials = [], courseId, materialId, userDetails, isLoggedIn }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const [completedMaterials, setCompletedMaterials] = useState([]);
+  const [quizCompleted, setQuizCompleted] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,11 +20,16 @@ const CourseDetail = ({ materials = [], courseId, materialId, userDetails, isLog
       const data = response.data.data[0];
       setProgress(data);
       setCompletedMaterials(data.completedMaterials || []);
+      setQuizCompleted(data.quizCompleted || false);
+      const index = materials.findIndex((material) => material._id === materialId);
+      if (data.quizCompleted) {
+        setCurrentIndex(index);
+      }
     };
-
+    
     fetchProgress();
-  }, []);
-
+  }, [courseId, userDetails.id, materials.length]);
+  
   useEffect(() => {
     const index = materials.findIndex((material) => material._id === materialId);
     if (index !== -1) {
@@ -34,19 +41,27 @@ const CourseDetail = ({ materials = [], courseId, materialId, userDetails, isLog
 
   const handleNext = async () => {
     const materialId = materials[currentIndex]._id;
-
+  
     if (completedMaterials.includes(materialId)) {
       if (currentIndex < materials.length - 1) {
         setCurrentIndex(currentIndex + 1);
       } else {
-        navigate(`/course/${courseId}/quiz`);
+        if (!quizCompleted) {
+          navigate(`/course/${courseId}/quiz`);
+        } else {
+          return showWarningToast('Quiz is already completed!');
+        }
       }
     } else {
       if (currentIndex < materials.length - 1) {
         await addProgress(courseId, materialId, userDetails.id);
         setCurrentIndex(currentIndex + 1);
       } else {
-        navigate(`/course/${courseId}/quiz`);
+        if (!quizCompleted) {
+          navigate(`/course/${courseId}/quiz`);
+        } else {
+          return showWarningToast('Quiz is already completed!');
+        }
       }
     }
   };
@@ -62,7 +77,6 @@ const CourseDetail = ({ materials = [], courseId, materialId, userDetails, isLog
   }
 
   const isLastMaterial = currentIndex === materials.length - 1;
-
   return (
     <section className="flex-1 p-4">
       <h1 className="text-3xl font-bold mb-4">{materials[currentIndex].title}</h1>
@@ -76,10 +90,10 @@ const CourseDetail = ({ materials = [], courseId, materialId, userDetails, isLog
           <p>Sebelumnya</p>
         </button>
 
-        <button onClick={handleNext} className="flex items-center gap-2 p-2 rounded-lg bg-primary-500 text-white">
+        <button onClick={handleNext} disabled={false} className="flex items-center gap-2 p-2 rounded-lg bg-primary-500 text-white">
           <p>{isLastMaterial ? 'Mulai Quiz' : 'Selanjutnya'}</p>
           <svg className="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin=" round" strokeWidth="2" d="m9 5 7 7-7 7" />
+            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m9 5 7 7-7 7" />
           </svg>
         </button>
       </div>

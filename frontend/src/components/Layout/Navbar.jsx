@@ -26,6 +26,9 @@ const Navbar = ({ userDetails, isLoggedIn, handleLogout }) => {
   }, [isMenuOpen]);
 
   const profileImage = (() => {
+    if(userDetails?.photo){
+      return <img src={`${import.meta.env.VITE_API_URL}${userDetails.photo}`} className="bg-gray-300 w-10 h-10 rounded-full"></img>
+    }
     if (userDetails?.gender === 'male') {
       return <img src="/male-profile.svg" alt="Male Profile" className="w-6 h-6 sm:w-8 sm:h-8 rounded-full" />;
     }

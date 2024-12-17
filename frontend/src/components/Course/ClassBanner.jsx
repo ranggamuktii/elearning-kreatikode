@@ -5,12 +5,14 @@ import { showWarningToast } from '../Utils/toastUtils';
 
 const ClassBanner = ({ courses, userDetails, isLoggedIn }) => {
   const [progress, setProgress] = useState(0);
+  const [quizCompleted, setQuizCompleted] = useState(false);
 
   useEffect(() => {
     const fetchProgress = async () => {
       const response = await getProgress(`${courses._id}`, userDetails.id);
       const data = response.data.data[0];
       setProgress(data);
+      setQuizCompleted(data.quizCompleted || false);
     };
 
     fetchProgress();
@@ -20,13 +22,22 @@ const ClassBanner = ({ courses, userDetails, isLoggedIn }) => {
     if (!isLoggedIn) {
       return showWarningToast('Please login to access this feature');
     }
-
+  
+    const allMaterialsCompleted = progress.completedMaterials.length === courses.materials.length;
+  
     if (progress && progress.lastAccessedMaterial) {
       const lastAccessedIndex = courses.materials.findIndex((material) => material._id === progress.lastAccessedMaterial);
-      if (lastAccessedIndex !== -1 && lastAccessedIndex < courses.materials.length - 1) {
+      
+      if (allMaterialsCompleted) {
+        window.location.href = `/course/${courses._id}/materials/${courses.materials[0]._id}`;
+      } else if (lastAccessedIndex !== -1 && lastAccessedIndex < courses.materials.length - 1) {
         window.location.href = `/course/${courses._id}/materials/${courses.materials[lastAccessedIndex + 1]._id}`;
       } else {
-        window.location.href = `/course/${courses._id}/quiz`;
+        if (!quizCompleted) {
+          window.location.href = `/course/${courses._id}/quiz`;
+        } else {
+          window.location.href = `/course/${courses._id}/materials/${courses.materials[0]._id}`;
+        }
       }
     } else {
       window.location.href = `/course/${courses._id}/materials/${courses.materials[0]._id}`;

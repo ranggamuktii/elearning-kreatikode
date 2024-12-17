@@ -141,3 +141,25 @@ export const getCoursesWithProgressByUserId = async (req, res) => {
     res.status(500).json({ success: false, message: 'Server error', error: error.message });
   }
 };
+
+export const addQuizScore = async (req, res) => {
+  try {
+    const { courseId, userId } = req.params;
+    const { score } = req.body;
+    if (!mongoose.Types.ObjectId.isValid(courseId) || !mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: 'Invalid courseId or userId' });
+    }
+    let progress = await Progress.findOneAndUpdate({ course: courseId, user: userId }, {
+      quizScore: score,
+      quizCompleted: true,
+      updatedAt: Date.now()
+    });
+
+    await progress.save();
+
+    res.status(200).json({ message: 'Quiz score added successfully', progress });
+  } catch (error) {
+    console.error('Error adding quiz score:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};

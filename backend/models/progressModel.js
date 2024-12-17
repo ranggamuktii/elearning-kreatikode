@@ -13,6 +13,14 @@ const progressSchema = new mongoose.Schema({
   },
   completedMaterials: [String],
   lastAccessedMaterial: String,
+  quizScore: {
+    type: Number,
+    default: 0
+  },
+  quizCompleted: {
+    type: Boolean,
+    default: false
+  },
   createdAt: {
     type: Date,
     default: Date.now,
