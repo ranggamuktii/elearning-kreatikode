@@ -1,10 +1,7 @@
 import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
-import { useState } from 'react';
 
-export const DetailProfile = ({ userDetails, uploading, handleFileChange, handleUpload, displayNameAlias, handleSave }) => {
-  const [name, setName] = useState(userDetails.name);
-
+export const DetailProfile = ({ userDetails, uploading, handleFileChange, displayNameAlias, handleSave, temporaryPhoto, handleDiscardChanges, name, onNameChange }) => {
   return (
     <div className="p-4 space-y-4">
       <h2 className="text-lg font-semibold mb-5">Detail Profil</h2>
@@ -13,9 +10,9 @@ export const DetailProfile = ({ userDetails, uploading, handleFileChange, handle
           Foto Profil <span className="text-red-500">*</span>
         </label>
         <div className="flex items-center space-x-8">
-          {userDetails?.photo ? (
+          {temporaryPhoto || userDetails?.photo ? (
             <img
-              src={`${import.meta.env.VITE_API_URL}${userDetails.photo}`}
+              src={temporaryPhoto || `${import.meta.env.VITE_API_URL}${userDetails.photo}`}
               alt="User profile"
               className="object-cover w-[100px] h-[100px] rounded-full"
               onError={(e) => {
@@ -33,9 +30,9 @@ export const DetailProfile = ({ userDetails, uploading, handleFileChange, handle
             {uploading ? 'Mengunggah...' : 'Unggah Foto'}
           </button>
 
-          {!userDetails.photo && (
-            <button type="button" onClick={handleUpload} className="font-semibold px-4 py-2.5 rounded-xl hover:bg-purple-50 text-primary-500 hover:text-primary-600">
-              Gunakan Karakter Avatar
+          {temporaryPhoto && (
+            <button type="button" onClick={handleDiscardChanges} className="font-semibold px-4 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 text-white">
+              Batalkan
             </button>
           )}
         </div>
@@ -47,7 +44,7 @@ export const DetailProfile = ({ userDetails, uploading, handleFileChange, handle
           <label htmlFor="name" className="block mb-2 text-xs sm:text-sm">
             Nama Lengkap <span className="text-red-500">*</span>
           </label>
-          <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full p-2.5 border-gray-300 rounded-xl text-xs sm:text-sm" placeholder="Nama Lengkap" required />
+          <input type="text" id="name" value={name} onChange={(e) => onNameChange(e.target.value)} className="w-full p-2.5 border-gray-300 rounded-xl text-xs sm:text-sm" placeholder="Nama Lengkap" required />
         </div>
         <div>
           <label className="block mb-2 text-xs sm:text-sm">
@@ -57,7 +54,11 @@ export const DetailProfile = ({ userDetails, uploading, handleFileChange, handle
         </div>
       </div>
 
-      <button onClick={handleSave} className="bg-primary-500 text-white py-2 px-5 rounded-xl">
+      <button
+        onClick={handleSave}
+        className={`py-2 px-5 rounded-xl ${temporaryPhoto || name !== userDetails.name ? 'bg-primary-500 hover:bg-primary-600 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
+        disabled={!temporaryPhoto && name === userDetails.name}
+      >
         Simpan
       </button>
     </div>
@@ -155,6 +156,10 @@ DetailProfile.propTypes = {
   handleUpload: PropTypes.func.isRequired,
   displayNameAlias: PropTypes.func.isRequired,
   handleSave: PropTypes.func.isRequired,
+  temporaryPhoto: PropTypes.string,
+  handleDiscardChanges: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+  onNameChange: PropTypes.func.isRequired,
 };
 
 PersonalData.propTypes = {
