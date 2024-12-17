@@ -126,7 +126,7 @@ const QuizDisplay = () => {
   const skor = pointsPerQuestion.toFixed(2).split('.')[0];
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
+    <div className="max-w-3xl mx-auto p-6">
       {showModal && <CompletionModal skor={totalScore} courseId={courseId} onClose={handleCloseModal} />}
 
       <h1 className="text-2xl font-bold mb-4">{quiz.title}</h1>
@@ -142,7 +142,7 @@ const QuizDisplay = () => {
             <li key={index} className="border p-4 rounded-lg">
               <div className="flex flex-nowrap justify-between items-start">
                 <h2 className="text-lg font-semibold">{`${index + 1}.) ${question.question}`}</h2>
-                {!submitted && <p className="text-sm text-gray-600 w-24 text-right pt-1">{`${skor} points`}</p>}
+                {!submitted && <p className="text-sm text-gray-600 min-w-24 text-right pt-1">{`${skor} points`}</p>}
                 {submitted && <p className="mt-1 text-sm w-24 text-right">{isUserAnswerCorrect ? `${skor}/${skor}` : isUserAnswerIncorrect ? `0/${skor}` : ''}</p>}
               </div>
               <ul className="mt-2 space-y-2">
@@ -163,7 +163,7 @@ const QuizDisplay = () => {
                   return (
                     <li key={optionIndex} className="flex w-full ">
                       <button type="button" onClick={() => handleAnswerChange(index, optionIndex)} className={`flex ${optionClass} transition duration-200`} disabled={submitted}>
-                        <span className="ml-2">{option}</span>
+                        <span className="ml-2 text-left">{option}</span>
                       </button>
                     </li>
                   );

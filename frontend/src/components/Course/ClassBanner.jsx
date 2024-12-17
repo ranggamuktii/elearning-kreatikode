@@ -12,7 +12,7 @@ const ClassBanner = ({ courses, userDetails, isLoggedIn }) => {
       const response = await getProgress(`${courses._id}`, userDetails.id);
       const data = response.data.data[0];
       setProgress(data);
-      setQuizCompleted(data.quizCompleted || false);
+      setQuizCompleted(data?.quizCompleted || false);
     };
 
     fetchProgress();
@@ -28,7 +28,7 @@ const ClassBanner = ({ courses, userDetails, isLoggedIn }) => {
       return;
     }
   
-    const allMaterialsCompleted = progress.completedMaterials.length === courses.materials.length;
+    const allMaterialsCompleted = progress?.completedMaterials.length === courses.materials.length;
   
     if (progress.lastAccessedMaterial) {
       const lastAccessedIndex = courses.materials.findIndex((material) => material._id === progress.lastAccessedMaterial);
