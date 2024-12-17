@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { Star } from 'lucide-react';
 
 const ReviewCourse = ({ reviews }) => {
   return (
@@ -12,6 +13,13 @@ const ReviewCourse = ({ reviews }) => {
               <p className="text-sm text-gray-500">{new Date(review.createdAt).toLocaleDateString()}</p>
             </div>
           </div>
+
+          <div className="flex items-center gap-1 mb-4">
+            {Array.from({ length: 5 }, (_, i) => (
+              <Star key={i} size={24} className={`${i < review.rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'} transition-colors duration-200`} />
+            ))}
+          </div>
+
           <p className="text-gray-600">{review.text}</p>
         </div>
       ))}

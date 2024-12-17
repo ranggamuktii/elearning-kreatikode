@@ -6,15 +6,14 @@ import { getProgress } from '../../services/api';
 
 const CourseCard = ({ course }) => {
   const [progress, setProgress] = useState(0);
-  const [isEnrolled, setIsEnrolled] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  let userDetails = {}
+  let userDetails = {};
 
   useEffect(() => {
     const token = Cookies.get('TOKEN');
     if (token) {
       setIsLoggedIn(true);
-      userDetails = decodeJwt(token)
+      userDetails = decodeJwt(token);
     } else {
       setIsLoggedIn(false);
     }
@@ -22,7 +21,7 @@ const CourseCard = ({ course }) => {
 
   useEffect(() => {
     const fetchProgress = async () => {
-      if(!userDetails.id){
+      if (!userDetails.id) {
         return 0;
       }
       const response = await getProgress(`${course._id}`, userDetails.id);
@@ -39,16 +38,12 @@ const CourseCard = ({ course }) => {
     fetchProgress();
   }, [course._id, course.materials.length]);
 
-  const handleEnrollClick = () => {
-    setIsEnrolled(true);
-  };
-
   return (
     <div className="flex flex-wrap justify-center">
       <div onClick={() => (window.location.href = `/course/${course._id}`)} className="w-[250px] sm:w-[330px] cursor-pointer hover:scale-97 transition-transform duration-500">
         <div className="border rounded-3xl shadow-custom-light overflow-hidden h-auto">
           <div className="relative pb-[56.25%]">
-            <img src={`${import.meta.env.VITE_API_URL}/thumbnail/${course.thumbnail.split("\\").pop()}`} alt={course.title} className="absolute top-0 left-0 w-full h-full object-cover" />
+            <img src={`${import.meta.env.VITE_API_URL}/thumbnail/${course.thumbnail.split('\\').pop()}`} alt={course.title} className="absolute top-0 left-0 w-full h-full object-cover" />
           </div>
           <div className="bg-white p-4 flex flex-col h-full">
             <h3 className="font-semibold text-base sm:text-xl mb-1">{course.title}</h3>
@@ -83,11 +78,6 @@ const CourseCard = ({ course }) => {
                 </div>
                 <p className="text-xs xs:text-sm sm:text-base">{Math.round(progress)}%</p>
               </div>
-            )}
-            {!isLoggedIn && (
-              <button onClick={handleEnrollClick} className="w-full mt-4 px-4 py-2 bg-primary-500 text-white rounded-xl text-xs xs:text-sm sm:text-base">
-                Selengkapnya
-              </button>
             )}
 
             {isLoggedIn && (

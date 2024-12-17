@@ -11,12 +11,12 @@ const CourseDetail = ({ materials = [], courseId, materialId, userDetails, isLog
 
   useEffect(() => {
     const fetchProgress = async () => {
-      if(!userDetails.id){
+      if (!userDetails.id) {
         return 0;
       }
       const response = await getProgress(courseId, userDetails.id);
       const data = response.data.data[0];
-      setProgress(data)
+      setProgress(data);
       setCompletedMaterials(data.completedMaterials || []);
     };
 
@@ -24,12 +24,11 @@ const CourseDetail = ({ materials = [], courseId, materialId, userDetails, isLog
   }, []);
 
   useEffect(() => {
-    const index = materials.findIndex(material => material._id === materialId);
+    const index = materials.findIndex((material) => material._id === materialId);
     if (index !== -1) {
-      setCurrentIndex(index); 
+      setCurrentIndex(index);
     } else {
-
-      setCurrentIndex(0); 
+      setCurrentIndex(0);
     }
   }, [materialId, materials]);
 
@@ -67,7 +66,7 @@ const CourseDetail = ({ materials = [], courseId, materialId, userDetails, isLog
   return (
     <section className="flex-1 p-4">
       <h1 className="text-3xl font-bold mb-4">{materials[currentIndex].title}</h1>
-      <article className="prose max-w-none mb-8" dangerouslySetInnerHTML={{ __html: materials[currentIndex].content }} />
+      <article className="prose max-w-none mb-4" dangerouslySetInnerHTML={{ __html: materials[currentIndex].content }} />
 
       <div className="flex justify-between">
         <button onClick={handlePrevious} disabled={currentIndex === 0} className={`flex items-center gap-2 p-2 rounded-lg ${currentIndex === 0 ? 'bg-gray-300' : 'bg-primary-500'} text-white`}>

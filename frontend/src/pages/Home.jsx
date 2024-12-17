@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchCourses } from '../services/api';
+import CourseCard from '../components/LandingPage/CourseCard';
 // import CourseCard from '../components/user/CourseCard';
 
 const Home = () => {

@@ -75,7 +75,7 @@ function Footer() {
               <ul className="text-gray-600 text-xs sm:text-base space-y-2 sm:space-y-4 font-normal">
                 <li>
                   <a href="/" className="hover:underline">
-                    kelas
+                    Kelas
                   </a>
                 </li>
                 <li>

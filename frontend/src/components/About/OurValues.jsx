@@ -60,7 +60,7 @@ const OurValues = () => {
                         <img 
                             src={point.image} 
                             alt={point.title} 
-                            className= "w-20 h-20 object-cover rounded-full mb-2"
+                            className= "w-20 h-20 object-cover mb-2"
                         />
                         <h3 className={`text-lg font-semibold ${textColors[index % textColors.length]}`}>
                             {point.title}
