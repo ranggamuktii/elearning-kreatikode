@@ -12,11 +12,11 @@ const CourseMaterial = ({ materials, courseId, userDetails, isLoggedIn }) => {
     const fetchProgress = async () => {
       const response = await getProgress(courseId, userDetails.id);
       if (!response) {
-        return 0;
+        return;
       }
       const data = response.data.data[0];
       setProgress(data);
-
+  
       const completedMaterialIds = data.completedMaterials || [];
       const initialCheckedItems = materials.reduce((acc, material, index) => {
         acc[`item${index}`] = completedMaterialIds.includes(material._id);
@@ -24,7 +24,7 @@ const CourseMaterial = ({ materials, courseId, userDetails, isLoggedIn }) => {
       }, {});
       setCheckedItems(initialCheckedItems);
     };
-
+  
     fetchProgress();
   }, [courseId]);
 

@@ -23,9 +23,14 @@ const ClassBanner = ({ courses, userDetails, isLoggedIn }) => {
       return showWarningToast('Please login to access this feature');
     }
   
+    if (!progress) {
+      window.location.href = `/course/${courses._id}/materials/${courses.materials[0]._id}`;
+      return;
+    }
+  
     const allMaterialsCompleted = progress.completedMaterials.length === courses.materials.length;
   
-    if (progress && progress.lastAccessedMaterial) {
+    if (progress.lastAccessedMaterial) {
       const lastAccessedIndex = courses.materials.findIndex((material) => material._id === progress.lastAccessedMaterial);
       
       if (allMaterialsCompleted) {
