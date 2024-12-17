@@ -34,7 +34,7 @@ const ClassBanner = ({ courses, userDetails, isLoggedIn }) => {
   };
 
   return (
-    <div className="w-full bg-gray-200  py-16 mt-20">
+    <div className="w-full bg-gray-100 py-16 mt-20">
       <div className="max-w-full mx-auto py-8 p-4">
         <div className="flex flex-col md:flex-row items-center justify-around">
           <div className="w-full md:w-1/2 flex flex-col items-center md:items-start">
