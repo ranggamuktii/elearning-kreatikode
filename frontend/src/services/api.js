@@ -54,9 +54,12 @@ export const fetchCourseById = (courseId) => API.get(`/courses/${courseId}`);
 export const createCourse = (courseData) => API.post('/courses', courseData);
 export const updateCourse = (id, courseData) => API.put(`/courses/${id}`, courseData);
 export const deleteCourse = (id) => API.delete(`/courses/${id}`);
+
 export const getProgress = (courseId, userId) => API.get(`/progress/${courseId}/${userId}`);
 export const addProgress = (courseId, materialId, userId) => API.post(`/progress/${courseId}/material/${materialId}/${userId}`);
 export const getProgressByUserId = (userId) => API.get(`/progress/${userId}`);
+
+export const postComment = (courseId, data) => API.post(`/courses/${courseId}/comments`, data);
 export const loadComment = (courseId) => API.get(`/courses/${courseId}/comments`);
 
 export const fetchQuizByCourse = (courseId) => API.get(`/courses/${courseId}/quiz`);

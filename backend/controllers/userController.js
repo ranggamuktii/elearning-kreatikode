@@ -1,24 +1,21 @@
-// backend/controllers/userController.js
 import User from '../models/userModel.js';
 import bcrypt from 'bcryptjs';
 import { generateToken } from '../utils/jwtUtils.js';
+import fs from 'fs';
+import path from 'path';
 
-// Register controller
 export const register = async (req, res) => {
   const { name, email, password, gender, phone, dateOfBirth } = req.body;
 
   try {
-    // Check if user exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(409).json({ message: 'Email sudah terdaftar' });
     }
 
-    // Hash password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Create new user
     const user = new User({
       name,
       email,
@@ -31,7 +28,6 @@ export const register = async (req, res) => {
     const savedUser = await user.save();
     const token = generateToken(savedUser);
 
-    // Return user data without password
     const { password: _, ...userWithoutPassword } = savedUser.toObject();
 
     res.status(201).json({
@@ -47,7 +43,6 @@ export const register = async (req, res) => {
   }
 };
 
-// Login controller
 export const login = async (req, res) => {
   const { email, password } = req.body;
 
@@ -78,7 +73,6 @@ export const login = async (req, res) => {
   }
 };
 
-// Existing controllers dengan modifikasi
 export const getUsers = async (req, res) => {
   try {
     const users = await User.find().select('-password');
@@ -102,21 +96,63 @@ export const getUserById = async (req, res) => {
 
 export const updateUser = async (req, res) => {
   try {
-    if (req.body.password) {
+    let updateData = { ...req.body };
+
+    if (updateData.password) {
       const salt = await bcrypt.genSalt(10);
-      req.body.password = await bcrypt.hash(req.body.password, salt);
+      updateData.password = await bcrypt.hash(updateData.password, salt);
     }
 
-    const updatedUser = await User.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true }).select('-password');
+    if (req.file) {
+      const user = await User.findById(req.params.id);
+      if (user?.photoURL) {
+        const oldPhotoPath = path.join('./public/thumbnail', path.basename(user.photoURL));
+        if (fs.existsSync(oldPhotoPath)) {
+          fs.unlinkSync(oldPhotoPath);
+        }
+      }
+
+      updateData.photoURL = `/thumbnail/${req.file.filename}`;
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(req.params.id, { $set: updateData }, { new: true }).select('-password');
 
     if (!updatedUser) {
+      if (req.file) {
+        fs.unlinkSync(path.join('./public/thumbnail', req.file.filename));
+      }
       return res.status(404).json({ message: 'Pengguna tidak ditemukan' });
     }
 
     res.status(200).json(updatedUser);
   } catch (error) {
-    res.status(400).json({ message: 'Gagal memperbarui data pengguna', error: error.message });
+    if (req.file) {
+      fs.unlinkSync(path.join('./public/thumbnail', req.file.filename));
+    }
+    res.status(400).json({
+      message: 'Gagal memperbarui data pengguna',
+      error: error.message,
+    });
   }
+};
+
+export const handleUploadError = (err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    if (err.code === 'LIMIT_FILE_SIZE') {
+      return res.status(400).json({
+        message: 'File terlalu besar. Maksimal ukuran file adalah 5MB',
+      });
+    }
+    return res.status(400).json({
+      message: 'Error saat upload file',
+      error: err.message,
+    });
+  } else if (err.message === 'Only JPG, JPEG and PNG files are allowed') {
+    return res.status(400).json({
+      message: 'Hanya file JPG, JPEG, dan PNG yang diperbolehkan',
+    });
+  }
+  next(err);
 };
 
 export const deleteUser = async (req, res) => {

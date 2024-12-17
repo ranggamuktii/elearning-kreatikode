@@ -4,7 +4,7 @@ import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import LandingPage from './components/LandingPage/LandingPage';
 import Course from './components/Course/Course';
-import Profile from './components/Dashboard';
+import Profile from './components/Dashboard/Dashboard';
 import PageFaq from './components/PageFaq';
 import IntroClass from './pages/IntroClass';
 import MaterialCourse from './pages/MaterialCourse';
