@@ -17,7 +17,7 @@ const CallToAction = () => {
   return (
     <div className="flex items-center justify-center px-4 sm:px-12">
       <div className="rounded-3xl bg-primary-500 p-6 md:p-12">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-12 gap-6 sm:gap-8">
+        <div className="max-w-7xl mx-auto text-center md:text-center lg:text-left md:grid-cols-none lg:grid lg:grid-cols-12 lg:gap-6">
           {/* Left Section */}
           <div className="md:col-span-4 space-y-3 sm:space-y-5 mt-0 sm:mt-8">
             <h2 className="text-2xl sm:text-4xl font-bold text-white leading-tight">Tertarik untuk Berkolaborasi & Memberi Dampak Positif?</h2>
@@ -26,7 +26,7 @@ const CallToAction = () => {
             </p>
             <div>
               <a href="https://forms.gle/JwGqeCnQJSNfYrC29" target="_blank" rel="noopener noreferrer">
-                <button className="text-sm sm:text-base bg-white px-7 py-2 sm:px-8 sm:py-2 rounded-xl text-primary-500 font-medium hover:shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105">
+                <button className="text-sm sm:text-base bg-white px-7 py-2 sm:px-8 sm:py-2 mb-8 md:mb-10 rounded-xl text-primary-500 font-medium hover:shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105">
                   Gabung Jadi Partner KreatiKode
                 </button>
               </a>
