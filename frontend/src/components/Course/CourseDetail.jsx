@@ -46,6 +46,7 @@ const CourseDetail = ({ materials = [], courseId, materialId, userDetails, isLog
         await addProgress(courseId, materialId, userDetails.id);
         setCurrentIndex(currentIndex + 1);
       } else {
+        await addProgress(courseId, materialId, userDetails.id);
         navigate(`/course/${courseId}/quiz`);
       }
     }

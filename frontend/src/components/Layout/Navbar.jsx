@@ -99,6 +99,24 @@ const Navbar = ({ userDetails, isLoggedIn, handleLogout }) => {
                     >
                       Profile
                     </Dropdown.Item>
+                    <Dropdown.Item
+                      className="custom-dropdown-item rounded-lg bg-white hover:bg-primary-100 hover:text-primary-600 hover:font-medium"
+                      onClick={() => {
+                        navigate('/profile/mycourse');
+                        handleMenuClose();
+                      }}
+                    >
+                      Kelas Saya
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      className="custom-dropdown-item rounded-lg bg-white hover:bg-primary-100 hover:text-primary-600 hover:font-medium"
+                      onClick={() => {
+                        navigate('/profile/setting');
+                        handleMenuClose();
+                      }}
+                    >
+                      Pengaturan
+                    </Dropdown.Item>
                     <Dropdown.Divider />
                     <Dropdown.Item
                       className="custom-dropdown-item font-semibold rounded-lg bg-red-100 hover:bg-red-500 text-red-600 hover:text-white flex justify-center items-center"
@@ -147,6 +165,24 @@ const Navbar = ({ userDetails, isLoggedIn, handleLogout }) => {
                       }}
                     >
                       Profile
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      className="custom-dropdown-item rounded-lg bg-white hover:bg-primary-100 hover:text-primary-600 hover:font-medium"
+                      onClick={() => {
+                        navigate('/profile/mycourse');
+                        handleMenuClose();
+                      }}
+                    >
+                      Kelas Saya
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      className="custom-dropdown-item rounded-lg bg-white hover:bg-primary-100 hover:text-primary-600 hover:font-medium"
+                      onClick={() => {
+                        navigate('/profile/setting');
+                        handleMenuClose();
+                      }}
+                    >
+                      Pengaturan
                     </Dropdown.Item>
                     <Dropdown.Divider />
                     <Dropdown.Item

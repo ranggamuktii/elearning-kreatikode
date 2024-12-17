@@ -1,9 +1,10 @@
+import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { decodeJwt } from 'jose';
 import { ToastContainer } from 'react-toastify';
 import { showErrorToast, showSuccessToast } from '../Utils/toastUtils';
-import { removeUserToken } from '../Utils/tokendata';
+import { removeUserToken, getUserData, setUserToken } from '../Utils/tokendata';
 import { updateProfileDetails, updatePersonalData, updatePassword, updateUser, fetchCourses, getProgress } from '../../services/api';
 
 import Sidebar from './Sidebar';
@@ -12,7 +13,7 @@ import { DetailProfile, PersonalData } from './Profile';
 import Settings from './Setting';
 import MyCourse from './MyCourse';
 
-const DashboardPage = () => {
+const DashboardPage = ({ defaultMenu }) => {
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [activeProfileSection, setActiveProfileSection] = useState(null);
   const [activeMenu, setActiveMenu] = useState('Dashboard');
@@ -84,6 +85,12 @@ const DashboardPage = () => {
     },
   ];
 
+  useEffect(() => {
+    if (defaultMenu) {
+      setActiveMenu(defaultMenu);
+    }
+  }, [defaultMenu]);
+
   const handlePhoneChange = (e) => {
     let value = e.target.value.replace(/\D/g, '');
     if (value.startsWith('62')) {
@@ -117,11 +124,12 @@ const DashboardPage = () => {
     try {
       const response = await updateUser(userDetails.id, formData);
 
-      if (response?.status === 200) {
-        setUserDetails((prev) => ({
-          ...prev,
-          photoURL: response.data.photoURL,
-        }));
+      if (response?.status === 200 && response.data?.token) {
+        setUserToken(response.data.token);
+
+        const userData = getUserData();
+        setUserDetails(userData);
+
         showSuccessToast('Foto profil berhasil diperbarui');
       }
     } catch (error) {
@@ -176,8 +184,12 @@ const DashboardPage = () => {
       switch (activeProfileSection) {
         case 'Detail Profil':
           response = await updateProfileDetails(userDetails.id, { name });
-          if (response.status === 200) {
-            setUserDetails((prev) => ({ ...prev, name }));
+          if (response.status === 200 && response.data?.token) {
+            setUserToken(response.data.token);
+
+            const userData = getUserData();
+            setUserDetails(userData);
+
             showSuccessToast('Profil berhasil diperbarui');
           }
           break;
@@ -188,13 +200,13 @@ const DashboardPage = () => {
             dateOfBirth: selectedDate,
             gender,
           });
-          if (response.status === 200) {
-            setUserDetails((prev) => ({
-              ...prev,
-              phone,
-              dateOfBirth: selectedDate,
-              gender,
-            }));
+
+          if (response.status === 200 && response.data?.token) {
+            setUserToken(response.data.token);
+
+            const userData = getUserData();
+            setUserDetails(userData);
+
             showSuccessToast('Data pribadi berhasil diperbarui');
           }
           break;
@@ -228,7 +240,19 @@ const DashboardPage = () => {
     setIsLoading(false);
   }, []);
 
-  console.log(userDetails);
+  useEffect(() => {
+    const userData = getUserData();
+    if (Object.keys(userData).length > 0) {
+      setUserDetails(userData);
+      setName(userData.name || '');
+      setPhone(userData.phone || '');
+      setSelectedDate(userData.dateOfBirth ? new Date(userData.dateOfBirth) : null);
+      setGender(userData.gender || '');
+    } else {
+      window.location.pathname = '/';
+    }
+    setIsLoading(false);
+  }, []);
 
   useEffect(() => {
     const loadCourses = async () => {
@@ -371,6 +395,14 @@ const DashboardPage = () => {
       </div>
     </div>
   );
+};
+
+DashboardPage.propTypes = {
+  defaultMenu: PropTypes.oneOf(['Dashboard', 'Kelas Saya', 'Pengaturan']),
+};
+
+DashboardPage.defaultProps = {
+  defaultMenu: 'Dashboard',
 };
 
 export default DashboardPage;
