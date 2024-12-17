@@ -37,6 +37,8 @@ const DashboardPage = () => {
     setIsLoading(false);
   }, []);
 
+  console.log(userDetails)
+
   useEffect(() => {
     const loadCourses = async () => {
       try {
