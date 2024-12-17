@@ -124,15 +124,16 @@ const Course = () => {
     const matchesSearchQuery =
       course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       course.description.toLowerCase().includes(searchQuery.toLowerCase());
-
+  
     const matchesTopicFilter =
-      selectedTopics.includes('all') || selectedTopics.includes(course.category);
-
+      selectedTopics.includes('all') || selectedTopics.some(topic => course.category.toLowerCase().includes(topic.toLowerCase()));
+  
     const matchesLevelFilter =
       selectedLevels.includes('all') || selectedLevels.includes(course.level);
-
+  
     return matchesSearchQuery && matchesTopicFilter && matchesLevelFilter;
   });
+  
 
   if (isLoading) {
     return <Loading />;

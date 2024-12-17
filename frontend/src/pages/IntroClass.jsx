@@ -73,11 +73,11 @@ const CourseDetail = () => {
             <SubMaterial courses={course?.materials} className="w-full md:w-1/2" />
           </div>
         </div>
-        <section className="border bg-white rounded-lg p-6 mb-8 w-full md:w-2/3">
+        <section className="border bg-white rounded-lg p-6 md:ml-6 mb-8 w-full md:w-2/3">
           <h2 className="font-bold text-xl mb-4">Ulasan</h2>
           <ReviewCourse reviews={comments} />
         </section>
-        <section className="w-full">
+        <section className="w-full md:ml-6 md:w-2/3">
           <h2 className="font-bold text-xl mb-4">Rekomendasi Kelas Untuk Kamu</h2>
         </section>
       </div>
