@@ -100,7 +100,7 @@ const CourseDetail = () => {
         </div>
         <section className="border bg-white rounded-lg p-6 md:ml-6 mb-8 w-full md:w-2/3">
           <h2 className="font-semibold text-xl mb-4">Ulasan</h2>
-          <ReviewCourse reviews={comments} />
+          <ReviewCourse reviews={comments} userDetails={userDetails}/>
         </section>
         <section className="w-full">
           <div className="flex justify-between items-center px-6 py-4 sm:px-10 sm:py-6">

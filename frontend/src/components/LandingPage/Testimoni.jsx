@@ -67,8 +67,8 @@ function Testimoni() {
   return (
     <div className="mx-auto py-0 sm:py-10">
       <div className="flex flex-col items-center text-center mx-auto space-y-2">
-        <h1 className="w-[300px] sm:w-full text-2xl sm:text-3xl text-primary-500 font-semibold transform transition-transform duration-500 hover:scale-105">Apa kata mereka tentang Kreatikode?</h1>
-        <p className="w-[300px] sm:w-[900px] text-sm sm:text-base pt-2">
+        <h1 className="w-[450px] sm:w-full text-2xl sm:text-3xl text-primary-500 font-semibold transform transition-transform duration-500 hover:scale-105">Apa kata mereka tentang Kreatikode?</h1>
+        <p className="w-[400px] sm:w-full text-sm sm:text-base pt-2">
           Lebih dari <span className="font-bold">1000</span> Talenta Digital telah berkembang bersama KreatiKode. Yuk, simak pengalaman seru dan manfaat yang dirasakan para Pengguna. Apakah kamu yang berikutnya?
         </p>
       </div>
@@ -93,11 +93,15 @@ function Testimoni() {
                 slidesPerGroup: 1,
               },
               768: {
+                slidesPerView: 2,
+                slidesPerGroup: 2,
+              },
+              1350: {
                 slidesPerView: 3,
                 slidesPerGroup: 3,
               },
             }}
-            className="max-w-[350px] sm:max-w-[1350px]"
+            className="max-w-[90%] sm:max-w-[600px] md:max-w-[768px] lg:max-w-[1350px] mx-auto"
           >
             {testimoniData.map((testimoni) => (
               <SwiperSlide key={testimoni.id}>

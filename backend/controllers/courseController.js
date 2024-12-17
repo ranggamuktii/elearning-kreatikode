@@ -34,7 +34,7 @@ export const createCourse = async (req, res) => {
   try {
     const { title, description, category, level, introduction, materials } = req.body;
 
-    const thumbnailPath = req.file.path;
+    const thumbnailPath = req.file ? req.file.path : null; 
 
     const formattedMaterials = Array.isArray(materials)
       ? materials.map((material) => ({

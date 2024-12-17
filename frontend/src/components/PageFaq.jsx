@@ -13,15 +13,15 @@ function PageFaq() {
 
   return (
     <div className="h-full w-full flex flex-col justify-center">
-      <div className="flex flex-col justify-center w-full h-full sm:w-[1400px] mx-auto px-4 sm:px-0 pt-20 sm:pt-28">
-        <div className="bg-gray-200 w-full aspect-[1600/300] sm:aspect-[1600/300] overflow-hidden flex justify-center items-center rounded-[20px] sm:rounded-[30px]">
+      <div className="flex flex-col justify-center w-full mx-auto px-4 md:px-6 pt-20 sm:pt-28">
+        <div className="bg-gray-200 w-full aspect-[1600/300] sm:aspect-[1600/300] overflow-hidden flex justify-center items-center rounded-[20px] sm:rounded-[30px] md:rounded-[40px]">
           <img src="./faq-banner.jpg" alt="Banner Faq" className="block w-full h-full object-cover object-center" />
         </div>
       </div>
-      <div className="w-full sm:max-w-[1400px] flex flex-col justify-center items-center space-y-5 px-4 sm:px-0 mx-auto mt-5 sm:mt-8">
-        <div className="w-full sm:w-[900px] flex flex-col space-y-4 sm:space-y-5 justify-center items-center">
-          <h1 className="text-center text-primary-500 text-xl sm:text-3xl font-semibold">kamu punya pertanyaan?</h1>
-          <p className="text-center text-[11px] sm:text-base leading-4 sm:leading-6">
+      <div className="w-full flex flex-col justify-center items-center space-y-5 px-4 md:px-6 mx-auto mt-5 sm:mt-8">
+        <div className="w-full lg:w-[1000px] flex flex-col space-y-4 sm:space-y-5 justify-center items-center">
+          <h1 className="text-center text-primary-500 text-xl sm:text-2xl md:text-3xl font-semibold">Kamu punya pertanyaan?</h1>
+          <p className="text-center text-sm leading-5 sm:leading-6 md:text-base md:leading-7">
             Ada yang ingin kamu tanyakan tentang kami? Cek dulu daftar pertanyaan yang sering diajukan user-user kami yang sudah kami buat secara komprehesif untuk memberikan jawaban yang kamu butuhkan yuk!
           </p>
 
@@ -58,7 +58,7 @@ function PageFaq() {
                     aria-controls={`accordion-flush-body-${faq.id}`}
                   >
                     <span className={`text-sm sm:text-base ${openIndex === faq.id ? 'text-primary-500' : ''}`}>{faq.question}</span>
-                    <svg className={`w-3 h-3 transform transition-transform duration-300 ${openIndex === faq.id ? 'rotate-180' : ''}`} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                    <svg className={`w-3 h-3 flex-shrink-0 transform transition-transform duration-300 ${openIndex === faq.id ? 'rotate-180' : ''}`} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                       <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5 5 1 1 5" />
                     </svg>
                   </button>
