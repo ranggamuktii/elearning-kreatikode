@@ -44,20 +44,20 @@ const QuizDisplay = () => {
       }
     };
 
-    const fetchCourses =  async () => {
+    const fetchCourses = async () => {
       try {
         const { data } = await fetchCourseById(courseId);
         setCourse(data);
       } catch (err) {
-        setError('Failed to fetch Course data');
+        setError('Failed to fetch course data');
         console.error(err);
       } finally {
         setLoading(false);
       }
-    }
-    
+    };
+
     fetchQuiz();
-    fetchCourses()
+    fetchCourses();
   }, [courseId]);
 
   const handleAnswerChange = (questionIndex, optionIndex) => {
@@ -84,14 +84,14 @@ const QuizDisplay = () => {
       }
     });
   
-    setTotalScore(score)
+    setTotalScore(score);
 
     const lastMaterial = course.materials[course.materials.length - 1];
     const materialId = lastMaterial._id;
 
     try {
-      await addQuizScore(courseId, userDetails.id, {score});
-      await addProgress(courseId, materialId, userDetails.id)
+      await addQuizScore(courseId, userDetails.id, { score });
+      await addProgress(courseId, materialId, userDetails.id);
     } catch (error) {
       console.error('Failed to add quiz score:', error);
     }
@@ -134,8 +134,13 @@ const QuizDisplay = () => {
     <div className="max-w-3xl mx-auto p-6 mt-20">
       {showModal && <CompletionModal skor={totalScore} courseId={courseId} onClose={handleCloseModal} />}
 
-      <h1 className="text-2xl font-bold mb-4">{quiz.title}</h1>
-      {submitted && <h2 className="text-lg font-semibold mb-4">{`Total Skor: ${totalScore.toFixed(2).split('.')[0]}/100`}</h2>}
+      {/* Judul kursus */}
+      {course && <h1 className="text-3xl font-bold mb-6 text-center">{course.title}</h1>}
+
+      {/* Judul kuis */}
+      <h2 className="text-2xl font-bold mb-4">{quiz.title}</h2>
+
+      {submitted && <h3 className="text-lg font-semibold mb-4">{`Total Skor: ${totalScore.toFixed(2).split('.')[0]}/100`}</h3>}
       <ul className="space-y-4">
         {quiz.questions.map((question, index) => {
           const userAnswer = userAnswers[index];
@@ -208,14 +213,5 @@ QuizDisplay.propTypes = {
   loading: PropTypes.bool,
   error: PropTypes.string,
 };
-
-// QuizDisplay.defaultProps = {
-//   quiz: null,
-//   userAnswers: {},
-//   submitted: false,
-//   totalScore: 0,
-//   loading: true,
-//   error: null,
-// };
 
 export default QuizDisplay;

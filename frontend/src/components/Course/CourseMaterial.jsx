@@ -33,16 +33,52 @@ const CourseMaterial = ({ materials, courseId, userDetails, isLoggedIn }) => {
   };
 
   return (
-    <div className="sm:sticky sm:top-24 border rounded-xl p-6 w-full md:w-3/12 h-fit">
+    <div className="
+      w-full md:w-3/12 
+      border rounded-xl p-6 
+      md:sticky md:top-24 
+      sm:relative 
+      bg-white 
+      z-10 
+      max-h-[calc(100vh-6rem)] 
+      overflow-y-auto 
+      mb-4
+    ">
       <h1 className="text-xl font-bold mb-4">Materi Kelas</h1>
       <div className="space-y-2">
         {materials.map((material, index) => {
           const isCompleted = checkedItems[`item${index}`] || false;
           return (
-            <label key={material._id} className={`flex justify-between items-center py-3 px-5 rounded-xl ${isCompleted ? 'bg-secondary-100 text-gray-800' : 'bg-gray-100 text-gray-300'}`}>
-              <span className="text-base">{material.title}</span>
-              <input type="checkbox" name={`item${index}`} onChange={(event) => handleCheckboxChange(event, material)} checked={isCompleted} className="form-checkbox rounded-md h-5 w-5 text-primary-500" />
-            </label>
+            <div 
+              key={material._id} 
+              className={`
+                flex justify-between items-center 
+                py-3 px-5 rounded-xl 
+                cursor-pointer 
+                h-16 
+                ${isCompleted ? 'bg-secondary-100 text-gray-800' : 'bg-gray-100 text-gray-300'}
+              `}
+              onClick={() => navigate(`/course/${courseId}/materials/${material._id}`)}
+            >
+              <span className="
+                text-base 
+                line-clamp-2 
+                flex-grow 
+                pr-2 
+                overflow-hidden 
+                text-ellipsis
+              ">
+                {material.title}
+              </span>
+              <input 
+                type="checkbox" 
+                name={`item${index}`} 
+                onChange={(event) => handleCheckboxChange(event, material)} 
+                checked={isCompleted} 
+                className="form-checkbox rounded-md h-5 w-5 text-primary-500 flex-shrink-0" 
+                onClick={(e) => e.stopPropagation()} 
+              />
+            </div>
           );
         })}
       </div>
