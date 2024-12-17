@@ -1,15 +1,16 @@
+import Cookies from 'js-cookie';
+import { decodeJwt } from 'jose';
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { fetchCourseById } from '../services/api';
+import { fetchCourses, loadComment } from '../services/api';
+import { showErrorToast } from '../components/Utils/toastUtils';
 import SubMaterial from '../components/Course/SubMaterial.';
 import AboutCourse from '../components/Course/AboutCourse';
 import ReviewCourse from '../components/Course/ReviewCourse';
 import ClassBanner from '../components/Course/ClassBanner';
-import { fetchCourses, loadComment } from '../services/api';
-import { fetchCourseById } from '../services/api';
-import Cookies from 'js-cookie';
-import { decodeJwt } from 'jose';
 import CourseCard from '../components/LandingPage/CourseCard';
-import { showErrorToast } from '../components/Utils/toastUtils';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 const CourseDetail = () => {
   const navigate = useNavigate();
@@ -102,20 +103,37 @@ const CourseDetail = () => {
           <ReviewCourse reviews={comments} />
         </section>
         <section className="w-full">
-          <div className="sm:flex hidden justify-between items-center px-6 py-4 sm:px-20 sm:py-6">
-            <h1 className="text-xl sm:text-2xl font-semibold">Rekomendasi Kelas Untuk Kamu</h1>
-            <button onClick={handleViewAll} className="flex items-center gap-2 text-primary-500 transition-colors">
+          <div className="flex justify-between items-center px-6 py-4 sm:px-10 sm:py-6">
+            <h1 className="text-center sm:text-start text-lg sm:text-2xl font-semibold">Rekomendasi Kelas Untuk Kamu</h1>
+            <button onClick={handleViewAll} className="hidden sm:flex items-center gap-2 text-primary-500 transition-colors">
               <span>Lihat Semua</span>
               <svg className="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="m9 5 7 7-7 7" />
               </svg>
             </button>
           </div>
-          <div className="hidden sm:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 px-6 sm:px-20">
+          <div className="hidden sm:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 px-6 sm:px-10">
             {courses.map((course) => (
               <CourseCard key={course._id} course={course} className="h-full" />
             ))}
           </div>
+          <div className="sm:hidden px-0  overflow-hidden">
+            <div className="pl-0">
+              <Swiper slidesPerView="auto" className="w-full !overflow-visible" spaceBetween={-40} slidesOffsetAfter={40}>
+                {courses.map((course) => (
+                  <SwiperSlide key={course._id} style={{ width: '330px' }} className="!h-auto">
+                    <CourseCard course={course} />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
+          </div>
+          <button onClick={handleViewAll} className="w-full flex sm:hidden justify-center items-center p-2 mt-4 rounded-xl border hover:bg-primary-100">
+            <span className="font-medium text-primary-500">Lihat Semua</span>
+            <svg className="w-5 h-5 text-primary-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="m9 5 7 7-7 7" />
+            </svg>
+          </button>
         </section>
       </div>
     </div>
