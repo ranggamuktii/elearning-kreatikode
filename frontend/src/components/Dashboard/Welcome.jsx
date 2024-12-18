@@ -19,7 +19,7 @@ const Welcome = ({ isLoading, error, userDetails, lastActiveCourse }) => {
       {lastActiveCourse ? (
         <div>
           <h2 className="text-lg text-gray-600 mb-6">Lanjutkan Progress Terakhir Kelas</h2>
-          <div className="bg-white rounded-xl p-2 sm:p-4 border flex flex-col sm:flex-row items-center justify-between space-y-4 sm-space-y-0">
+          <div className="bg-white rounded-xl p-2 sm:p-4 border flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-4 sm-space-y-0">
             <div className="flex items-center gap-2 sm:gap-4">
               <img
                 src={lastActiveCourse.thumbnail ? `${import.meta.env.VITE_API_URL}/thumbnail/${lastActiveCourse.thumbnail.split('\\').pop()}` : 'https://placehold.co/400'}
@@ -30,7 +30,7 @@ const Welcome = ({ isLoading, error, userDetails, lastActiveCourse }) => {
                   e.target.src = 'https://placehold.co/400';
                 }}
               />
-              <div>
+              <div className="w-[200px] sm:w-[400px]">
                 <h3 className="font-medium text-base sm:text-lg mb-1 sm:mb-2">{lastActiveCourse.title}</h3>
                 <span className="flex text-sm sm:text-base items-center gap-1">📘 {lastActiveCourse.materials.length} Materi</span>
                 <div className="w-full mt-2">
