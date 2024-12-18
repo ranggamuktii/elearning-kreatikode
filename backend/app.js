@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import routes from './routes/index.js';
 import connectDB from './config/mongodb.js';
-import mongoSanitize from 'express-mongo-sanitize';
+// import mongoSanitize from 'express-mongo-sanitize';
 import { rateLimit } from 'express-rate-limit'
 
 dotenv.config();
@@ -23,7 +23,7 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 
-app.use(mongoSanitize());
+// app.use(mongoSanitize());
 app.use(limiter)
 
 app.use('/api/thumbnail', express.static('public/thumbnail'));
