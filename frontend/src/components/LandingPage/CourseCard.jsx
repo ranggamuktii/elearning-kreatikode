@@ -97,11 +97,11 @@ const CourseCard = ({ course, progressFilter = false }) => {
               </div>
             )}
 
-            {isLoggedIn && (
+            {/* {isLoggedIn && ( */}
               <button onClick={() => (window.location.href = `/course/${course._id}`)} className="w-full mt-4 px-4 py-2 bg-primary-500 text-white rounded-xl text-xs xs:text-sm sm:text-base">
                 Selengkapnya
               </button>
-            )}
+            {/* )} */}
           </div>
         </div>
       </div>
