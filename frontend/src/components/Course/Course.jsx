@@ -1,12 +1,10 @@
 import PropTypes from 'prop-types';
-import Cookies from 'js-cookie';
-import CourseCard from '../LandingPage/CourseCard';
-import Loading from '../Loader/Loading';
 import { useEffect, useState } from 'react';
 import { fetchCourses } from '../../services/api';
+import CourseCard from '../LandingPage/CourseCard';
+import Loading from '../Loader/Loading';
 import { showErrorToast } from '../Utils/toastUtils';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
+import Cookies from 'js-cookie';
 
 const topics = [
   { id: 'all', label: 'Semua Kelas' },
@@ -189,34 +187,21 @@ const Course = () => {
         <div className="flex flex-col">
           {isLoggedIn && (
             <div className="space-y-5">
-              <h1 className="text-xl sm:text-2xl font-semibold">Kelas Saya</h1>
-
-              <Swiper
-                spaceBetween={-60}
-                slidesPerView={'auto'}
-                className="w-full"
-                breakpoints={{
-                  0: {
-                    slidesOffsetBefore: 16,
-                    slidesOffsetAfter: 16,
-                  },
-                  640: {
-                    slidesOffsetBefore: 112,
-                    slidesOffsetAfter: 112,
-                  },
-                }}
-              >
-                {filteredCourses.map((course) => (
-                  <SwiperSlide key={`my-${course._id}`} style={{ width: '330px' }} className="!h-auto">
-                    <CourseCard course={course} progressFilter={true} />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
+              <h1 className="text-xl sm:text-2xl text-center sm:text-star font-semibold">Kelas Saya</h1>
+              <div className="overflow-x-auto pb-4 sm:overflow-visible">
+                <div className="flex gap-0 sm:gap-6 min-w-max sm:min-w-0 sm:grid sm:grid-cols-2 lg:grid-cols-3">
+                  {filteredCourses.map((course) => (
+                    <div key={`my-${course._id}`} className="w-[300px] sm:w-auto">
+                      <CourseCard course={course} progressFilter={true} />
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           )}
 
           <div className="space-y-5 mt-10">
-            <h1 className="text-xl sm:text-2xl font-semibold">Semua Kelas</h1>
+            <h1 className="text-xl sm:text-2xl text-center sm:text-star font-semibold">Semua Kelas</h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredCourses.length > 0 ? filteredCourses.map((course) => <CourseCard key={course._id} course={course} />) : <div className="col-span-full text-center text-gray-500">No courses found</div>}
             </div>
