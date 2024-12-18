@@ -356,7 +356,6 @@ const DashboardPage = ({ defaultMenu = 'Dashboard' }) => {
               console.error('Photo upload error:', error);
               showErrorToast('Gagal mengupload foto');
             }
-            showSuccessToast('Photo berhasil diperbarui');
           }
 
           // Update nama jika berubah
