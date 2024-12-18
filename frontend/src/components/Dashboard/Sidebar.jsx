@@ -33,10 +33,16 @@ const Sidebar = ({ userDetails, sidebarItems, activeMenu, showProfileDropdown, a
             </div>
             {item.text === 'Profile' && showProfileDropdown && (
               <div className="pl-8 py-2 space-y-3">
-                <div onClick={() => handleProfileSectionClick('Detail Profil')} className={`cursor-pointer p-2 hover:text-primary-600 ${activeProfileSection === 'Detail Profil' ? 'text-primary-600 bg-gray-50 rounded-lg' : ''}`}>
+                <div
+                  onClick={() => handleProfileSectionClick('Detail Profil')}
+                  className={`cursor-pointer text-sm sm:text-base p-2 hover:text-primary-600 ${activeProfileSection === 'Detail Profil' ? 'text-primary-600 bg-gray-50 rounded-lg' : ''}`}
+                >
                   Detail Profil
                 </div>
-                <div onClick={() => handleProfileSectionClick('Data Pribadi')} className={`cursor-pointer p-2 hover:text-primary-600 ${activeProfileSection === 'Data Pribadi' ? 'text-primary-600 bg-gray-50 rounded-lg' : ''}`}>
+                <div
+                  onClick={() => handleProfileSectionClick('Data Pribadi')}
+                  className={`cursor-pointer text-sm sm:text-base p-2 hover:text-primary-600 ${activeProfileSection === 'Data Pribadi' ? 'text-primary-600 bg-gray-50 rounded-lg' : ''}`}
+                >
                   Data Pribadi
                 </div>
               </div>

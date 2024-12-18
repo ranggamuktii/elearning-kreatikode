@@ -14,10 +14,10 @@ const MyCourse = ({ isLoading, error, tabs, activeTab, setActiveTab, filteredCou
   return (
     <div className="bg-white rounded-lg shadow-sm mb-6">
       <h1 className="text-2xl font-semibold px-4 py-4">Kelas Saya</h1>
-      <div className="border-b px-4 py-3">
-        <div className="flex space-x-6">
+      <div className="border-b text-center px-4 py-3">
+        <div className="flex space-x-3 sm:space-x-6 justify-between sm:justify-start">
           {tabs.map((tab) => (
-            <button key={tab} onClick={() => setActiveTab(tab)} className={`pb-2 ${activeTab === tab ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-gray-700'}`}>
+            <button key={tab} onClick={() => setActiveTab(tab)} className={`pb-2 ${activeTab === tab ? 'text-sm sm:text-base text-blue-600 border-b-2 border-blue-600' : 'text-sm sm:text-base text-gray-500 hover:text-gray-700'}`}>
               {tab}
             </button>
           ))}
@@ -37,31 +37,31 @@ const CourseCard = ({ course }) => {
   const progressPercentage = totalMaterials > 0 ? (completedCount / totalMaterials) * 100 : 0;
 
   return (
-    <div className="flex items-center justify-between border-b pb-4">
-      <div className="flex items-center space-x-4">
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b pb-4 space-y-4 sm:space-y-0">
+      <div className="flex items-center gap-2 sm:gap-4">
         <img
           src={course.thumbnail ? `${import.meta.env.VITE_API_URL}/thumbnail/${course.thumbnail.split('\\').pop()}` : '/https://placehold.co/400'}
           alt={course.title}
-          className="w-12 h-12 object-cover rounded-lg"
+          className="w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-lg"
           onError={(e) => {
             e.target.onerror = null;
             e.target.src = '/default-course-thumbnail.png';
           }}
         />
         <div>
-          <h3 className="font-medium">{course.title}</h3>
-          <span className="flex items-center">📚 {totalMaterials}</span>
+          <h3 className="text-sm sm:text-base font-medium">{course.title}</h3>
+          <span className="flex text-sm sm:text-base  items-center">📘 {totalMaterials}</span>
           <div className="mt-2">
-            <div className="w-64 h-2 bg-gray-200 rounded-full">
+            <div className="w-full h-2 bg-gray-200 rounded-full">
               <div className="h-full bg-blue-600 rounded-full" style={{ width: `${progressPercentage}%` }} />
             </div>
-            <span className="text-sm text-gray-500">
+            <span className="text-xs sm:text-sm  text-gray-500">
               {completedCount} / {totalMaterials} Materi
             </span>
           </div>
         </div>
       </div>
-      <button className="px-4 py-2 text-primary-600 border border-primary-600 rounded-lg hover:bg-primary-50" onClick={() => (window.location.href = `/course/${course._id}`)}>
+      <button className="px-4 py-1 sm:py-2 text-primary-600 border border-primary-600 rounded-lg hover:bg-primary-50" onClick={() => (window.location.href = `/course/${course._id}`)}>
         Lihat Detail Kelas
       </button>
     </div>

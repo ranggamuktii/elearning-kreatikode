@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
+import { useState, useEffect } from 'react';
 import { decodeJwt } from 'jose';
 import { ToastContainer } from 'react-toastify';
 import { showErrorToast, showSuccessToast } from '../Utils/toastUtils';
@@ -14,6 +14,7 @@ import Settings from './Setting';
 import MyCourse from './MyCourse';
 import ModalValidation from './ModalValidation';
 import ModalLogout from './ModalLogout';
+import MobileSidebar from './MobileSidebar';
 
 const DashboardPage = ({ defaultMenu = 'Dashboard' }) => {
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
@@ -549,23 +550,40 @@ const DashboardPage = ({ defaultMenu = 'Dashboard' }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 mt-20">
+    <div className="min-h-screen bg-gray-50 mt-16 sm:mt-20">
       <ToastContainer />
       <div className="flex">
-        <Sidebar
-          userDetails={{
-            ...userDetails,
-            temporaryPhoto: temporaryPhoto,
-          }}
-          sidebarItems={sidebarItems}
-          activeMenu={activeMenu}
-          showProfileDropdown={showProfileDropdown}
-          activeProfileSection={activeProfileSection}
-          handleProfileClick={handleProfileClick}
-          handleProfileSectionClick={handleProfileSectionClick}
-          handleMenuClick={handleMenuClick}
-        />
-        <main className="flex-1 p-6">
+        <div className="hidden md:block">
+          <Sidebar
+            userDetails={{
+              ...userDetails,
+              temporaryPhoto: temporaryPhoto,
+            }}
+            sidebarItems={sidebarItems}
+            activeMenu={activeMenu}
+            showProfileDropdown={showProfileDropdown}
+            activeProfileSection={activeProfileSection}
+            handleProfileClick={handleProfileClick}
+            handleProfileSectionClick={handleProfileSectionClick}
+            handleMenuClick={handleMenuClick}
+          />
+        </div>
+
+        <main className="flex-1 p-6 space-y-5 sm:space-y-0">
+          {/* Mobile Sidebar - Visible on mobile */}
+          <MobileSidebar
+            userDetails={{
+              ...userDetails,
+              temporaryPhoto: temporaryPhoto,
+            }}
+            sidebarItems={sidebarItems}
+            activeMenu={activeMenu}
+            showProfileDropdown={showProfileDropdown}
+            activeProfileSection={activeProfileSection}
+            handleProfileClick={handleProfileClick}
+            handleProfileSectionClick={handleProfileSectionClick}
+            handleMenuClick={handleMenuClick}
+          />
           <div className="bg-white rounded-lg shadow-sm">{renderContent()}</div>
         </main>
       </div>
