@@ -64,12 +64,14 @@ const CourseDetail = ({ materials = [], courseId, materialId, userDetails, isLog
         }
       }
     }
+    window.scrollTo(0, 0);
   };
 
   const handlePrevious = () => {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
     }
+    window.scrollTo(0, 0);
   };
 
   if (!materials.length) {
