@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
-// import { Navigation, Pagination } from 'swiper/modules';
 import { fetchCourses } from '../../services/api';
-// import { showErrorToast } from '../Utils/toastUtils';
+import { showErrorToast } from '../Utils/toastUtils';
 import CourseCard from './CourseCard';
 import Loading from '../../components/Loader/Loading';
 
@@ -11,7 +10,6 @@ function CourseList() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [courses, setCourses] = useState([]);
-  
 
   useEffect(() => {
     const getCourses = async () => {
@@ -20,7 +18,7 @@ function CourseList() {
         setCourses(data.slice(0, 4));
         setIsLoading(false);
       } catch (err) {
-        // showErrorToast('Gagal memuat data kelas');
+        showErrorToast('Gagal memuat data kelas');
         setIsLoading(false);
         console.error(err);
       }
@@ -28,7 +26,6 @@ function CourseList() {
 
     getCourses();
   }, []);
-
 
   const handleViewAll = () => {
     navigate('/course');
@@ -55,9 +52,20 @@ function CourseList() {
       </div>
 
       {/* Mobile Swiper */}
-      <div className="sm:hidden px-6 -mx-6 overflow-visible">
+      <div className="sm:hidden px-0 -mx-4 overflow-x-hidden w-full">
         <div className="pl-6">
-          <Swiper slidesPerView="auto" className="w-full !overflow-visible" spaceBetween={-40} slidesOffsetAfter={40}>
+          <Swiper
+            spaceBetween={-60}
+            slidesPerView={'auto'}
+            className="w-full"
+            pagination={{ clickable: true }}
+            breakpoints={{
+              0: {
+                slidesOffsetBefore: 24,
+                slidesOffsetAfter: 24,
+              },
+            }}
+          >
             {courses.map((course) => (
               <SwiperSlide key={course._id} style={{ width: '330px' }} className="!h-auto">
                 <CourseCard course={course} />
