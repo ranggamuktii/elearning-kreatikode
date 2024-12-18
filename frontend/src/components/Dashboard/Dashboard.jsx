@@ -352,11 +352,13 @@ const DashboardPage = ({ defaultMenu = 'Dashboard' }) => {
               if (response.data?.token) {
                 setUserToken(response.data.token);
                 shouldRedirect = true;
+                showSuccessToast('Photo berhasil diperbarui');
               }
             } catch (error) {
               console.error('Photo upload error:', error);
               showErrorToast('Gagal mengupload foto');
             }
+            showSuccessToast('Photo berhasil diperbarui');
           }
 
           // Update nama jika berubah
