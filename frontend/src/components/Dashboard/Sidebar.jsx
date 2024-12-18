@@ -17,7 +17,7 @@ const Sidebar = ({ userDetails, sidebarItems, activeMenu, showProfileDropdown, a
         ) : (
           <div className="w-24 h-24 rounded-full bg-gray-300 flex items-center justify-center text-2xl text-white font-semibold">{userDetails?.name ? userDetails.name.charAt(0).toUpperCase() : 'U'}</div>
         )}
-        <h3 className="font-medium">{userDetails?.name || 'User'}</h3>
+        <h3 className="font-medium text-center">{userDetails?.name || 'User'}</h3>
       </div>
 
       <div className="space-y-2">

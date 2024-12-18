@@ -62,8 +62,8 @@ export const updatePersonalData = (userId, { phone, dateOfBirth, gender }) => {
   return updateUser(userId, { phone, dateOfBirth, gender });
 };
 
-export const updatePassword = (userId, { password }) => {
-  return updateUser(userId, { password });
+export const updatePassword = (userId, data) => {
+  return updateUser(userId, { password: data.password });
 };
 
 export const fetchCourses = () => API.get('/courses');

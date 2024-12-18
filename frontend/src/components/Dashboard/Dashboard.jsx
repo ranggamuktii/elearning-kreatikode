@@ -339,7 +339,7 @@ const DashboardPage = ({ defaultMenu = 'Dashboard' }) => {
       setIsLoading(true);
       let response;
       let shouldRedirect = false;
-
+      console.log(activeProfileSection);
       switch (activeProfileSection) {
         case 'Detail Profil':
           // Update foto jika ada
@@ -415,7 +415,7 @@ const DashboardPage = ({ defaultMenu = 'Dashboard' }) => {
             showSuccessToast('Password berhasil diperbarui');
             await new Promise((resolve) => setTimeout(resolve, 1000));
             resetAllStates();
-            window.location.pathname = '/profile/mycourse';
+            window.location.pathname = '/profile';
           }
           break;
 
@@ -452,7 +452,7 @@ const DashboardPage = ({ defaultMenu = 'Dashboard' }) => {
   const navigateToMenu = (menuText) => {
     setActiveMenu(menuText);
     setShowProfileDropdown(menuText === 'Profile');
-    setActiveProfileSection(null);
+    setActiveProfileSection(menuText);
     setPassword('');
     setConfirmPassword('');
   };
@@ -570,6 +570,7 @@ const DashboardPage = ({ defaultMenu = 'Dashboard' }) => {
         </div>
 
         <main className="flex-1 p-6 space-y-5 sm:space-y-0">
+          {/* Mobile Sidebar - Visible on mobile */}
           <MobileSidebar
             userDetails={{
               ...userDetails,
@@ -583,7 +584,7 @@ const DashboardPage = ({ defaultMenu = 'Dashboard' }) => {
             handleProfileSectionClick={handleProfileSectionClick}
             handleMenuClick={handleMenuClick}
           />
-          <div className="bg-white rounded-xl shadow-sm">{renderContent()}</div>
+          <div className="bg-white rounded-lg shadow-sm">{renderContent()}</div>
         </main>
       </div>
 
