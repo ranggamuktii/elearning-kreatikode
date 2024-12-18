@@ -187,20 +187,16 @@ const Course = () => {
         <div className="flex flex-col">
           {isLoggedIn && (
             <div className="space-y-5">
-              <h1 className="text-xl sm:text-2xl text- sm:text-start font-semibold">Kelas Saya</h1>
-              <div className="overflow-x-auto pb-4 sm:overflow-visible">
-                {filteredCourses.length > 0 ? (
-                  <div className="flex gap-0 sm:gap-6 min-w-max sm:min-w-0 sm:grid sm:grid-cols-2 lg:grid-cols-3">
-                    {filteredCourses.map((course) => (
-                      <div key={`my-${course._id}`} className="w-[300px] sm:w-auto">
-                        <CourseCard course={course} progressFilter={true} />
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center text-gray-500">Anda belum memulai kelas apapun. Yuk mulai belajar!</div>
-                )}
-              </div>
+              <h1 className="text-xl sm:text-2xl text-center sm:text-start font-semibold">Kelas Saya</h1>
+              {filteredCourses.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {filteredCourses.map((course) => (
+                    <CourseCard key={course._id} course={course} progressFilter={true} />
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center text-gray-500">Anda belum memulai kelas apapun. Yuk mulai belajar!</div>
+              )}
             </div>
           )}
 
