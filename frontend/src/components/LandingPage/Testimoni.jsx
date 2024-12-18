@@ -68,7 +68,7 @@ function Testimoni() {
     <div className="mx-auto py-0 sm:py-10">
       <div className="flex flex-col items-center text-center mx-auto space-y-2">
         <h1 className="w-full text-2xl sm:text-3xl text-primary-500 font-semibold transform transition-transform duration-500 hover:scale-105">Apa kata mereka tentang Kreatikode?</h1>
-        <p className="w-[320px] sm:w-full text-sm sm:text-base pt-2">
+        <p className="w-[320px] sm:w-[800px] text-sm sm:text-base pt-2">
           Lebih dari <span className="font-bold">1000</span> Talenta Digital telah berkembang bersama KreatiKode. Yuk, simak pengalaman seru dan manfaat yang dirasakan para Pengguna. Apakah kamu yang berikutnya?
         </p>
       </div>

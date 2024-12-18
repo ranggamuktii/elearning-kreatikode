@@ -570,7 +570,6 @@ const DashboardPage = ({ defaultMenu = 'Dashboard' }) => {
         </div>
 
         <main className="flex-1 p-6 space-y-5 sm:space-y-0">
-          {/* Mobile Sidebar - Visible on mobile */}
           <MobileSidebar
             userDetails={{
               ...userDetails,
@@ -584,7 +583,7 @@ const DashboardPage = ({ defaultMenu = 'Dashboard' }) => {
             handleProfileSectionClick={handleProfileSectionClick}
             handleMenuClick={handleMenuClick}
           />
-          <div className="bg-white rounded-lg shadow-sm">{renderContent()}</div>
+          <div className="bg-white rounded-xl shadow-sm">{renderContent()}</div>
         </main>
       </div>
 

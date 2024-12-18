@@ -3,7 +3,7 @@ import DatePicker from 'react-datepicker';
 
 export const DetailProfile = ({ userDetails, uploading, handleFileChange, displayNameAlias, handleSave, temporaryPhoto, handleDiscardChanges, name, onNameChange }) => {
   return (
-    <div className="p-4 space-y-4">
+    <div className="p-8 space-y-4">
       <h2 className="text-lg font-semibold mb-5">Detail Profil</h2>
       <div>
         <label className="block mb-2 text-sm font-normal text-gray-900">
