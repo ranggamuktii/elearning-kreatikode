@@ -178,6 +178,8 @@ const DashboardPage = ({ defaultMenu = 'Dashboard' }) => {
         setPhone(userData.phone || '');
         setSelectedDate(userData.dateOfBirth ? new Date(userData.dateOfBirth) : null);
         setGender(userData.gender || '');
+        setPassword('');
+        setConfirmPassword('');
       } else {
         window.location.pathname = '/';
       }
@@ -327,10 +329,6 @@ const DashboardPage = ({ defaultMenu = 'Dashboard' }) => {
 
   const handleSave = async () => {
     try {
-      console.log('Selected File:', selectedFile);
-      console.log('Name:', name);
-      console.log('User Details:', userDetails);
-
       if (!validateForm()) {
         showErrorToast('Mohon lengkapi semua field yang diperlukan');
         return;
@@ -339,7 +337,7 @@ const DashboardPage = ({ defaultMenu = 'Dashboard' }) => {
       setIsLoading(true);
       let response;
       let shouldRedirect = false;
-      console.log(activeProfileSection);
+
       switch (activeProfileSection) {
         case 'Detail Profil':
           // Update foto jika ada
@@ -365,13 +363,10 @@ const DashboardPage = ({ defaultMenu = 'Dashboard' }) => {
           if (name !== userDetails.name) {
             try {
               response = await updateProfileDetails(userDetails.id, { name });
-              console.log('Name Update Response:', response);
 
               if (response.data?.token) {
-                // Perbarui token di cookies
                 setUserToken(response.data.token);
 
-                // Update state userDetails dengan nama baru
                 setUserDetails((prevDetails) => ({
                   ...prevDetails,
                   name: name,
@@ -404,7 +399,6 @@ const DashboardPage = ({ defaultMenu = 'Dashboard' }) => {
           if (response.status === 200 && response.data?.token) {
             setUserToken(response.data.token);
             showSuccessToast('Data pribadi berhasil diperbarui');
-            // Tunggu toast muncul sebelum reset dan redirect
             await new Promise((resolve) => setTimeout(resolve, 1000));
             resetAllStates();
             window.location.pathname = '/profile';
@@ -425,7 +419,6 @@ const DashboardPage = ({ defaultMenu = 'Dashboard' }) => {
           break;
       }
     } catch (error) {
-      console.error('Save error:', error);
       showErrorToast(error.response?.data?.message || 'Terjadi kesalahan saat menyimpan');
     } finally {
       setIsLoading(false);
@@ -455,7 +448,6 @@ const DashboardPage = ({ defaultMenu = 'Dashboard' }) => {
     setActiveMenu(menuText);
     setShowProfileDropdown(menuText === 'Profile');
     setActiveProfileSection(menuText);
-    setActiveProfileSection(menuText);
     setPassword('');
     setConfirmPassword('');
   };
@@ -470,6 +462,7 @@ const DashboardPage = ({ defaultMenu = 'Dashboard' }) => {
 
     setShowProfileDropdown(!showProfileDropdown);
     setActiveMenu('Profile');
+    setActiveProfileSection('Detail Profil');
   };
 
   const handleProfileSectionClick = (section) => {
@@ -573,7 +566,6 @@ const DashboardPage = ({ defaultMenu = 'Dashboard' }) => {
         </div>
 
         <main className="flex-1 p-6 space-y-5 sm:space-y-0">
-          {/* Mobile Sidebar - Visible on mobile */}
           <MobileSidebar
             userDetails={{
               ...userDetails,
@@ -587,7 +579,7 @@ const DashboardPage = ({ defaultMenu = 'Dashboard' }) => {
             handleProfileSectionClick={handleProfileSectionClick}
             handleMenuClick={handleMenuClick}
           />
-          <div className="bg-white rounded-lg shadow-sm">{renderContent()}</div>
+          <div className="bg-white rounded-xl shadow-sm">{renderContent()}</div>
         </main>
       </div>
 
