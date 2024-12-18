@@ -140,7 +140,7 @@ const Navbar = ({ userDetails, isLoggedIn, handleLogout }) => {
                         <img
                           src={`${import.meta.env.VITE_API_URL}${userDetails.photo}`}
                           alt="Default"
-                          className="w-6 h-6 rounded-full"
+                          className="w-7 h-7 rounded-full"
                           onError={(e) => {
                             e.target.onerror = null;
                             e.target.src = 'https://placehold.co/400x400/png';
