@@ -453,6 +453,7 @@ const DashboardPage = ({ defaultMenu = 'Dashboard' }) => {
     setActiveMenu(menuText);
     setShowProfileDropdown(menuText === 'Profile');
     setActiveProfileSection(menuText);
+    setActiveProfileSection(menuText);
     setPassword('');
     setConfirmPassword('');
   };

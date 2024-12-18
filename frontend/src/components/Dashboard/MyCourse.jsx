@@ -45,14 +45,14 @@ const CourseCard = ({ course }) => {
           className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg"
           onError={(e) => {
             e.target.onerror = null;
-            e.target.src = '/default-course-thumbnail.png';
+            e.target.src = '/https://placehold.co/400';
           }}
         />
         <div>
           <h3 className="text-sm sm:text-base font-medium">{course.title}</h3>
           <span className="flex text-sm sm:text-base  items-center">📘 {totalMaterials}</span>
           <div className="mt-2 w-[200px] sm:w-[400px]">
-            <div className="w-full h-2 bg-gray-200 rounded-full">
+            <div className="w-64 h-2 bg-gray-200 rounded-full">
               <div className="h-full bg-blue-600 rounded-full" style={{ width: `${progressPercentage}%` }} />
             </div>
             <span className="text-xs sm:text-sm  text-gray-500">
