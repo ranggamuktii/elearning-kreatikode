@@ -4,9 +4,10 @@ import { decodeJwt } from 'jose';
 import { useEffect, useState } from 'react';
 import { getProgress } from '../../services/api';
 
-const CourseCard = ({ course }) => {
+const CourseCard = ({ course, progressFilter = false }) => {
   const [progress, setProgress] = useState(0);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [shouldRender, setShouldRender] = useState(true);
   let userDetails = {};
 
   useEffect(() => {
@@ -22,21 +23,37 @@ const CourseCard = ({ course }) => {
   useEffect(() => {
     const fetchProgress = async () => {
       if (!userDetails.id) {
-        return 0;
+        return;
       }
-      const response = await getProgress(`${course._id}`, userDetails.id);
-      const data = response.data.data[0];
+      try {
+        const response = await getProgress(`${course._id}`, userDetails.id);
+        const data = response.data.data[0];
 
-      const totalMaterials = course.materials.length || 0;
-      const completedMaterials = data.completedMaterials.length || 0;
-      if (totalMaterials > 0) {
-        const percentage = (completedMaterials / totalMaterials) * 100;
-        setProgress(percentage);
+        const totalMaterials = course.materials.length || 0;
+        const completedMaterials = data?.completedMaterials?.length || 0;
+        if (totalMaterials > 0) {
+          const percentage = (completedMaterials / totalMaterials) * 100;
+          setProgress(percentage);
+
+          // Kalau ini adalah card untuk "Kelas Saya", sembunyiin kalo engga ada progress
+          if (progressFilter && percentage === 0) {
+            setShouldRender(false);
+          }
+        }
+      } catch (error) {
+        if (progressFilter) {
+          setShouldRender(false);
+          console.error(error);
+        }
       }
     };
 
     fetchProgress();
-  }, [course._id, course.materials.length]);
+  }, [userDetails.id, course._id, course.materials.length, progressFilter]);
+
+  if (!shouldRender) {
+    return null;
+  }
 
   return (
     <div className="flex flex-wrap justify-center">
@@ -102,6 +119,7 @@ CourseCard.propTypes = {
     materials: PropTypes.array.isRequired,
     level: PropTypes.string.isRequired,
   }).isRequired,
+  progressFilter: PropTypes.bool,
 };
 
 export default CourseCard;

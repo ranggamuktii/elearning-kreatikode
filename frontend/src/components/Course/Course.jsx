@@ -4,6 +4,7 @@ import { fetchCourses } from '../../services/api';
 import CourseCard from '../LandingPage/CourseCard';
 import Loading from '../Loader/Loading';
 import { showErrorToast } from '../Utils/toastUtils';
+import Cookies from 'js-cookie';
 
 const topics = [
   { id: 'all', label: 'Semua Kelas' },
@@ -73,14 +74,20 @@ const Course = () => {
   const [selectedTopics, setSelectedTopics] = useState(['all']);
   const [selectedLevels, setSelectedLevels] = useState(['all']);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
-  const [courses, setCourses] = useState([]); // Inisialisasi dengan array kosong
+  const [courses, setCourses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = Cookies.get('TOKEN');
+    setIsLoggedIn(!!token);
+  }, []);
 
   useEffect(() => {
     const getCourses = async () => {
       try {
         const { data } = await fetchCourses();
-        // Pastikan data berupa array sebelum di-set ke state
+
         if (Array.isArray(data)) {
           setCourses(data);
         } else {
@@ -122,9 +129,7 @@ const Course = () => {
 
   const filteredCourses = courses.filter((course) => {
     const matchesSearchQuery = course.title.toLowerCase().includes(searchQuery.toLowerCase()) || course.description.toLowerCase().includes(searchQuery.toLowerCase());
-
     const matchesTopicFilter = selectedTopics.includes('all') || selectedTopics.some((topic) => course.category.toLowerCase().includes(topic.toLowerCase()));
-
     const matchesLevelFilter = selectedLevels.includes('all') || selectedLevels.includes(course.level);
 
     return matchesSearchQuery && matchesTopicFilter && matchesLevelFilter;
@@ -136,7 +141,6 @@ const Course = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Header Section */}
       <div className="w-full bg-primary-500 text-white">
         <div className="max-w-7xl mx-auto px-14 py-16 sm:px-6 lg:px-8 mt-10 sm:mt-20">
           <div className="space-y-4 text-center">
@@ -159,9 +163,7 @@ const Course = () => {
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-28 w-full flex flex-col sm:flex-row gap-6 py-6">
-        {/* Mobile Filter Button */}
         <button className="sm:hidden px-4 py-2 border rounded-lg flex items-center justify-center" onClick={() => setIsMobileFilterOpen(true)}>
           <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
@@ -183,32 +185,21 @@ const Course = () => {
 
         {/* Course List */}
         <div className="flex flex-col">
-          <div className="space-y-5">
-            <h1 className="text-xl sm:text-2xl font-semibold">Kelas Saya</h1>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {Array.isArray(filteredCourses) && filteredCourses.length > 0 ? (
-                filteredCourses.map((course) => (
-                  <div key={course._id}>
-                    <CourseCard course={course} />
-                  </div>
-                ))
-              ) : (
-                <div className="col-span-full text-center text-gray-500">No courses found</div>
-              )}
+          {isLoggedIn && (
+            <div className="space-y-5">
+              <h1 className="text-xl sm:text-2xl font-semibold">Kelas Saya</h1>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredCourses.map((course) => (
+                  <CourseCard key={`my-${course._id}`} course={course} progressFilter={true} />
+                ))}
+              </div>
             </div>
-          </div>
+          )}
+
           <div className="space-y-5 mt-10">
             <h1 className="text-xl sm:text-2xl font-semibold">Semua Kelas</h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {Array.isArray(filteredCourses) && filteredCourses.length > 0 ? (
-                filteredCourses.map((course) => (
-                  <div key={course._id}>
-                    <CourseCard course={course} />
-                  </div>
-                ))
-              ) : (
-                <div className="col-span-full text-center text-gray-500">No courses found</div>
-              )}
+              {filteredCourses.length > 0 ? filteredCourses.map((course) => <CourseCard key={course._id} course={course} />) : <div className="col-span-full text-center text-gray-500">No courses found</div>}
             </div>
           </div>
         </div>
