@@ -9,6 +9,8 @@ const MyCourse = ({ isLoading, error, tabs, activeTab, setActiveTab, filteredCou
     return <div className="p-6 text-red-500">{error}</div>;
   }
 
+  const displayedCourses = activeTab === 'Semua Kelas' ? filteredCourses.filter((course) => course.progress.percentage > 0) : filteredCourses;
+
   return (
     <div className="bg-white rounded-lg shadow-sm mb-6">
       <h1 className="text-2xl font-semibold px-4 py-4">Kelas Saya</h1>
@@ -23,7 +25,7 @@ const MyCourse = ({ isLoading, error, tabs, activeTab, setActiveTab, filteredCou
       </div>
 
       <div className="p-4 space-y-4">
-        {filteredCourses.length === 0 ? <div className="text-center py-8 text-gray-500">Tidak ada kelas yang tersedia untuk kategori ini</div> : filteredCourses.map((course) => <CourseCard key={course._id} course={course} />)}
+        {displayedCourses.length === 0 ? <div className="text-center py-8 text-gray-500">Tidak ada kelas yang tersedia untuk kategori ini</div> : displayedCourses.map((course) => <CourseCard key={course._id} course={course} />)}
       </div>
     </div>
   );

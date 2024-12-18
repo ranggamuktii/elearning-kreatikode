@@ -499,6 +499,8 @@ const DashboardPage = ({ defaultMenu = 'Dashboard' }) => {
 
   const filterCourses = (tab) => {
     switch (tab) {
+      case 'Semua Kelas':
+        return courses;
       case 'Sedang Dipelajari':
         return courses.filter((course) => course.progress.percentage > 0 && course.progress.percentage < 100);
       case 'Selesai':
