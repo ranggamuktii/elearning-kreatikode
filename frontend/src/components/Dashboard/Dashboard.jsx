@@ -339,7 +339,7 @@ const DashboardPage = ({ defaultMenu = 'Dashboard' }) => {
       setIsLoading(true);
       let response;
       let shouldRedirect = false;
-
+      console.log(activeProfileSection)
       switch (activeProfileSection) {
         case 'Detail Profil':
           // Update foto jika ada
@@ -452,7 +452,7 @@ const DashboardPage = ({ defaultMenu = 'Dashboard' }) => {
   const navigateToMenu = (menuText) => {
     setActiveMenu(menuText);
     setShowProfileDropdown(menuText === 'Profile');
-    setActiveProfileSection(null);
+    setActiveProfileSection(menuText);
     setPassword('');
     setConfirmPassword('');
   };
