@@ -1,10 +1,12 @@
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
-import { fetchCourses } from '../../services/api';
+import Cookies from 'js-cookie';
 import CourseCard from '../LandingPage/CourseCard';
 import Loading from '../Loader/Loading';
+import { useEffect, useState } from 'react';
+import { fetchCourses } from '../../services/api';
 import { showErrorToast } from '../Utils/toastUtils';
-import Cookies from 'js-cookie';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
 
 const topics = [
   { id: 'all', label: 'Semua Kelas' },
@@ -188,11 +190,28 @@ const Course = () => {
           {isLoggedIn && (
             <div className="space-y-5">
               <h1 className="text-xl sm:text-2xl font-semibold">Kelas Saya</h1>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+              <Swiper
+                spaceBetween={-60}
+                slidesPerView={'auto'}
+                className="w-full"
+                breakpoints={{
+                  0: {
+                    slidesOffsetBefore: 16,
+                    slidesOffsetAfter: 16,
+                  },
+                  640: {
+                    slidesOffsetBefore: 112,
+                    slidesOffsetAfter: 112,
+                  },
+                }}
+              >
                 {filteredCourses.map((course) => (
-                  <CourseCard key={`my-${course._id}`} course={course} progressFilter={true} />
+                  <SwiperSlide key={`my-${course._id}`} style={{ width: '330px' }} className="!h-auto">
+                    <CourseCard course={course} progressFilter={true} />
+                  </SwiperSlide>
                 ))}
-              </div>
+              </Swiper>
             </div>
           )}
 
