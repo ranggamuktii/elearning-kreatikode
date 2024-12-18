@@ -26,10 +26,10 @@ const CourseDetail = ({ materials = [], courseId, materialId, userDetails, isLog
         setCurrentIndex(index);
       }
     };
-    
+
     fetchProgress();
   }, [courseId, userDetails.id, materials.length]);
-  
+
   useEffect(() => {
     const index = materials.findIndex((material) => material._id === materialId);
     if (index !== -1) {
@@ -41,7 +41,7 @@ const CourseDetail = ({ materials = [], courseId, materialId, userDetails, isLog
 
   const handleNext = async () => {
     const materialId = materials[currentIndex]._id;
-  
+
     if (completedMaterials.includes(materialId)) {
       if (currentIndex < materials.length - 1) {
         setCurrentIndex(currentIndex + 1);
@@ -80,7 +80,24 @@ const CourseDetail = ({ materials = [], courseId, materialId, userDetails, isLog
   return (
     <section className="flex-1 p-4">
       <h1 className="text-3xl font-bold mb-4">{materials[currentIndex].title}</h1>
-      <article className="prose max-w-none mb-4" dangerouslySetInnerHTML={{ __html: materials[currentIndex].content }} />
+      <article className="prose max-w-none mb-4">
+        <div
+          className="
+            break-words overflow-x-auto w-full
+            [&_pre]:bg-gray-100 [&_pre]:p-4 [&_pre]:rounded-lg [&_pre]:overflow-x-auto [&_pre]:my-4
+            [&_code]:font-mono [&_code]:text-sm [&_code]:bg-gray-100 [&_code]:px-2 [&_code]:py-1 [&_code]:rounded
+            [&_img]:max-w-full [&_img]:h-auto
+            [&_table]:w-full [&_table]:overflow-x-auto [&_table]:block [&_table]:my-4
+            [&_td]:p-2 [&_td]:border [&_td]:border-gray-200
+            [&_th]:p-2 [&_th]:border [&_th]:border-gray-200
+            sm:[&_pre]:text-base sm:[&_code]:text-base
+            md:[&_pre]:text-base md:[&_code]:text-base
+          "
+          dangerouslySetInnerHTML={{
+            __html: materials[currentIndex].content,
+          }}
+        />
+      </article>
 
       <div className="flex justify-between">
         <button onClick={handlePrevious} disabled={currentIndex === 0} className={`flex items-center gap-2 p-2 rounded-lg ${currentIndex === 0 ? 'bg-gray-300' : 'bg-primary-500'} text-white`}>
