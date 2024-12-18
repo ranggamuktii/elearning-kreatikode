@@ -89,10 +89,30 @@ export const PersonalData = ({ phone, handlePhoneChange, selectedDate, setSelect
               <CalendarIcon />
             </span>
             <DatePicker
+              id="default-datepicker"
               selected={selectedDate}
               onChange={(date) => setSelectedDate(date)}
-              className="custom-datepicker w-full p-2 border rounded-lg"
-              renderCustomHeader={({ date, changeYear, changeMonth }) => <CustomDatePickerHeader date={date} changeYear={changeYear} changeMonth={changeMonth} />}
+              className="custom-datepicker"
+              popperClassName="custom-datepicker-popper"
+              wrapperClassName="custom-datepicker-wrapper"
+              renderCustomHeader={({ date, changeYear, changeMonth }) => (
+                <div className="flex space-x-2 items-center justify-center custom-datepicker">
+                  <select value={new Date(date).getFullYear()} onChange={({ target: { value } }) => changeYear(value)} className="px-2 py-1 border rounded-md focus:outline-none">
+                    {Array.from({ length: 101 }).map((_, index) => (
+                      <option key={index} value={1924 + index}>
+                        {1924 + index}
+                      </option>
+                    ))}
+                  </select>
+                  <select value={new Date(date).getMonth()} onChange={({ target: { value } }) => changeMonth(value)} className="px-2 py-1 border rounded-md focus:outline-none">
+                    {Array.from({ length: 12 }).map((_, index) => (
+                      <option key={index} value={index}>
+                        {new Date(0, index).toLocaleString('default', { month: 'long' })}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
             />
           </div>
         </div>

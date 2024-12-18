@@ -113,10 +113,10 @@ const DashboardPage = ({ defaultMenu = 'Dashboard' }) => {
     resetFileState();
 
     const currentUserData = getUserData();
-    setName(currentUserData.name || '');
-    setPhone(currentUserData.phone || '');
-    setSelectedDate(currentUserData.dateOfBirth ? new Date(currentUserData.dateOfBirth) : null);
-    setGender(currentUserData.gender || '');
+    setName(currentUserData.name);
+    setPhone(currentUserData.phone?.replace(/^62/, ''));
+    setSelectedDate(currentUserData.dateOfBirth);
+    setGender(currentUserData.gender);
     setPassword('');
     setConfirmPassword('');
     setShowDiscardModal(false);

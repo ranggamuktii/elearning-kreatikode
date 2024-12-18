@@ -10,11 +10,12 @@ import IntroClass from './pages/IntroClass';
 import MaterialCourse from './pages/MaterialCourse';
 import AboutUs from './pages/AboutUs';
 import CourseQuiz from './components/Course/CourseQuiz';
+import Modal from './components/Modal/quizModal';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import 'react-datepicker/dist/react-datepicker.css';
 import 'flowbite-react';
 import './App.css';
-import Modal from './components/Modal/quizModal';
 
 function App() {
   return (
