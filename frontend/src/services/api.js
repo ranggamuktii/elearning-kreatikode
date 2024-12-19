@@ -66,6 +66,8 @@ export const updatePassword = (userId, data) => {
   return updateUser(userId, { password: data.password });
 };
 
+export const verifyEmail = (token) => API.get(`/users/verify-email/${token}`);
+
 export const fetchCourses = () => API.get('/courses');
 export const fetchCourseById = (courseId) => API.get(`/courses/${courseId}`);
 export const createCourse = (courseData) => API.post('/courses', courseData);
