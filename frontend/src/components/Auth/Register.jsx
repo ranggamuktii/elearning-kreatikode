@@ -88,10 +88,13 @@ function Register() {
         const response = await registerUser(userData);
 
         if (response.data) {
-          showSuccessToast('Registrasi berhasil!');
-          // Tunggu sebentar sebelum redirect ke login
+          showSuccessToast('Registrasi berhasil! Silakan cek email Anda untuk verifikasi.');
           setTimeout(() => {
-            navigate('/login');
+            navigate('/login', {
+              state: {
+                message: 'Silakan cek email Anda untuk verifikasi akun sebelum login.',
+              },
+            });
           }, 2000);
         }
       } catch (error) {
@@ -99,8 +102,7 @@ function Register() {
           showErrorToast('Email sudah terdaftar');
           setErrors({ email: 'Email sudah terdaftar, silakan login.' });
         } else {
-          showErrorToast('Terjadi kesalahan saat registrasi');
-          console.error('Error:', error);
+          showErrorToast(error.response?.data?.message || 'Terjadi kesalahan saat registrasi');
         }
       } finally {
         setIsLoading(false);
@@ -316,10 +318,18 @@ function Register() {
           <div className="mt-8 flex flex-col gap-y-4">
             <button
               type="submit"
-              className={`w-full py-3 rounded-xl font-medium text-md transition duration-200 ${isFormComplete() ? 'bg-primary-500 text-white hover:bg-blue-600' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
-              disabled={!isFormComplete()}
+              className={`w-full py-3 rounded-xl font-medium text-md transition duration-200 
+            ${isFormComplete() ? 'bg-primary-500 text-white hover:bg-blue-600' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
+              disabled={!isFormComplete() || isLoading}
             >
-              Daftar {isLoading && <Spinner size="sm" />}
+              {isLoading ? (
+                <span className="flex items-center justify-center">
+                  <Spinner size="sm" className="mr-2" />
+                  Mendaftar...
+                </span>
+              ) : (
+                'Daftar'
+              )}
             </button>
           </div>
           <div className="flex items-center justify-center mt-4">

@@ -37,8 +37,6 @@ const DashboardPage = () => {
     setIsLoading(false);
   }, []);
 
-  console.log(userDetails)
-
   useEffect(() => {
     const loadCourses = async () => {
       try {
@@ -57,7 +55,7 @@ const DashboardPage = () => {
                 progress: progressResponse.data.progress || 0,
                 completedSubmodules: progressResponse.data.completedSubmodules || 0,
                 totalSubmodules: progressResponse.data.totalSubmodules || course.totalSubmodules || 0,
-                icon: course.thumbnail ? `${import.meta.env.VITE_API_URL}/thumbnail//${course.thumbnail.split("\\").pop()}` : '/default-course-thumbnail.png', // Use a local default image
+                icon: course.thumbnail ? `${import.meta.env.VITE_API_URL}/thumbnail//${course.thumbnail.split('\\').pop()}` : '/default-course-thumbnail.png', // Use a local default image
               };
             } catch (error) {
               console.error(`Error fetching progress for course ${course.id}:`, error);
