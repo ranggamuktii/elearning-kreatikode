@@ -10,6 +10,7 @@ function CourseList() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [courses, setCourses] = useState([]);
+  const myCourse = false;
 
   useEffect(() => {
     const getCourses = async () => {
@@ -68,7 +69,7 @@ function CourseList() {
           >
             {courses.map((course) => (
               <SwiperSlide key={course._id} style={{ width: '330px' }} className="!h-auto">
-                <CourseCard course={course} />
+                <CourseCard course={course} isMyCourse={myCourse}/>
               </SwiperSlide>
             ))}
           </Swiper>
@@ -79,7 +80,7 @@ function CourseList() {
       <div className="hidden sm:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-6 sm:px-20">
         {courses.map((course) => (
           <div key={course._id}>
-            <CourseCard course={course} />
+            <CourseCard course={course} isMyCourse={myCourse} />
           </div>
         ))}
       </div>

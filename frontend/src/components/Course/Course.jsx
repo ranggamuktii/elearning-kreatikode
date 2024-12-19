@@ -192,7 +192,7 @@ const Course = () => {
                 {filteredCourses.length > 0 ? (
                   <div className="flex gap-4 sm:gap-6 min-w-max sm:min-w-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:justify-items-start">
                     {filteredCourses.map((course) => (
-                      <CourseCard key={course._id} course={course} progressFilter={true} />
+                      <CourseCard key={course._id} course={course} progressFilter={true} isMyCourse={true}/>
                     ))}
                   </div>
                 ) : (

@@ -4,7 +4,7 @@ import { decodeJwt } from 'jose';
 import { useEffect, useState } from 'react';
 import { getProgress } from '../../services/api';
 
-const CourseCard = ({ course, progressFilter = false }) => {
+const CourseCard = ({ course, progressFilter = false, isMyCourse }) => {
   const [progress, setProgress] = useState(0);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [shouldRender, setShouldRender] = useState(true);
@@ -88,7 +88,7 @@ const CourseCard = ({ course, progressFilter = false }) => {
             </div>
             <hr className="mt-4 mb-0" />
 
-            {isLoggedIn && (
+            {isLoggedIn && isMyCourse &&(
               <div className="flex items-center gap-1 mt-3 -mb-1">
                 <div className="w-full h-2 bg-gray-200 border-0 rounded-xl border-current">
                   <div className="bg-primary-500 rounded-xl p-1 h-full text-xs sm:text-sm" style={{ width: `${progress}%` }}></div>
