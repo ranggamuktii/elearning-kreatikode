@@ -11,6 +11,7 @@ import MaterialCourse from './pages/MaterialCourse';
 import AboutUs from './pages/AboutUs';
 import CourseQuiz from './components/Course/CourseQuiz';
 import Modal from './components/Modal/quizModal';
+import VerifyEmail from './components/VerifyEmail';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -36,6 +37,7 @@ function App() {
           <Route path="/course/:courseId/quiz" element={<CourseQuiz />} />
           <Route path="/about_us" element={<AboutUs />} />
           <Route path="/modal" element={<Modal />} />
+          <Route path="/verify-email/:token" element={<VerifyEmail />} />
         </Routes>
       </Layout>
     </Router>
