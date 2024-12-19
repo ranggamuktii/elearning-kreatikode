@@ -3,6 +3,8 @@ import bcrypt from 'bcryptjs';
 import { generateToken } from '../utils/jwtUtils.js';
 import fs from 'fs';
 import path from 'path';
+import { randomBytes } from 'crypto';
+import { sendVerificationEmail } from '../utils/emailUtils.js';
 
 export const register = async (req, res) => {
   const { name, email, password, gender, phone, dateOfBirth } = req.body;
@@ -12,6 +14,9 @@ export const register = async (req, res) => {
     if (existingUser) {
       return res.status(409).json({ message: 'Email sudah terdaftar' });
     }
+
+    const verificationToken = randomBytes(32).toString('hex');
+    const verificationTokenExpires = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -23,15 +28,22 @@ export const register = async (req, res) => {
       gender,
       phone,
       dateOfBirth: new Date(dateOfBirth),
+      verificationToken,
+      verificationTokenExpires,
+      isEmailVerified: false,
     });
 
     const savedUser = await user.save();
     const token = generateToken(savedUser);
 
+    await sendVerificationEmail(email, name, verificationToken);
+
+    // const authToken = generateToken({ _id: user._id });
+
     const { password: _, ...userWithoutPassword } = savedUser.toObject();
 
     res.status(201).json({
-      message: 'Registrasi berhasil',
+      message: 'Registrasi berhasil. Silakan cek email Anda untuk verifikasi.',
       user: userWithoutPassword,
       token,
     });
@@ -57,6 +69,13 @@ export const login = async (req, res) => {
       return res.status(401).json({ message: 'Email atau password salah' });
     }
 
+    if (!user.isEmailVerified) {
+      return res.status(403).json({
+        message: 'Email belum diverifikasi. Silakan cek email Anda untuk verifikasi.',
+        needsVerification: true,
+      });
+    }
+
     const token = generateToken(user);
     const { password: _, ...userWithoutPassword } = user.toObject();
 
@@ -68,6 +87,76 @@ export const login = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       message: 'Gagal melakukan login',
+      error: error.message,
+    });
+  }
+};
+
+export const verifyEmail = async (req, res) => {
+  try {
+    const { token } = req.params;
+    console.log('Received verification token:', token);
+
+    const user = await User.findOne({
+      $or: [{ verificationToken: token }, { isEmailVerified: true }],
+    });
+
+    console.log('Found user:', user ? 'Yes' : 'No');
+
+    if (!user) {
+      return res.status(400).json({
+        message: 'Token verifikasi tidak valid atau sudah kadaluarsa',
+      });
+    }
+
+    if (user.isEmailVerified) {
+      console.log('Email already verified');
+      return res.status(200).json({
+        message: 'Email sudah terverifikasi sebelumnya',
+      });
+    }
+
+    user.isEmailVerified = true;
+    user.verificationToken = undefined;
+    user.verificationTokenExpires = undefined;
+    await user.save();
+    console.log('User updated successfully');
+
+    res.json({ message: 'Email berhasil diverifikasi' });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Terjadi kesalahan saat verifikasi email',
+      error: error.message,
+    });
+  }
+};
+
+export const resendVerification = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: 'Email tidak terdaftar' });
+    }
+
+    if (user.isEmailVerified) {
+      return res.status(400).json({ message: 'Email sudah terverifikasi' });
+    }
+
+    const verificationToken = randomBytes(32).toString('hex');
+    const verificationTokenExpires = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+    user.verificationToken = verificationToken;
+    user.verificationTokenExpires = verificationTokenExpires;
+    await user.save();
+
+    await sendVerificationEmail(email, user.name, verificationToken);
+
+    res.json({ message: 'Email verifikasi telah dikirim ulang' });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Gagal mengirim ulang email verifikasi',
       error: error.message,
     });
   }
