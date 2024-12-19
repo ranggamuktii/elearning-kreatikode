@@ -3,8 +3,10 @@ import { addProgress, getProgress } from '../../services/api';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { showWarningToast } from '../Utils/toastUtils';
+import CompletionModal from '../Modal/modalComplated';
 
 const CourseDetail = ({ materials = [], courseId, materialId, userDetails, isLoggedIn }) => {
+  const [showModal, setShowModal] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const [completedMaterials, setCompletedMaterials] = useState([]);
@@ -49,6 +51,7 @@ const CourseDetail = ({ materials = [], courseId, materialId, userDetails, isLog
         if (!quizCompleted) {
           navigate(`/course/${courseId}/quiz`);
         } else {
+          setShowModal(true);
           return showWarningToast('Quiz is already completed!');
         }
       }
@@ -60,6 +63,7 @@ const CourseDetail = ({ materials = [], courseId, materialId, userDetails, isLog
         if (!quizCompleted) {
           navigate(`/course/${courseId}/quiz`);
         } else {
+          setShowModal(true);
           return showWarningToast('Quiz is already completed!');
         }
       }
@@ -67,11 +71,17 @@ const CourseDetail = ({ materials = [], courseId, materialId, userDetails, isLog
     window.scrollTo(0, 0);
   };
 
+  console.log(showModal)
+
   const handlePrevious = () => {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
     }
     window.scrollTo(0, 0);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
   };
 
   if (!materials.length) {
@@ -81,6 +91,7 @@ const CourseDetail = ({ materials = [], courseId, materialId, userDetails, isLog
   const isLastMaterial = currentIndex === materials.length - 1;
   return (
     <section className="flex-1 p-4">
+      {showModal && <CompletionModal skor={progress.quizScore} courseId={courseId} onClose={handleCloseModal} />}
       <h1 className="text-3xl font-bold mb-4">{materials[currentIndex].title}</h1>
       <article className="prose max-w-none mb-4">
         <div
