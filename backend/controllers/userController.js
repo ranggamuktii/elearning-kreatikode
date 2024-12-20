@@ -97,17 +97,10 @@ export const verifyEmail = async (req, res) => {
     const { token } = req.params;
     console.log('Received verification token:', token);
 
-    const user = await User.findOne({
-      $or: [{ verificationToken: token }, { isEmailVerified: true }],
-    });
+    const user = await User.findOne({ verificationToken: token });
 
     console.log('Found user:', user ? 'Yes' : 'No');
-
-    if (!user) {
-      return res.status(400).json({
-        message: 'Token verifikasi tidak valid atau sudah kadaluarsa',
-      });
-    }
+    console.log(user)
 
     if (user.isEmailVerified) {
       console.log('Email already verified');
@@ -116,6 +109,12 @@ export const verifyEmail = async (req, res) => {
       });
     }
 
+    if (!user) {
+      return res.status(400).json({
+        message: 'Token verifikasi tidak valid atau sudah kadaluarsa',
+      });
+    }
+    
     user.isEmailVerified = true;
     user.verificationToken = undefined;
     user.verificationTokenExpires = undefined;

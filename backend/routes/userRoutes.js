@@ -16,7 +16,7 @@ router.get('/:id', authenticateToken, getUserById);
 router.put('/:id', upload.single('photo'), handleUploadError, updateUser);
 router.delete('/:id', deleteUser);
 
-router.get('/verify-email/:token', verifyEmail);
+router.put('/verify-email/:token', verifyEmail);
 router.post('/resend-verification', resendVerification);
 
 export default router;
