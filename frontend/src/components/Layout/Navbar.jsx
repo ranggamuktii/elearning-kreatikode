@@ -111,6 +111,15 @@ const Navbar = ({ userDetails, isLoggedIn, handleLogout }) => {
                     <Dropdown.Item
                       className="custom-dropdown-item rounded-lg bg-white hover:bg-primary-100 hover:text-primary-600 hover:font-medium"
                       onClick={() => {
+                        navigate('/');
+                        handleMenuClose();
+                      }}
+                    >
+                      Notifikasi
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      className="custom-dropdown-item rounded-lg bg-white hover:bg-primary-100 hover:text-primary-600 hover:font-medium"
+                      onClick={() => {
                         navigate('/profile/setting');
                         handleMenuClose();
                       }}
@@ -174,6 +183,15 @@ const Navbar = ({ userDetails, isLoggedIn, handleLogout }) => {
                       }}
                     >
                       Kelas Saya
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      className="custom-dropdown-item rounded-lg bg-white hover:bg-primary-100 hover:text-primary-600 hover:font-medium"
+                      onClick={() => {
+                        navigate('/');
+                        handleMenuClose();
+                      }}
+                    >
+                      Notifikasi
                     </Dropdown.Item>
                     <Dropdown.Item
                       className="custom-dropdown-item rounded-lg bg-white hover:bg-primary-100 hover:text-primary-600 hover:font-medium"

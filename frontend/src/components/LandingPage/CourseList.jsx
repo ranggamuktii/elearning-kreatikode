@@ -4,11 +4,9 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { fetchCourses } from '../../services/api';
 import { showErrorToast } from '../Utils/toastUtils';
 import CourseCard from './CourseCard';
-import Loading from '../../components/Loader/Loading';
 
 function CourseList() {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(true);
   const [courses, setCourses] = useState([]);
   const myCourse = false;
 
@@ -17,10 +15,8 @@ function CourseList() {
       try {
         const { data } = await fetchCourses();
         setCourses(data.slice(0, 4));
-        setIsLoading(false);
       } catch (err) {
         showErrorToast('Gagal memuat data kelas');
-        setIsLoading(false);
         console.error(err);
       }
     };
@@ -31,10 +27,6 @@ function CourseList() {
   const handleViewAll = () => {
     navigate('/course');
   };
-
-  if (isLoading) {
-    return <Loading />;
-  }
 
   return (
     <div className="w-full flex flex-col">
@@ -69,7 +61,7 @@ function CourseList() {
           >
             {courses.map((course) => (
               <SwiperSlide key={course._id} style={{ width: '330px' }} className="!h-auto">
-                <CourseCard course={course} isMyCourse={myCourse}/>
+                <CourseCard course={course} isMyCourse={myCourse} />
               </SwiperSlide>
             ))}
           </Swiper>
