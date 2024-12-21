@@ -18,7 +18,8 @@
 .custom-datepicker {
   display: flex !important;
   flex-grow: 1 !important;
-  min-width: 100% !important;
+  width: 100% !important; /* Changed from min-width to width */
+  max-width: 100% !important; /* Added max-width */
   background-color: white !important;
   color: #111827 !important;
   border: 1px solid #e6e8eb;
@@ -26,10 +27,37 @@
 }
 
 .custom-datepicker input {
+  width: 100% !important;
+  max-width: 100% !important;
   background-color: white !important;
   color: #111827 !important;
   border-radius: 0.375rem !important;
   padding: 0.5rem !important;
+  font-size: 14px !important;
+}
+
+@media screen and (max-width: 768px) {
+  .custom-datepicker,
+  .custom-datepicker-wrapper {
+    width: 100% !important;
+    min-width: auto !important;
+  }
+
+  .react-datepicker {
+    width: 280px !important;
+    font-size: 14px !important;
+  }
+
+  .react-datepicker__month-container {
+    width: 100% !important;
+  }
+
+  .react-datepicker__day {
+    width: 30px !important;
+    height: 30px !important;
+    line-height: 30px !important;
+    margin: 2px !important;
+  }
 }
 
 .custom-datepicker select {
@@ -56,7 +84,6 @@
 .react-datepicker__day {
   background-color: white !important;
   color: #000 !important;
-  /* border-radius: 0.25rem; */
   font-weight: 500 !important;
   padding: 1px !important;
 }
@@ -68,10 +95,6 @@
 
 .react-datepicker__day--002 {
   font-weight: bold !important;
-}
-
-.custom-datepicker-wrapper {
-  width: 100% !important;
 }
 
 @keyframes slideDown {
