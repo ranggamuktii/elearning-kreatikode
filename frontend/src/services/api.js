@@ -68,6 +68,8 @@ export const updatePassword = (userId, data) => {
 
 export const verifyEmail = (token) => API.put(`/users/verify-email/${token}`);
 
+export const resendVerification = (data) => API.post('/users/resend-verification', data);
+
 export const fetchCourses = () => API.get('/courses');
 export const fetchCourseById = (courseId) => API.get(`/courses/${courseId}`);
 export const createCourse = (courseData) => API.post('/courses', courseData);
